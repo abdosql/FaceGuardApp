@@ -1,0 +1,32 @@
+# Symfony specific
+/.env.local
+/.env.test
+/public/bundles/
+/var/
+/vendor/
+/.phpunit.result.cache
+/phpunit.xml
+/phpunit.xml.dist
+/.php_cs.cache
+/.php_cs
+/.phpunit.cache
+/var/bootstrap.php.cache
+/.idea
+/.DS_Store
+/public/build
+# Package directory
+/node_modules
+
+# User-specific files
+/.history
+
+# Logs and databases
+/var/cache/*
+/var/log/*
+!/var/cache/.gitkeep
+!/var/log/.gitkeep
+/var/sessions/*
+!/var/sessions/.gitkeep
+
+# Environment file
+.env

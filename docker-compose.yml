@@ -1,0 +1,73 @@
+version: '3.7'
+
+services:
+
+    frontend:
+        container_name: "frontend_client"
+        build:
+            context: .
+            dockerfile: ./docker/server/Dockerfile
+        expose:
+            - "9000"
+            - "9003"
+        ports:
+            - "80:80"
+        working_dir: /var/www/html
+        volumes:
+            - ./frontend:/var/www/html
+            - ./docker/server/apache/sites-enabled:/etc/apache2/sites-enabled
+            - ./docker/server/php/php.ini:/usr/local/etc/php/conf.d/extra-php-config.ini
+            - ./docker/xdebug/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+        depends_on:
+            - database
+        networks:
+            - inner_net
+
+    database:
+        container_name: "database_server"
+        image: mysql
+        volumes:
+            - db_data:/var/lib/mysql
+            - ./docker/db/mariadb/my.cnf:/etc/mysql/conf.d/my.cnf
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_ROOT_PASSWORD: 'superSecret'
+            MYSQL_DATABASE: 'FaceGuard'
+            MYSQL_USER: 'user'
+            MYSQL_PASSWORD: '12345'
+            MYSQL_ROOT_HOST: '%'
+        networks:
+            - inner_net
+
+    # Your other microservices and containers...
+
+    myadmin:
+        container_name: "phpmyadmin"
+        image: phpmyadmin/phpmyadmin:5
+        environment:
+            PMA_HOST: database
+        ports:
+            - "8080:80"
+        depends_on:
+            - database
+        networks:
+            - inner_net
+        volumes:
+            - db_admin_data:/var/www/html
+
+    mailcatcher:
+        container_name: "smtp_server"
+        image: yappabe/mailcatcher
+        networks:
+            - inner_net
+        ports:
+            - 1025:1025
+            - 1080:1080
+
+volumes:
+    db_data:
+    db_admin_data:
+
+networks:
+    inner_net:
