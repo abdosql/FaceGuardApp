@@ -13,8 +13,7 @@
 /var/bootstrap.php.cache
 /.idea
 /.DS_Store
-/frontend/vendor
-/frontend/public/assets/*
+/
 
 # Package directory
 /node_modules
