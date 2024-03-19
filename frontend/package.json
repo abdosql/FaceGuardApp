@@ -24,7 +24,7 @@
     "postcss-rtl": "^2.0.0",
     "rtl-css-loader": "^1.0.1"
   },
-  "license": "UNLICENSED",
+  "license": "MIT",
   "private": true,
   "scripts": {
     "dev-server": "encore dev-server",

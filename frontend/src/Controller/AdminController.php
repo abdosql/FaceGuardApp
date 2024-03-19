@@ -8,9 +8,10 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class AdminController extends AbstractController
 {
-    #[Route('/admin', name: 'app_admin')]
+    #[Route(['/admin', '/'], name: 'app_admin')]
     public function index(): Response
     {
+        $this->denyAccessUnlessGranted("ROLE_USER");
         return $this->render('admin/index.html.twig', [
             'controller_name' => 'AdminController',
         ]);

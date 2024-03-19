@@ -1,1 +1,2 @@
-import{l as i}from"./utils.min.mjs";function t(t,e){const s=i(e);return s!==e&&(s.style.backfaceVisibility="hidden",s.style["-webkit-backface-visibility"]="hidden"),s}export{t as e};
+import{l as getSlideTransformEl}from"./utils.min.mjs";function effectTarget(e,i){const t=getSlideTransformEl(i);return t!==i&&(t.style.backfaceVisibility="hidden",t.style["-webkit-backface-visibility"]="hidden"),t}export{effectTarget as e};
+//# sourceMappingURL=effect-target.min.mjs.map

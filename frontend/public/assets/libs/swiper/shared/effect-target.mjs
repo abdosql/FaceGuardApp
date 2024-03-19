@@ -1,1 +1,12 @@
-import{l as i}from"./utils.mjs";function t(t,e){const s=i(e);return s!==e&&(s.style.backfaceVisibility="hidden",s.style["-webkit-backface-visibility"]="hidden"),s}export{t as e};
+import { l as getSlideTransformEl } from './utils.mjs';
+
+function effectTarget(effectParams, slideEl) {
+  const transformEl = getSlideTransformEl(slideEl);
+  if (transformEl !== slideEl) {
+    transformEl.style.backfaceVisibility = 'hidden';
+    transformEl.style['-webkit-backface-visibility'] = 'hidden';
+  }
+  return transformEl;
+}
+
+export { effectTarget as e };

@@ -61,7 +61,9 @@
                                     <input name="_csrf_token" type="hidden" value="{{ csrf_token('authenticate') }}"/>
                                     <div class="mb-3">
                                         <label for="username" class="form-label">Username</label>
-                                        <input name="username" type="text" class="form-control" id="username" placeholder="Enter username">
+                                        <input
+                                                value="{{ last_username }}"
+                                                name="username" type="text" class="form-control" id="username" placeholder="Enter username">
                                     </div>
 
                                     <div class="mb-3">

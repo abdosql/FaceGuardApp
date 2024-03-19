@@ -1,1 +1,591 @@
-import{a as e}from"../shared/ssr-window.esm.mjs";import{e as t,a as i,b as a,i as r}from"../shared/utils.mjs";function s(s){let{swiper:o,extendParams:n,on:l,emit:m}=s;const c=e();n({zoom:{enabled:!1,maxRatio:3,minRatio:1,toggle:!0,containerClass:"swiper-zoom-container",zoomedSlideClass:"swiper-slide-zoomed"}}),o.zoom={enabled:!1};let d,u,p=1,g=!1;const h=[],E={originX:0,originY:0,slideEl:void 0,slideWidth:void 0,slideHeight:void 0,imageEl:void 0,imageWrapEl:void 0,maxRatio:3},v={isTouched:void 0,isMoved:void 0,currentX:void 0,currentY:void 0,minX:void 0,minY:void 0,maxX:void 0,maxY:void 0,width:void 0,height:void 0,startX:void 0,startY:void 0,touchesStart:{},touchesCurrent:{}},f={x:void 0,y:void 0,prevPositionX:void 0,prevPositionY:void 0,prevTime:void 0};let x=1;function X(){if(h.length<2)return 1;const e=h[0].pageX,t=h[0].pageY,i=h[1].pageX,a=h[1].pageY;return Math.sqrt((i-e)**2+(a-t)**2)}function Y(e){const t=o.isElement?"swiper-slide":`.${o.params.slideClass}`;return!!e.target.matches(t)||o.slides.filter((t=>t.contains(e.target))).length>0}function y(e){if("mouse"===e.pointerType&&h.splice(0,h.length),!Y(e))return;const t=o.params.zoom;if(d=!1,u=!1,h.push(e),!(h.length<2)){if(d=!0,E.scaleStart=X(),!E.slideEl){E.slideEl=e.target.closest(`.${o.params.slideClass}, swiper-slide`),E.slideEl||(E.slideEl=o.slides[o.activeIndex]);let a=E.slideEl.querySelector(`.${t.containerClass}`);if(a&&(a=a.querySelectorAll("picture, img, svg, canvas, .swiper-zoom-target")[0]),E.imageEl=a,E.imageWrapEl=a?i(E.imageEl,`.${t.containerClass}`)[0]:void 0,!E.imageWrapEl)return void(E.imageEl=void 0);E.maxRatio=E.imageWrapEl.getAttribute("data-swiper-zoom")||t.maxRatio}if(E.imageEl){const[e,t]=function(){if(h.length<2)return{x:null,y:null};const e=E.imageEl.getBoundingClientRect();return[(h[0].pageX+(h[1].pageX-h[0].pageX)/2-e.x-c.scrollX)/p,(h[0].pageY+(h[1].pageY-h[0].pageY)/2-e.y-c.scrollY)/p]}();E.originX=e,E.originY=t,E.imageEl.style.transitionDuration="0ms"}g=!0}}function z(e){if(!Y(e))return;const t=o.params.zoom,i=o.zoom,a=h.findIndex((t=>t.pointerId===e.pointerId));a>=0&&(h[a]=e),h.length<2||(u=!0,E.scaleMove=X(),E.imageEl&&(i.scale=E.scaleMove/E.scaleStart*p,i.scale>E.maxRatio&&(i.scale=E.maxRatio-1+(i.scale-E.maxRatio+1)**.5),i.scale<t.minRatio&&(i.scale=t.minRatio+1-(t.minRatio-i.scale+1)**.5),E.imageEl.style.transform=`translate3d(0,0,0) scale(${i.scale})`))}function C(e){if(!Y(e))return;if("mouse"===e.pointerType&&"pointerout"===e.type)return;const t=o.params.zoom,i=o.zoom,a=h.findIndex((t=>t.pointerId===e.pointerId));a>=0&&h.splice(a,1),d&&u&&(d=!1,u=!1,E.imageEl&&(i.scale=Math.max(Math.min(i.scale,E.maxRatio),t.minRatio),E.imageEl.style.transitionDuration=`${o.params.speed}ms`,E.imageEl.style.transform=`translate3d(0,0,0) scale(${i.scale})`,p=i.scale,g=!1,i.scale>1&&E.slideEl?E.slideEl.classList.add(`${t.zoomedSlideClass}`):i.scale<=1&&E.slideEl&&E.slideEl.classList.remove(`${t.zoomedSlideClass}`),1===i.scale&&(E.originX=0,E.originY=0,E.slideEl=void 0)))}function M(e){if(!Y(e)||!function(e){const t=`.${o.params.zoom.containerClass}`;return!!e.target.matches(t)||[...o.hostEl.querySelectorAll(t)].filter((t=>t.contains(e.target))).length>0}(e))return;const t=o.zoom;if(!E.imageEl)return;if(!v.isTouched||!E.slideEl)return;v.isMoved||(v.width=E.imageEl.offsetWidth,v.height=E.imageEl.offsetHeight,v.startX=r(E.imageWrapEl,"x")||0,v.startY=r(E.imageWrapEl,"y")||0,E.slideWidth=E.slideEl.offsetWidth,E.slideHeight=E.slideEl.offsetHeight,E.imageWrapEl.style.transitionDuration="0ms");const i=v.width*t.scale,a=v.height*t.scale;if(i<E.slideWidth&&a<E.slideHeight)return;v.minX=Math.min(E.slideWidth/2-i/2,0),v.maxX=-v.minX,v.minY=Math.min(E.slideHeight/2-a/2,0),v.maxY=-v.minY,v.touchesCurrent.x=h.length>0?h[0].pageX:e.pageX,v.touchesCurrent.y=h.length>0?h[0].pageY:e.pageY;if(Math.max(Math.abs(v.touchesCurrent.x-v.touchesStart.x),Math.abs(v.touchesCurrent.y-v.touchesStart.y))>5&&(o.allowClick=!1),!v.isMoved&&!g){if(o.isHorizontal()&&(Math.floor(v.minX)===Math.floor(v.startX)&&v.touchesCurrent.x<v.touchesStart.x||Math.floor(v.maxX)===Math.floor(v.startX)&&v.touchesCurrent.x>v.touchesStart.x))return void(v.isTouched=!1);if(!o.isHorizontal()&&(Math.floor(v.minY)===Math.floor(v.startY)&&v.touchesCurrent.y<v.touchesStart.y||Math.floor(v.maxY)===Math.floor(v.startY)&&v.touchesCurrent.y>v.touchesStart.y))return void(v.isTouched=!1)}e.cancelable&&e.preventDefault(),e.stopPropagation(),v.isMoved=!0;const s=(t.scale-p)/(E.maxRatio-o.params.zoom.minRatio),{originX:n,originY:l}=E;v.currentX=v.touchesCurrent.x-v.touchesStart.x+v.startX+s*(v.width-2*n),v.currentY=v.touchesCurrent.y-v.touchesStart.y+v.startY+s*(v.height-2*l),v.currentX<v.minX&&(v.currentX=v.minX+1-(v.minX-v.currentX+1)**.8),v.currentX>v.maxX&&(v.currentX=v.maxX-1+(v.currentX-v.maxX+1)**.8),v.currentY<v.minY&&(v.currentY=v.minY+1-(v.minY-v.currentY+1)**.8),v.currentY>v.maxY&&(v.currentY=v.maxY-1+(v.currentY-v.maxY+1)**.8),f.prevPositionX||(f.prevPositionX=v.touchesCurrent.x),f.prevPositionY||(f.prevPositionY=v.touchesCurrent.y),f.prevTime||(f.prevTime=Date.now()),f.x=(v.touchesCurrent.x-f.prevPositionX)/(Date.now()-f.prevTime)/2,f.y=(v.touchesCurrent.y-f.prevPositionY)/(Date.now()-f.prevTime)/2,Math.abs(v.touchesCurrent.x-f.prevPositionX)<2&&(f.x=0),Math.abs(v.touchesCurrent.y-f.prevPositionY)<2&&(f.y=0),f.prevPositionX=v.touchesCurrent.x,f.prevPositionY=v.touchesCurrent.y,f.prevTime=Date.now(),E.imageWrapEl.style.transform=`translate3d(${v.currentX}px, ${v.currentY}px,0)`}function w(){const e=o.zoom;E.slideEl&&o.activeIndex!==o.slides.indexOf(E.slideEl)&&(E.imageEl&&(E.imageEl.style.transform="translate3d(0,0,0) scale(1)"),E.imageWrapEl&&(E.imageWrapEl.style.transform="translate3d(0,0,0)"),E.slideEl.classList.remove(`${o.params.zoom.zoomedSlideClass}`),e.scale=1,p=1,E.slideEl=void 0,E.imageEl=void 0,E.imageWrapEl=void 0,E.originX=0,E.originY=0)}function b(e){const r=o.zoom,s=o.params.zoom;if(!E.slideEl){e&&e.target&&(E.slideEl=e.target.closest(`.${o.params.slideClass}, swiper-slide`)),E.slideEl||(o.params.virtual&&o.params.virtual.enabled&&o.virtual?E.slideEl=t(o.slidesEl,`.${o.params.slideActiveClass}`)[0]:E.slideEl=o.slides[o.activeIndex]);let a=E.slideEl.querySelector(`.${s.containerClass}`);a&&(a=a.querySelectorAll("picture, img, svg, canvas, .swiper-zoom-target")[0]),E.imageEl=a,E.imageWrapEl=a?i(E.imageEl,`.${s.containerClass}`)[0]:void 0}if(!E.imageEl||!E.imageWrapEl)return;let n,l,m,d,u,g,h,f,x,X,Y,y,z,C,M,w,b,W;o.params.cssMode&&(o.wrapperEl.style.overflow="hidden",o.wrapperEl.style.touchAction="none"),E.slideEl.classList.add(`${s.zoomedSlideClass}`),void 0===v.touchesStart.x&&e?(n=e.pageX,l=e.pageY):(n=v.touchesStart.x,l=v.touchesStart.y);const S="number"==typeof e?e:null;1===p&&S&&(n=void 0,l=void 0),r.scale=S||E.imageWrapEl.getAttribute("data-swiper-zoom")||s.maxRatio,p=S||E.imageWrapEl.getAttribute("data-swiper-zoom")||s.maxRatio,!e||1===p&&S?(h=0,f=0):(b=E.slideEl.offsetWidth,W=E.slideEl.offsetHeight,m=a(E.slideEl).left+c.scrollX,d=a(E.slideEl).top+c.scrollY,u=m+b/2-n,g=d+W/2-l,x=E.imageEl.offsetWidth,X=E.imageEl.offsetHeight,Y=x*r.scale,y=X*r.scale,z=Math.min(b/2-Y/2,0),C=Math.min(W/2-y/2,0),M=-z,w=-C,h=u*r.scale,f=g*r.scale,h<z&&(h=z),h>M&&(h=M),f<C&&(f=C),f>w&&(f=w)),S&&1===r.scale&&(E.originX=0,E.originY=0),E.imageWrapEl.style.transitionDuration="300ms",E.imageWrapEl.style.transform=`translate3d(${h}px, ${f}px,0)`,E.imageEl.style.transitionDuration="300ms",E.imageEl.style.transform=`translate3d(0,0,0) scale(${r.scale})`}function W(){const e=o.zoom,a=o.params.zoom;if(!E.slideEl){o.params.virtual&&o.params.virtual.enabled&&o.virtual?E.slideEl=t(o.slidesEl,`.${o.params.slideActiveClass}`)[0]:E.slideEl=o.slides[o.activeIndex];let e=E.slideEl.querySelector(`.${a.containerClass}`);e&&(e=e.querySelectorAll("picture, img, svg, canvas, .swiper-zoom-target")[0]),E.imageEl=e,E.imageWrapEl=e?i(E.imageEl,`.${a.containerClass}`)[0]:void 0}E.imageEl&&E.imageWrapEl&&(o.params.cssMode&&(o.wrapperEl.style.overflow="",o.wrapperEl.style.touchAction=""),e.scale=1,p=1,E.imageWrapEl.style.transitionDuration="300ms",E.imageWrapEl.style.transform="translate3d(0,0,0)",E.imageEl.style.transitionDuration="300ms",E.imageEl.style.transform="translate3d(0,0,0) scale(1)",E.slideEl.classList.remove(`${a.zoomedSlideClass}`),E.slideEl=void 0,E.originX=0,E.originY=0)}function S(e){const t=o.zoom;t.scale&&1!==t.scale?W():b(e)}function $(){return{passiveListener:!!o.params.passiveListeners&&{passive:!0,capture:!1},activeListenerWithCapture:!o.params.passiveListeners||{passive:!1,capture:!0}}}function L(){const e=o.zoom;if(e.enabled)return;e.enabled=!0;const{passiveListener:t,activeListenerWithCapture:i}=$();o.wrapperEl.addEventListener("pointerdown",y,t),o.wrapperEl.addEventListener("pointermove",z,i),["pointerup","pointercancel","pointerout"].forEach((e=>{o.wrapperEl.addEventListener(e,C,t)})),o.wrapperEl.addEventListener("pointermove",M,i)}function R(){const e=o.zoom;if(!e.enabled)return;e.enabled=!1;const{passiveListener:t,activeListenerWithCapture:i}=$();o.wrapperEl.removeEventListener("pointerdown",y,t),o.wrapperEl.removeEventListener("pointermove",z,i),["pointerup","pointercancel","pointerout"].forEach((e=>{o.wrapperEl.removeEventListener(e,C,t)})),o.wrapperEl.removeEventListener("pointermove",M,i)}Object.defineProperty(o.zoom,"scale",{get:()=>x,set(e){if(x!==e){const t=E.imageEl,i=E.slideEl;m("zoomChange",e,t,i)}x=e}}),l("init",(()=>{o.params.zoom.enabled&&L()})),l("destroy",(()=>{R()})),l("touchStart",((e,t)=>{o.zoom.enabled&&function(e){const t=o.device;if(!E.imageEl)return;if(v.isTouched)return;t.android&&e.cancelable&&e.preventDefault(),v.isTouched=!0;const i=h.length>0?h[0]:e;v.touchesStart.x=i.pageX,v.touchesStart.y=i.pageY}(t)})),l("touchEnd",((e,t)=>{o.zoom.enabled&&function(){const e=o.zoom;if(!E.imageEl)return;if(!v.isTouched||!v.isMoved)return v.isTouched=!1,void(v.isMoved=!1);v.isTouched=!1,v.isMoved=!1;let t=300,i=300;const a=f.x*t,r=v.currentX+a,s=f.y*i,n=v.currentY+s;0!==f.x&&(t=Math.abs((r-v.currentX)/f.x)),0!==f.y&&(i=Math.abs((n-v.currentY)/f.y));const l=Math.max(t,i);v.currentX=r,v.currentY=n;const m=v.width*e.scale,c=v.height*e.scale;v.minX=Math.min(E.slideWidth/2-m/2,0),v.maxX=-v.minX,v.minY=Math.min(E.slideHeight/2-c/2,0),v.maxY=-v.minY,v.currentX=Math.max(Math.min(v.currentX,v.maxX),v.minX),v.currentY=Math.max(Math.min(v.currentY,v.maxY),v.minY),E.imageWrapEl.style.transitionDuration=`${l}ms`,E.imageWrapEl.style.transform=`translate3d(${v.currentX}px, ${v.currentY}px,0)`}()})),l("doubleTap",((e,t)=>{!o.animating&&o.params.zoom.enabled&&o.zoom.enabled&&o.params.zoom.toggle&&S(t)})),l("transitionEnd",(()=>{o.zoom.enabled&&o.params.zoom.enabled&&w()})),l("slideChange",(()=>{o.zoom.enabled&&o.params.zoom.enabled&&o.params.cssMode&&w()})),Object.assign(o.zoom,{enable:L,disable:R,in:b,out:W,toggle:S})}export{s as default};
+import { a as getWindow } from '../shared/ssr-window.esm.mjs';
+import { e as elementChildren, a as elementParents, b as elementOffset, i as getTranslate } from '../shared/utils.mjs';
+
+function Zoom(_ref) {
+  let {
+    swiper,
+    extendParams,
+    on,
+    emit
+  } = _ref;
+  const window = getWindow();
+  extendParams({
+    zoom: {
+      enabled: false,
+      maxRatio: 3,
+      minRatio: 1,
+      toggle: true,
+      containerClass: 'swiper-zoom-container',
+      zoomedSlideClass: 'swiper-slide-zoomed'
+    }
+  });
+  swiper.zoom = {
+    enabled: false
+  };
+  let currentScale = 1;
+  let isScaling = false;
+  let fakeGestureTouched;
+  let fakeGestureMoved;
+  const evCache = [];
+  const gesture = {
+    originX: 0,
+    originY: 0,
+    slideEl: undefined,
+    slideWidth: undefined,
+    slideHeight: undefined,
+    imageEl: undefined,
+    imageWrapEl: undefined,
+    maxRatio: 3
+  };
+  const image = {
+    isTouched: undefined,
+    isMoved: undefined,
+    currentX: undefined,
+    currentY: undefined,
+    minX: undefined,
+    minY: undefined,
+    maxX: undefined,
+    maxY: undefined,
+    width: undefined,
+    height: undefined,
+    startX: undefined,
+    startY: undefined,
+    touchesStart: {},
+    touchesCurrent: {}
+  };
+  const velocity = {
+    x: undefined,
+    y: undefined,
+    prevPositionX: undefined,
+    prevPositionY: undefined,
+    prevTime: undefined
+  };
+  let scale = 1;
+  Object.defineProperty(swiper.zoom, 'scale', {
+    get() {
+      return scale;
+    },
+    set(value) {
+      if (scale !== value) {
+        const imageEl = gesture.imageEl;
+        const slideEl = gesture.slideEl;
+        emit('zoomChange', value, imageEl, slideEl);
+      }
+      scale = value;
+    }
+  });
+  function getDistanceBetweenTouches() {
+    if (evCache.length < 2) return 1;
+    const x1 = evCache[0].pageX;
+    const y1 = evCache[0].pageY;
+    const x2 = evCache[1].pageX;
+    const y2 = evCache[1].pageY;
+    const distance = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2);
+    return distance;
+  }
+  function getScaleOrigin() {
+    if (evCache.length < 2) return {
+      x: null,
+      y: null
+    };
+    const box = gesture.imageEl.getBoundingClientRect();
+    return [(evCache[0].pageX + (evCache[1].pageX - evCache[0].pageX) / 2 - box.x - window.scrollX) / currentScale, (evCache[0].pageY + (evCache[1].pageY - evCache[0].pageY) / 2 - box.y - window.scrollY) / currentScale];
+  }
+  function getSlideSelector() {
+    return swiper.isElement ? `swiper-slide` : `.${swiper.params.slideClass}`;
+  }
+  function eventWithinSlide(e) {
+    const slideSelector = getSlideSelector();
+    if (e.target.matches(slideSelector)) return true;
+    if (swiper.slides.filter(slideEl => slideEl.contains(e.target)).length > 0) return true;
+    return false;
+  }
+  function eventWithinZoomContainer(e) {
+    const selector = `.${swiper.params.zoom.containerClass}`;
+    if (e.target.matches(selector)) return true;
+    if ([...swiper.hostEl.querySelectorAll(selector)].filter(containerEl => containerEl.contains(e.target)).length > 0) return true;
+    return false;
+  }
+
+  // Events
+  function onGestureStart(e) {
+    if (e.pointerType === 'mouse') {
+      evCache.splice(0, evCache.length);
+    }
+    if (!eventWithinSlide(e)) return;
+    const params = swiper.params.zoom;
+    fakeGestureTouched = false;
+    fakeGestureMoved = false;
+    evCache.push(e);
+    if (evCache.length < 2) {
+      return;
+    }
+    fakeGestureTouched = true;
+    gesture.scaleStart = getDistanceBetweenTouches();
+    if (!gesture.slideEl) {
+      gesture.slideEl = e.target.closest(`.${swiper.params.slideClass}, swiper-slide`);
+      if (!gesture.slideEl) gesture.slideEl = swiper.slides[swiper.activeIndex];
+      let imageEl = gesture.slideEl.querySelector(`.${params.containerClass}`);
+      if (imageEl) {
+        imageEl = imageEl.querySelectorAll('picture, img, svg, canvas, .swiper-zoom-target')[0];
+      }
+      gesture.imageEl = imageEl;
+      if (imageEl) {
+        gesture.imageWrapEl = elementParents(gesture.imageEl, `.${params.containerClass}`)[0];
+      } else {
+        gesture.imageWrapEl = undefined;
+      }
+      if (!gesture.imageWrapEl) {
+        gesture.imageEl = undefined;
+        return;
+      }
+      gesture.maxRatio = gesture.imageWrapEl.getAttribute('data-swiper-zoom') || params.maxRatio;
+    }
+    if (gesture.imageEl) {
+      const [originX, originY] = getScaleOrigin();
+      gesture.originX = originX;
+      gesture.originY = originY;
+      gesture.imageEl.style.transitionDuration = '0ms';
+    }
+    isScaling = true;
+  }
+  function onGestureChange(e) {
+    if (!eventWithinSlide(e)) return;
+    const params = swiper.params.zoom;
+    const zoom = swiper.zoom;
+    const pointerIndex = evCache.findIndex(cachedEv => cachedEv.pointerId === e.pointerId);
+    if (pointerIndex >= 0) evCache[pointerIndex] = e;
+    if (evCache.length < 2) {
+      return;
+    }
+    fakeGestureMoved = true;
+    gesture.scaleMove = getDistanceBetweenTouches();
+    if (!gesture.imageEl) {
+      return;
+    }
+    zoom.scale = gesture.scaleMove / gesture.scaleStart * currentScale;
+    if (zoom.scale > gesture.maxRatio) {
+      zoom.scale = gesture.maxRatio - 1 + (zoom.scale - gesture.maxRatio + 1) ** 0.5;
+    }
+    if (zoom.scale < params.minRatio) {
+      zoom.scale = params.minRatio + 1 - (params.minRatio - zoom.scale + 1) ** 0.5;
+    }
+    gesture.imageEl.style.transform = `translate3d(0,0,0) scale(${zoom.scale})`;
+  }
+  function onGestureEnd(e) {
+    if (!eventWithinSlide(e)) return;
+    if (e.pointerType === 'mouse' && e.type === 'pointerout') return;
+    const params = swiper.params.zoom;
+    const zoom = swiper.zoom;
+    const pointerIndex = evCache.findIndex(cachedEv => cachedEv.pointerId === e.pointerId);
+    if (pointerIndex >= 0) evCache.splice(pointerIndex, 1);
+    if (!fakeGestureTouched || !fakeGestureMoved) {
+      return;
+    }
+    fakeGestureTouched = false;
+    fakeGestureMoved = false;
+    if (!gesture.imageEl) return;
+    zoom.scale = Math.max(Math.min(zoom.scale, gesture.maxRatio), params.minRatio);
+    gesture.imageEl.style.transitionDuration = `${swiper.params.speed}ms`;
+    gesture.imageEl.style.transform = `translate3d(0,0,0) scale(${zoom.scale})`;
+    currentScale = zoom.scale;
+    isScaling = false;
+    if (zoom.scale > 1 && gesture.slideEl) {
+      gesture.slideEl.classList.add(`${params.zoomedSlideClass}`);
+    } else if (zoom.scale <= 1 && gesture.slideEl) {
+      gesture.slideEl.classList.remove(`${params.zoomedSlideClass}`);
+    }
+    if (zoom.scale === 1) {
+      gesture.originX = 0;
+      gesture.originY = 0;
+      gesture.slideEl = undefined;
+    }
+  }
+  function onTouchStart(e) {
+    const device = swiper.device;
+    if (!gesture.imageEl) return;
+    if (image.isTouched) return;
+    if (device.android && e.cancelable) e.preventDefault();
+    image.isTouched = true;
+    const event = evCache.length > 0 ? evCache[0] : e;
+    image.touchesStart.x = event.pageX;
+    image.touchesStart.y = event.pageY;
+  }
+  function onTouchMove(e) {
+    if (!eventWithinSlide(e) || !eventWithinZoomContainer(e)) return;
+    const zoom = swiper.zoom;
+    if (!gesture.imageEl) return;
+    if (!image.isTouched || !gesture.slideEl) return;
+    if (!image.isMoved) {
+      image.width = gesture.imageEl.offsetWidth;
+      image.height = gesture.imageEl.offsetHeight;
+      image.startX = getTranslate(gesture.imageWrapEl, 'x') || 0;
+      image.startY = getTranslate(gesture.imageWrapEl, 'y') || 0;
+      gesture.slideWidth = gesture.slideEl.offsetWidth;
+      gesture.slideHeight = gesture.slideEl.offsetHeight;
+      gesture.imageWrapEl.style.transitionDuration = '0ms';
+    }
+    // Define if we need image drag
+    const scaledWidth = image.width * zoom.scale;
+    const scaledHeight = image.height * zoom.scale;
+    if (scaledWidth < gesture.slideWidth && scaledHeight < gesture.slideHeight) return;
+    image.minX = Math.min(gesture.slideWidth / 2 - scaledWidth / 2, 0);
+    image.maxX = -image.minX;
+    image.minY = Math.min(gesture.slideHeight / 2 - scaledHeight / 2, 0);
+    image.maxY = -image.minY;
+    image.touchesCurrent.x = evCache.length > 0 ? evCache[0].pageX : e.pageX;
+    image.touchesCurrent.y = evCache.length > 0 ? evCache[0].pageY : e.pageY;
+    const touchesDiff = Math.max(Math.abs(image.touchesCurrent.x - image.touchesStart.x), Math.abs(image.touchesCurrent.y - image.touchesStart.y));
+    if (touchesDiff > 5) {
+      swiper.allowClick = false;
+    }
+    if (!image.isMoved && !isScaling) {
+      if (swiper.isHorizontal() && (Math.floor(image.minX) === Math.floor(image.startX) && image.touchesCurrent.x < image.touchesStart.x || Math.floor(image.maxX) === Math.floor(image.startX) && image.touchesCurrent.x > image.touchesStart.x)) {
+        image.isTouched = false;
+        return;
+      }
+      if (!swiper.isHorizontal() && (Math.floor(image.minY) === Math.floor(image.startY) && image.touchesCurrent.y < image.touchesStart.y || Math.floor(image.maxY) === Math.floor(image.startY) && image.touchesCurrent.y > image.touchesStart.y)) {
+        image.isTouched = false;
+        return;
+      }
+    }
+    if (e.cancelable) {
+      e.preventDefault();
+    }
+    e.stopPropagation();
+    image.isMoved = true;
+    const scaleRatio = (zoom.scale - currentScale) / (gesture.maxRatio - swiper.params.zoom.minRatio);
+    const {
+      originX,
+      originY
+    } = gesture;
+    image.currentX = image.touchesCurrent.x - image.touchesStart.x + image.startX + scaleRatio * (image.width - originX * 2);
+    image.currentY = image.touchesCurrent.y - image.touchesStart.y + image.startY + scaleRatio * (image.height - originY * 2);
+    if (image.currentX < image.minX) {
+      image.currentX = image.minX + 1 - (image.minX - image.currentX + 1) ** 0.8;
+    }
+    if (image.currentX > image.maxX) {
+      image.currentX = image.maxX - 1 + (image.currentX - image.maxX + 1) ** 0.8;
+    }
+    if (image.currentY < image.minY) {
+      image.currentY = image.minY + 1 - (image.minY - image.currentY + 1) ** 0.8;
+    }
+    if (image.currentY > image.maxY) {
+      image.currentY = image.maxY - 1 + (image.currentY - image.maxY + 1) ** 0.8;
+    }
+
+    // Velocity
+    if (!velocity.prevPositionX) velocity.prevPositionX = image.touchesCurrent.x;
+    if (!velocity.prevPositionY) velocity.prevPositionY = image.touchesCurrent.y;
+    if (!velocity.prevTime) velocity.prevTime = Date.now();
+    velocity.x = (image.touchesCurrent.x - velocity.prevPositionX) / (Date.now() - velocity.prevTime) / 2;
+    velocity.y = (image.touchesCurrent.y - velocity.prevPositionY) / (Date.now() - velocity.prevTime) / 2;
+    if (Math.abs(image.touchesCurrent.x - velocity.prevPositionX) < 2) velocity.x = 0;
+    if (Math.abs(image.touchesCurrent.y - velocity.prevPositionY) < 2) velocity.y = 0;
+    velocity.prevPositionX = image.touchesCurrent.x;
+    velocity.prevPositionY = image.touchesCurrent.y;
+    velocity.prevTime = Date.now();
+    gesture.imageWrapEl.style.transform = `translate3d(${image.currentX}px, ${image.currentY}px,0)`;
+  }
+  function onTouchEnd() {
+    const zoom = swiper.zoom;
+    if (!gesture.imageEl) return;
+    if (!image.isTouched || !image.isMoved) {
+      image.isTouched = false;
+      image.isMoved = false;
+      return;
+    }
+    image.isTouched = false;
+    image.isMoved = false;
+    let momentumDurationX = 300;
+    let momentumDurationY = 300;
+    const momentumDistanceX = velocity.x * momentumDurationX;
+    const newPositionX = image.currentX + momentumDistanceX;
+    const momentumDistanceY = velocity.y * momentumDurationY;
+    const newPositionY = image.currentY + momentumDistanceY;
+
+    // Fix duration
+    if (velocity.x !== 0) momentumDurationX = Math.abs((newPositionX - image.currentX) / velocity.x);
+    if (velocity.y !== 0) momentumDurationY = Math.abs((newPositionY - image.currentY) / velocity.y);
+    const momentumDuration = Math.max(momentumDurationX, momentumDurationY);
+    image.currentX = newPositionX;
+    image.currentY = newPositionY;
+    // Define if we need image drag
+    const scaledWidth = image.width * zoom.scale;
+    const scaledHeight = image.height * zoom.scale;
+    image.minX = Math.min(gesture.slideWidth / 2 - scaledWidth / 2, 0);
+    image.maxX = -image.minX;
+    image.minY = Math.min(gesture.slideHeight / 2 - scaledHeight / 2, 0);
+    image.maxY = -image.minY;
+    image.currentX = Math.max(Math.min(image.currentX, image.maxX), image.minX);
+    image.currentY = Math.max(Math.min(image.currentY, image.maxY), image.minY);
+    gesture.imageWrapEl.style.transitionDuration = `${momentumDuration}ms`;
+    gesture.imageWrapEl.style.transform = `translate3d(${image.currentX}px, ${image.currentY}px,0)`;
+  }
+  function onTransitionEnd() {
+    const zoom = swiper.zoom;
+    if (gesture.slideEl && swiper.activeIndex !== swiper.slides.indexOf(gesture.slideEl)) {
+      if (gesture.imageEl) {
+        gesture.imageEl.style.transform = 'translate3d(0,0,0) scale(1)';
+      }
+      if (gesture.imageWrapEl) {
+        gesture.imageWrapEl.style.transform = 'translate3d(0,0,0)';
+      }
+      gesture.slideEl.classList.remove(`${swiper.params.zoom.zoomedSlideClass}`);
+      zoom.scale = 1;
+      currentScale = 1;
+      gesture.slideEl = undefined;
+      gesture.imageEl = undefined;
+      gesture.imageWrapEl = undefined;
+      gesture.originX = 0;
+      gesture.originY = 0;
+    }
+  }
+  function zoomIn(e) {
+    const zoom = swiper.zoom;
+    const params = swiper.params.zoom;
+    if (!gesture.slideEl) {
+      if (e && e.target) {
+        gesture.slideEl = e.target.closest(`.${swiper.params.slideClass}, swiper-slide`);
+      }
+      if (!gesture.slideEl) {
+        if (swiper.params.virtual && swiper.params.virtual.enabled && swiper.virtual) {
+          gesture.slideEl = elementChildren(swiper.slidesEl, `.${swiper.params.slideActiveClass}`)[0];
+        } else {
+          gesture.slideEl = swiper.slides[swiper.activeIndex];
+        }
+      }
+      let imageEl = gesture.slideEl.querySelector(`.${params.containerClass}`);
+      if (imageEl) {
+        imageEl = imageEl.querySelectorAll('picture, img, svg, canvas, .swiper-zoom-target')[0];
+      }
+      gesture.imageEl = imageEl;
+      if (imageEl) {
+        gesture.imageWrapEl = elementParents(gesture.imageEl, `.${params.containerClass}`)[0];
+      } else {
+        gesture.imageWrapEl = undefined;
+      }
+    }
+    if (!gesture.imageEl || !gesture.imageWrapEl) return;
+    if (swiper.params.cssMode) {
+      swiper.wrapperEl.style.overflow = 'hidden';
+      swiper.wrapperEl.style.touchAction = 'none';
+    }
+    gesture.slideEl.classList.add(`${params.zoomedSlideClass}`);
+    let touchX;
+    let touchY;
+    let offsetX;
+    let offsetY;
+    let diffX;
+    let diffY;
+    let translateX;
+    let translateY;
+    let imageWidth;
+    let imageHeight;
+    let scaledWidth;
+    let scaledHeight;
+    let translateMinX;
+    let translateMinY;
+    let translateMaxX;
+    let translateMaxY;
+    let slideWidth;
+    let slideHeight;
+    if (typeof image.touchesStart.x === 'undefined' && e) {
+      touchX = e.pageX;
+      touchY = e.pageY;
+    } else {
+      touchX = image.touchesStart.x;
+      touchY = image.touchesStart.y;
+    }
+    const forceZoomRatio = typeof e === 'number' ? e : null;
+    if (currentScale === 1 && forceZoomRatio) {
+      touchX = undefined;
+      touchY = undefined;
+    }
+    zoom.scale = forceZoomRatio || gesture.imageWrapEl.getAttribute('data-swiper-zoom') || params.maxRatio;
+    currentScale = forceZoomRatio || gesture.imageWrapEl.getAttribute('data-swiper-zoom') || params.maxRatio;
+    if (e && !(currentScale === 1 && forceZoomRatio)) {
+      slideWidth = gesture.slideEl.offsetWidth;
+      slideHeight = gesture.slideEl.offsetHeight;
+      offsetX = elementOffset(gesture.slideEl).left + window.scrollX;
+      offsetY = elementOffset(gesture.slideEl).top + window.scrollY;
+      diffX = offsetX + slideWidth / 2 - touchX;
+      diffY = offsetY + slideHeight / 2 - touchY;
+      imageWidth = gesture.imageEl.offsetWidth;
+      imageHeight = gesture.imageEl.offsetHeight;
+      scaledWidth = imageWidth * zoom.scale;
+      scaledHeight = imageHeight * zoom.scale;
+      translateMinX = Math.min(slideWidth / 2 - scaledWidth / 2, 0);
+      translateMinY = Math.min(slideHeight / 2 - scaledHeight / 2, 0);
+      translateMaxX = -translateMinX;
+      translateMaxY = -translateMinY;
+      translateX = diffX * zoom.scale;
+      translateY = diffY * zoom.scale;
+      if (translateX < translateMinX) {
+        translateX = translateMinX;
+      }
+      if (translateX > translateMaxX) {
+        translateX = translateMaxX;
+      }
+      if (translateY < translateMinY) {
+        translateY = translateMinY;
+      }
+      if (translateY > translateMaxY) {
+        translateY = translateMaxY;
+      }
+    } else {
+      translateX = 0;
+      translateY = 0;
+    }
+    if (forceZoomRatio && zoom.scale === 1) {
+      gesture.originX = 0;
+      gesture.originY = 0;
+    }
+    gesture.imageWrapEl.style.transitionDuration = '300ms';
+    gesture.imageWrapEl.style.transform = `translate3d(${translateX}px, ${translateY}px,0)`;
+    gesture.imageEl.style.transitionDuration = '300ms';
+    gesture.imageEl.style.transform = `translate3d(0,0,0) scale(${zoom.scale})`;
+  }
+  function zoomOut() {
+    const zoom = swiper.zoom;
+    const params = swiper.params.zoom;
+    if (!gesture.slideEl) {
+      if (swiper.params.virtual && swiper.params.virtual.enabled && swiper.virtual) {
+        gesture.slideEl = elementChildren(swiper.slidesEl, `.${swiper.params.slideActiveClass}`)[0];
+      } else {
+        gesture.slideEl = swiper.slides[swiper.activeIndex];
+      }
+      let imageEl = gesture.slideEl.querySelector(`.${params.containerClass}`);
+      if (imageEl) {
+        imageEl = imageEl.querySelectorAll('picture, img, svg, canvas, .swiper-zoom-target')[0];
+      }
+      gesture.imageEl = imageEl;
+      if (imageEl) {
+        gesture.imageWrapEl = elementParents(gesture.imageEl, `.${params.containerClass}`)[0];
+      } else {
+        gesture.imageWrapEl = undefined;
+      }
+    }
+    if (!gesture.imageEl || !gesture.imageWrapEl) return;
+    if (swiper.params.cssMode) {
+      swiper.wrapperEl.style.overflow = '';
+      swiper.wrapperEl.style.touchAction = '';
+    }
+    zoom.scale = 1;
+    currentScale = 1;
+    gesture.imageWrapEl.style.transitionDuration = '300ms';
+    gesture.imageWrapEl.style.transform = 'translate3d(0,0,0)';
+    gesture.imageEl.style.transitionDuration = '300ms';
+    gesture.imageEl.style.transform = 'translate3d(0,0,0) scale(1)';
+    gesture.slideEl.classList.remove(`${params.zoomedSlideClass}`);
+    gesture.slideEl = undefined;
+    gesture.originX = 0;
+    gesture.originY = 0;
+  }
+
+  // Toggle Zoom
+  function zoomToggle(e) {
+    const zoom = swiper.zoom;
+    if (zoom.scale && zoom.scale !== 1) {
+      // Zoom Out
+      zoomOut();
+    } else {
+      // Zoom In
+      zoomIn(e);
+    }
+  }
+  function getListeners() {
+    const passiveListener = swiper.params.passiveListeners ? {
+      passive: true,
+      capture: false
+    } : false;
+    const activeListenerWithCapture = swiper.params.passiveListeners ? {
+      passive: false,
+      capture: true
+    } : true;
+    return {
+      passiveListener,
+      activeListenerWithCapture
+    };
+  }
+
+  // Attach/Detach Events
+  function enable() {
+    const zoom = swiper.zoom;
+    if (zoom.enabled) return;
+    zoom.enabled = true;
+    const {
+      passiveListener,
+      activeListenerWithCapture
+    } = getListeners();
+
+    // Scale image
+    swiper.wrapperEl.addEventListener('pointerdown', onGestureStart, passiveListener);
+    swiper.wrapperEl.addEventListener('pointermove', onGestureChange, activeListenerWithCapture);
+    ['pointerup', 'pointercancel', 'pointerout'].forEach(eventName => {
+      swiper.wrapperEl.addEventListener(eventName, onGestureEnd, passiveListener);
+    });
+
+    // Move image
+    swiper.wrapperEl.addEventListener('pointermove', onTouchMove, activeListenerWithCapture);
+  }
+  function disable() {
+    const zoom = swiper.zoom;
+    if (!zoom.enabled) return;
+    zoom.enabled = false;
+    const {
+      passiveListener,
+      activeListenerWithCapture
+    } = getListeners();
+
+    // Scale image
+    swiper.wrapperEl.removeEventListener('pointerdown', onGestureStart, passiveListener);
+    swiper.wrapperEl.removeEventListener('pointermove', onGestureChange, activeListenerWithCapture);
+    ['pointerup', 'pointercancel', 'pointerout'].forEach(eventName => {
+      swiper.wrapperEl.removeEventListener(eventName, onGestureEnd, passiveListener);
+    });
+
+    // Move image
+    swiper.wrapperEl.removeEventListener('pointermove', onTouchMove, activeListenerWithCapture);
+  }
+  on('init', () => {
+    if (swiper.params.zoom.enabled) {
+      enable();
+    }
+  });
+  on('destroy', () => {
+    disable();
+  });
+  on('touchStart', (_s, e) => {
+    if (!swiper.zoom.enabled) return;
+    onTouchStart(e);
+  });
+  on('touchEnd', (_s, e) => {
+    if (!swiper.zoom.enabled) return;
+    onTouchEnd();
+  });
+  on('doubleTap', (_s, e) => {
+    if (!swiper.animating && swiper.params.zoom.enabled && swiper.zoom.enabled && swiper.params.zoom.toggle) {
+      zoomToggle(e);
+    }
+  });
+  on('transitionEnd', () => {
+    if (swiper.zoom.enabled && swiper.params.zoom.enabled) {
+      onTransitionEnd();
+    }
+  });
+  on('slideChange', () => {
+    if (swiper.zoom.enabled && swiper.params.zoom.enabled && swiper.params.cssMode) {
+      onTransitionEnd();
+    }
+  });
+  Object.assign(swiper.zoom, {
+    enable,
+    disable,
+    in: zoomIn,
+    out: zoomOut,
+    toggle: zoomToggle
+  });
+}
+
+export { Zoom as default };

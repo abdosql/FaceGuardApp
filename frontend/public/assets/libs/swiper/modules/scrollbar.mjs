@@ -1,1 +1,354 @@
-import{g as l}from"../shared/ssr-window.esm.mjs";import{h as s,c as r,n as a,b as e}from"../shared/utils.mjs";import{c as t}from"../shared/create-element-if-not-defined.mjs";import{c as o}from"../shared/classes-to-selector.mjs";function n(n){let{swiper:i,extendParams:c,on:p,emit:d}=n;const b=l();let m,u,f,g,y=!1,h=null,v=null;function C(){if(!i.params.scrollbar.el||!i.scrollbar.el)return;const{scrollbar:l,rtlTranslate:s}=i,{dragEl:r,el:a}=l,e=i.params.scrollbar,t=i.params.loop?i.progressLoop:i.progress;let o=u,n=(f-u)*t;s?(n=-n,n>0?(o=u-n,n=0):-n+u>f&&(o=f+n)):n<0?(o=u+n,n=0):n+u>f&&(o=f-n),i.isHorizontal()?(r.style.transform=`translate3d(${n}px, 0, 0)`,r.style.width=`${o}px`):(r.style.transform=`translate3d(0px, ${n}px, 0)`,r.style.height=`${o}px`),e.hide&&(clearTimeout(h),a.style.opacity=1,h=setTimeout((()=>{a.style.opacity=0,a.style.transitionDuration="400ms"}),1e3))}function D(){if(!i.params.scrollbar.el||!i.scrollbar.el)return;const{scrollbar:l}=i,{dragEl:s,el:r}=l;s.style.width="",s.style.height="",f=i.isHorizontal()?r.offsetWidth:r.offsetHeight,g=i.size/(i.virtualSize+i.params.slidesOffsetBefore-(i.params.centeredSlides?i.snapGrid[0]:0)),u="auto"===i.params.scrollbar.dragSize?f*g:parseInt(i.params.scrollbar.dragSize,10),i.isHorizontal()?s.style.width=`${u}px`:s.style.height=`${u}px`,r.style.display=g>=1?"none":"",i.params.scrollbar.hide&&(r.style.opacity=0),i.params.watchOverflow&&i.enabled&&l.el.classList[i.isLocked?"add":"remove"](i.params.scrollbar.lockClass)}function w(l){return i.isHorizontal()?l.clientX:l.clientY}function z(l){const{scrollbar:s,rtlTranslate:r}=i,{el:a}=s;let t;t=(w(l)-e(a)[i.isHorizontal()?"left":"top"]-(null!==m?m:u/2))/(f-u),t=Math.max(Math.min(t,1),0),r&&(t=1-t);const o=i.minTranslate()+(i.maxTranslate()-i.minTranslate())*t;i.updateProgress(o),i.setTranslate(o),i.updateActiveIndex(),i.updateSlidesClasses()}function E(l){const s=i.params.scrollbar,{scrollbar:r,wrapperEl:a}=i,{el:e,dragEl:t}=r;y=!0,m=l.target===t?w(l)-l.target.getBoundingClientRect()[i.isHorizontal()?"left":"top"]:null,l.preventDefault(),l.stopPropagation(),a.style.transitionDuration="100ms",t.style.transitionDuration="100ms",z(l),clearTimeout(v),e.style.transitionDuration="0ms",s.hide&&(e.style.opacity=1),i.params.cssMode&&(i.wrapperEl.style["scroll-snap-type"]="none"),d("scrollbarDragStart",l)}function L(l){const{scrollbar:s,wrapperEl:r}=i,{el:a,dragEl:e}=s;y&&(l.preventDefault?l.preventDefault():l.returnValue=!1,z(l),r.style.transitionDuration="0ms",a.style.transitionDuration="0ms",e.style.transitionDuration="0ms",d("scrollbarDragMove",l))}function T(l){const s=i.params.scrollbar,{scrollbar:r,wrapperEl:e}=i,{el:t}=r;y&&(y=!1,i.params.cssMode&&(i.wrapperEl.style["scroll-snap-type"]="",e.style.transitionDuration=""),s.hide&&(clearTimeout(v),v=a((()=>{t.style.opacity=0,t.style.transitionDuration="400ms"}),1e3)),d("scrollbarDragEnd",l),s.snapOnRelease&&i.slideToClosest())}function S(l){const{scrollbar:s,params:r}=i,a=s.el;if(!a)return;const e=a,t=!!r.passiveListeners&&{passive:!1,capture:!1},o=!!r.passiveListeners&&{passive:!0,capture:!1};if(!e)return;const n="on"===l?"addEventListener":"removeEventListener";e[n]("pointerdown",E,t),b[n]("pointermove",L,t),b[n]("pointerup",T,o)}function x(){const{scrollbar:l,el:a}=i;i.params.scrollbar=t(i,i.originalParams.scrollbar,i.params.scrollbar,{el:"swiper-scrollbar"});const e=i.params.scrollbar;if(!e.el)return;let n,c;if("string"==typeof e.el&&i.isElement&&(n=i.el.querySelector(e.el)),n||"string"!=typeof e.el)n||(n=e.el);else if(n=b.querySelectorAll(e.el),!n.length)return;i.params.uniqueNavElements&&"string"==typeof e.el&&n.length>1&&1===a.querySelectorAll(e.el).length&&(n=a.querySelector(e.el)),n.length>0&&(n=n[0]),n.classList.add(i.isHorizontal()?e.horizontalClass:e.verticalClass),n&&(c=n.querySelector(o(i.params.scrollbar.dragClass)),c||(c=r("div",i.params.scrollbar.dragClass),n.append(c))),Object.assign(l,{el:n,dragEl:c}),e.draggable&&i.params.scrollbar.el&&i.scrollbar.el&&S("on"),n&&n.classList[i.enabled?"remove":"add"](...s(i.params.scrollbar.lockClass))}function H(){const l=i.params.scrollbar,r=i.scrollbar.el;r&&r.classList.remove(...s(i.isHorizontal()?l.horizontalClass:l.verticalClass)),i.params.scrollbar.el&&i.scrollbar.el&&S("off")}c({scrollbar:{el:null,dragSize:"auto",hide:!1,draggable:!1,snapOnRelease:!0,lockClass:"swiper-scrollbar-lock",dragClass:"swiper-scrollbar-drag",scrollbarDisabledClass:"swiper-scrollbar-disabled",horizontalClass:"swiper-scrollbar-horizontal",verticalClass:"swiper-scrollbar-vertical"}}),i.scrollbar={el:null,dragEl:null},p("init",(()=>{!1===i.params.scrollbar.enabled?k():(x(),D(),C())})),p("update resize observerUpdate lock unlock",(()=>{D()})),p("setTranslate",(()=>{C()})),p("setTransition",((l,s)=>{!function(l){i.params.scrollbar.el&&i.scrollbar.el&&(i.scrollbar.dragEl.style.transitionDuration=`${l}ms`)}(s)})),p("enable disable",(()=>{const{el:l}=i.scrollbar;l&&l.classList[i.enabled?"remove":"add"](...s(i.params.scrollbar.lockClass))})),p("destroy",(()=>{H()}));const k=()=>{i.el.classList.add(...s(i.params.scrollbar.scrollbarDisabledClass)),i.scrollbar.el&&i.scrollbar.el.classList.add(...s(i.params.scrollbar.scrollbarDisabledClass)),H()};Object.assign(i.scrollbar,{enable:()=>{i.el.classList.remove(...s(i.params.scrollbar.scrollbarDisabledClass)),i.scrollbar.el&&i.scrollbar.el.classList.remove(...s(i.params.scrollbar.scrollbarDisabledClass)),x(),D(),C()},disable:k,updateSize:D,setTranslate:C,init:x,destroy:H})}export{n as default};
+import { g as getDocument } from '../shared/ssr-window.esm.mjs';
+import { h as classesToTokens, c as createElement, n as nextTick, b as elementOffset } from '../shared/utils.mjs';
+import { c as createElementIfNotDefined } from '../shared/create-element-if-not-defined.mjs';
+import { c as classesToSelector } from '../shared/classes-to-selector.mjs';
+
+function Scrollbar(_ref) {
+  let {
+    swiper,
+    extendParams,
+    on,
+    emit
+  } = _ref;
+  const document = getDocument();
+  let isTouched = false;
+  let timeout = null;
+  let dragTimeout = null;
+  let dragStartPos;
+  let dragSize;
+  let trackSize;
+  let divider;
+  extendParams({
+    scrollbar: {
+      el: null,
+      dragSize: 'auto',
+      hide: false,
+      draggable: false,
+      snapOnRelease: true,
+      lockClass: 'swiper-scrollbar-lock',
+      dragClass: 'swiper-scrollbar-drag',
+      scrollbarDisabledClass: 'swiper-scrollbar-disabled',
+      horizontalClass: `swiper-scrollbar-horizontal`,
+      verticalClass: `swiper-scrollbar-vertical`
+    }
+  });
+  swiper.scrollbar = {
+    el: null,
+    dragEl: null
+  };
+  function setTranslate() {
+    if (!swiper.params.scrollbar.el || !swiper.scrollbar.el) return;
+    const {
+      scrollbar,
+      rtlTranslate: rtl
+    } = swiper;
+    const {
+      dragEl,
+      el
+    } = scrollbar;
+    const params = swiper.params.scrollbar;
+    const progress = swiper.params.loop ? swiper.progressLoop : swiper.progress;
+    let newSize = dragSize;
+    let newPos = (trackSize - dragSize) * progress;
+    if (rtl) {
+      newPos = -newPos;
+      if (newPos > 0) {
+        newSize = dragSize - newPos;
+        newPos = 0;
+      } else if (-newPos + dragSize > trackSize) {
+        newSize = trackSize + newPos;
+      }
+    } else if (newPos < 0) {
+      newSize = dragSize + newPos;
+      newPos = 0;
+    } else if (newPos + dragSize > trackSize) {
+      newSize = trackSize - newPos;
+    }
+    if (swiper.isHorizontal()) {
+      dragEl.style.transform = `translate3d(${newPos}px, 0, 0)`;
+      dragEl.style.width = `${newSize}px`;
+    } else {
+      dragEl.style.transform = `translate3d(0px, ${newPos}px, 0)`;
+      dragEl.style.height = `${newSize}px`;
+    }
+    if (params.hide) {
+      clearTimeout(timeout);
+      el.style.opacity = 1;
+      timeout = setTimeout(() => {
+        el.style.opacity = 0;
+        el.style.transitionDuration = '400ms';
+      }, 1000);
+    }
+  }
+  function setTransition(duration) {
+    if (!swiper.params.scrollbar.el || !swiper.scrollbar.el) return;
+    swiper.scrollbar.dragEl.style.transitionDuration = `${duration}ms`;
+  }
+  function updateSize() {
+    if (!swiper.params.scrollbar.el || !swiper.scrollbar.el) return;
+    const {
+      scrollbar
+    } = swiper;
+    const {
+      dragEl,
+      el
+    } = scrollbar;
+    dragEl.style.width = '';
+    dragEl.style.height = '';
+    trackSize = swiper.isHorizontal() ? el.offsetWidth : el.offsetHeight;
+    divider = swiper.size / (swiper.virtualSize + swiper.params.slidesOffsetBefore - (swiper.params.centeredSlides ? swiper.snapGrid[0] : 0));
+    if (swiper.params.scrollbar.dragSize === 'auto') {
+      dragSize = trackSize * divider;
+    } else {
+      dragSize = parseInt(swiper.params.scrollbar.dragSize, 10);
+    }
+    if (swiper.isHorizontal()) {
+      dragEl.style.width = `${dragSize}px`;
+    } else {
+      dragEl.style.height = `${dragSize}px`;
+    }
+    if (divider >= 1) {
+      el.style.display = 'none';
+    } else {
+      el.style.display = '';
+    }
+    if (swiper.params.scrollbar.hide) {
+      el.style.opacity = 0;
+    }
+    if (swiper.params.watchOverflow && swiper.enabled) {
+      scrollbar.el.classList[swiper.isLocked ? 'add' : 'remove'](swiper.params.scrollbar.lockClass);
+    }
+  }
+  function getPointerPosition(e) {
+    return swiper.isHorizontal() ? e.clientX : e.clientY;
+  }
+  function setDragPosition(e) {
+    const {
+      scrollbar,
+      rtlTranslate: rtl
+    } = swiper;
+    const {
+      el
+    } = scrollbar;
+    let positionRatio;
+    positionRatio = (getPointerPosition(e) - elementOffset(el)[swiper.isHorizontal() ? 'left' : 'top'] - (dragStartPos !== null ? dragStartPos : dragSize / 2)) / (trackSize - dragSize);
+    positionRatio = Math.max(Math.min(positionRatio, 1), 0);
+    if (rtl) {
+      positionRatio = 1 - positionRatio;
+    }
+    const position = swiper.minTranslate() + (swiper.maxTranslate() - swiper.minTranslate()) * positionRatio;
+    swiper.updateProgress(position);
+    swiper.setTranslate(position);
+    swiper.updateActiveIndex();
+    swiper.updateSlidesClasses();
+  }
+  function onDragStart(e) {
+    const params = swiper.params.scrollbar;
+    const {
+      scrollbar,
+      wrapperEl
+    } = swiper;
+    const {
+      el,
+      dragEl
+    } = scrollbar;
+    isTouched = true;
+    dragStartPos = e.target === dragEl ? getPointerPosition(e) - e.target.getBoundingClientRect()[swiper.isHorizontal() ? 'left' : 'top'] : null;
+    e.preventDefault();
+    e.stopPropagation();
+    wrapperEl.style.transitionDuration = '100ms';
+    dragEl.style.transitionDuration = '100ms';
+    setDragPosition(e);
+    clearTimeout(dragTimeout);
+    el.style.transitionDuration = '0ms';
+    if (params.hide) {
+      el.style.opacity = 1;
+    }
+    if (swiper.params.cssMode) {
+      swiper.wrapperEl.style['scroll-snap-type'] = 'none';
+    }
+    emit('scrollbarDragStart', e);
+  }
+  function onDragMove(e) {
+    const {
+      scrollbar,
+      wrapperEl
+    } = swiper;
+    const {
+      el,
+      dragEl
+    } = scrollbar;
+    if (!isTouched) return;
+    if (e.preventDefault) e.preventDefault();else e.returnValue = false;
+    setDragPosition(e);
+    wrapperEl.style.transitionDuration = '0ms';
+    el.style.transitionDuration = '0ms';
+    dragEl.style.transitionDuration = '0ms';
+    emit('scrollbarDragMove', e);
+  }
+  function onDragEnd(e) {
+    const params = swiper.params.scrollbar;
+    const {
+      scrollbar,
+      wrapperEl
+    } = swiper;
+    const {
+      el
+    } = scrollbar;
+    if (!isTouched) return;
+    isTouched = false;
+    if (swiper.params.cssMode) {
+      swiper.wrapperEl.style['scroll-snap-type'] = '';
+      wrapperEl.style.transitionDuration = '';
+    }
+    if (params.hide) {
+      clearTimeout(dragTimeout);
+      dragTimeout = nextTick(() => {
+        el.style.opacity = 0;
+        el.style.transitionDuration = '400ms';
+      }, 1000);
+    }
+    emit('scrollbarDragEnd', e);
+    if (params.snapOnRelease) {
+      swiper.slideToClosest();
+    }
+  }
+  function events(method) {
+    const {
+      scrollbar,
+      params
+    } = swiper;
+    const el = scrollbar.el;
+    if (!el) return;
+    const target = el;
+    const activeListener = params.passiveListeners ? {
+      passive: false,
+      capture: false
+    } : false;
+    const passiveListener = params.passiveListeners ? {
+      passive: true,
+      capture: false
+    } : false;
+    if (!target) return;
+    const eventMethod = method === 'on' ? 'addEventListener' : 'removeEventListener';
+    target[eventMethod]('pointerdown', onDragStart, activeListener);
+    document[eventMethod]('pointermove', onDragMove, activeListener);
+    document[eventMethod]('pointerup', onDragEnd, passiveListener);
+  }
+  function enableDraggable() {
+    if (!swiper.params.scrollbar.el || !swiper.scrollbar.el) return;
+    events('on');
+  }
+  function disableDraggable() {
+    if (!swiper.params.scrollbar.el || !swiper.scrollbar.el) return;
+    events('off');
+  }
+  function init() {
+    const {
+      scrollbar,
+      el: swiperEl
+    } = swiper;
+    swiper.params.scrollbar = createElementIfNotDefined(swiper, swiper.originalParams.scrollbar, swiper.params.scrollbar, {
+      el: 'swiper-scrollbar'
+    });
+    const params = swiper.params.scrollbar;
+    if (!params.el) return;
+    let el;
+    if (typeof params.el === 'string' && swiper.isElement) {
+      el = swiper.el.querySelector(params.el);
+    }
+    if (!el && typeof params.el === 'string') {
+      el = document.querySelectorAll(params.el);
+      if (!el.length) return;
+    } else if (!el) {
+      el = params.el;
+    }
+    if (swiper.params.uniqueNavElements && typeof params.el === 'string' && el.length > 1 && swiperEl.querySelectorAll(params.el).length === 1) {
+      el = swiperEl.querySelector(params.el);
+    }
+    if (el.length > 0) el = el[0];
+    el.classList.add(swiper.isHorizontal() ? params.horizontalClass : params.verticalClass);
+    let dragEl;
+    if (el) {
+      dragEl = el.querySelector(classesToSelector(swiper.params.scrollbar.dragClass));
+      if (!dragEl) {
+        dragEl = createElement('div', swiper.params.scrollbar.dragClass);
+        el.append(dragEl);
+      }
+    }
+    Object.assign(scrollbar, {
+      el,
+      dragEl
+    });
+    if (params.draggable) {
+      enableDraggable();
+    }
+    if (el) {
+      el.classList[swiper.enabled ? 'remove' : 'add'](...classesToTokens(swiper.params.scrollbar.lockClass));
+    }
+  }
+  function destroy() {
+    const params = swiper.params.scrollbar;
+    const el = swiper.scrollbar.el;
+    if (el) {
+      el.classList.remove(...classesToTokens(swiper.isHorizontal() ? params.horizontalClass : params.verticalClass));
+    }
+    disableDraggable();
+  }
+  on('init', () => {
+    if (swiper.params.scrollbar.enabled === false) {
+      // eslint-disable-next-line
+      disable();
+    } else {
+      init();
+      updateSize();
+      setTranslate();
+    }
+  });
+  on('update resize observerUpdate lock unlock', () => {
+    updateSize();
+  });
+  on('setTranslate', () => {
+    setTranslate();
+  });
+  on('setTransition', (_s, duration) => {
+    setTransition(duration);
+  });
+  on('enable disable', () => {
+    const {
+      el
+    } = swiper.scrollbar;
+    if (el) {
+      el.classList[swiper.enabled ? 'remove' : 'add'](...classesToTokens(swiper.params.scrollbar.lockClass));
+    }
+  });
+  on('destroy', () => {
+    destroy();
+  });
+  const enable = () => {
+    swiper.el.classList.remove(...classesToTokens(swiper.params.scrollbar.scrollbarDisabledClass));
+    if (swiper.scrollbar.el) {
+      swiper.scrollbar.el.classList.remove(...classesToTokens(swiper.params.scrollbar.scrollbarDisabledClass));
+    }
+    init();
+    updateSize();
+    setTranslate();
+  };
+  const disable = () => {
+    swiper.el.classList.add(...classesToTokens(swiper.params.scrollbar.scrollbarDisabledClass));
+    if (swiper.scrollbar.el) {
+      swiper.scrollbar.el.classList.add(...classesToTokens(swiper.params.scrollbar.scrollbarDisabledClass));
+    }
+    destroy();
+  };
+  Object.assign(swiper.scrollbar, {
+    enable,
+    disable,
+    updateSize,
+    setTranslate,
+    init,
+    destroy
+  });
+}
+
+export { Scrollbar as default };
