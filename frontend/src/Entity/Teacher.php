@@ -8,27 +8,18 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TeacherRepository::class)]
-class Teacher
+class Teacher extends User
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
-
     #[ORM\OneToMany(targetEntity: Course::class, mappedBy: 'teacher')]
-    private Collection $Courses;
+    private Collection $courses;
 
-    #[ORM\OneToOne(mappedBy: 'teacher', cascade: ['persist', 'remove'])]
-    private ?User $user = null;
+    #[ORM\ManyToMany(targetEntity: Level::class, inversedBy: 'teachers')]
+    private Collection $levels;
 
     public function __construct()
     {
-        $this->Courses = new ArrayCollection();
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
+        $this->courses = new ArrayCollection();
+        $this->levels = new ArrayCollection();
     }
 
     /**
@@ -36,13 +27,13 @@ class Teacher
      */
     public function getCourses(): Collection
     {
-        return $this->Courses;
+        return $this->courses;
     }
 
     public function addCourse(Course $course): static
     {
-        if (!$this->Courses->contains($course)) {
-            $this->Courses->add($course);
+        if (!$this->courses->contains($course)) {
+            $this->courses->add($course);
             $course->setTeacher($this);
         }
 
@@ -51,7 +42,7 @@ class Teacher
 
     public function removeCourse(Course $course): static
     {
-        if ($this->Courses->removeElement($course)) {
+        if ($this->courses->removeElement($course)) {
             // set the owning side to null (unless already changed)
             if ($course->getTeacher() === $this) {
                 $course->setTeacher(null);
@@ -61,24 +52,26 @@ class Teacher
         return $this;
     }
 
-    public function getUser(): ?User
+    /**
+     * @return Collection<int, Level>
+     */
+    public function getLevels(): Collection
     {
-        return $this->user;
+        return $this->levels;
     }
 
-    public function setUser(?User $user): static
+    public function addLevel(Level $level): static
     {
-        // unset the owning side of the relation if necessary
-        if ($user === null && $this->user !== null) {
-            $this->user->setTeacher(null);
+        if (!$this->levels->contains($level)) {
+            $this->levels->add($level);
         }
 
-        // set the owning side of the relation if necessary
-        if ($user !== null && $user->getTeacher() !== $this) {
-            $user->setTeacher($this);
-        }
+        return $this;
+    }
 
-        $this->user = $user;
+    public function removeLevel(Level $level): static
+    {
+        $this->levels->removeElement($level);
 
         return $this;
     }

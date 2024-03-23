@@ -1,5 +1,8 @@
 <header id="page-topbar">
     <div class="layout-width">
+        {% for course in courses %}
+            {{ course.getCourseName }}
+        {% endfor %}
         <div class="navbar-header">
             <div class="d-flex">
                 <!-- LOGO -->
