@@ -6,103 +6,88 @@ use App\Repository\StudentRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: StudentRepository::class)]
-class Student
+class Student extends User
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
-
-    #[ORM\OneToOne(inversedBy: 'student', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(targetEntity: self::class, inversedBy: 'student', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?RFIDCard $rfid_card = null;
+    private ?self $rfidCard = null;
 
-    #[ORM\OneToOne(inversedBy: 'student', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(targetEntity: self::class, mappedBy: 'rfidCard', cascade: ['persist', 'remove'])]
+    private ?self $student = null;
+
+    #[ORM\OneToOne(targetEntity: self::class, inversedBy: 'student', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?FacialRecognitionLog $facialRecognition = null;
+    private ?self $facialRecognition = null;
 
     #[ORM\ManyToOne(inversedBy: 'students')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Group $grou_p = null;
+    private ?Group $group_ = null;
 
     #[ORM\ManyToOne(inversedBy: 'students')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Level $level = null;
+    private ?Level $Level = null;
 
-    #[ORM\OneToOne(mappedBy: 'student', cascade: ['persist', 'remove'])]
-    private ?User $user = null;
-
-    public function getId(): ?int
+    public function getRfidCard(): ?self
     {
-        return $this->id;
+        return $this->rfidCard;
     }
 
-    public function getRfidCard(): ?RFIDCard
+    public function setRfidCard(self $rfidCard): static
     {
-        return $this->rfid_card;
-    }
-
-    public function setRfidCard(RFIDCard $rfid_card): static
-    {
-        $this->rfid_card = $rfid_card;
+        $this->rfidCard = $rfidCard;
 
         return $this;
     }
 
-    public function getFacialRecognition(): ?FacialRecognitionLog
+    public function getStudent(): ?self
+    {
+        return $this->student;
+    }
+
+    public function setStudent(self $student): static
+    {
+        // set the owning side of the relation if necessary
+        if ($student->getRfidCard() !== $this) {
+            $student->setRfidCard($this);
+        }
+
+        $this->student = $student;
+
+        return $this;
+    }
+
+    public function getFacialRecognition(): ?self
     {
         return $this->facialRecognition;
     }
 
-    public function setFacialRecognition(FacialRecognitionLog $facialRecognition): static
+    public function setFacialRecognition(self $facialRecognition): static
     {
         $this->facialRecognition = $facialRecognition;
 
         return $this;
     }
 
-    public function getGrouP(): ?Group
+    public function getGroup(): ?Group
     {
-        return $this->grou_p;
+        return $this->group_;
     }
 
-    public function setGrouP(?Group $grou_p): static
+    public function setGroup(?Group $group_): static
     {
-        $this->grou_p = $grou_p;
+        $this->group_ = $group_;
 
         return $this;
     }
 
     public function getLevel(): ?Level
     {
-        return $this->level;
+        return $this->Level;
     }
 
-    public function setLevel(?Level $level): static
+    public function setLevel(?Level $Level): static
     {
-        $this->level = $level;
-
-        return $this;
-    }
-
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): static
-    {
-        // unset the owning side of the relation if necessary
-        if ($user === null && $this->user !== null) {
-            $this->user->setStudent(null);
-        }
-
-        // set the owning side of the relation if necessary
-        if ($user !== null && $user->getStudent() !== $this) {
-            $user->setStudent($this);
-        }
-
-        $this->user = $user;
+        $this->Level = $Level;
 
         return $this;
     }
