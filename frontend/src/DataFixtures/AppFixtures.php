@@ -13,7 +13,6 @@ class AppFixtures extends Fixture
     {
         UserFactory::createOne([
             "username" => "abdo",
-            "roles" => ["ROLE_ADMIN"]
         ]);
         UserFactory::createOne([
             "username" => "hanae",
