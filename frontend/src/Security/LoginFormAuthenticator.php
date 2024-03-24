@@ -3,6 +3,7 @@
 namespace App\Security;
 
 use App\Repository\UserRepository;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,12 +25,11 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
     use TargetPathTrait;
     public function __construct(
         private UserRepository $userRepository,
-        private RouterInterface $router
+        private RouterInterface $router,
+        private Security $security,
     )
     {
     }
-
-
     public function authenticate(Request $request): Passport
     {
         $username = $request->request->get("username");

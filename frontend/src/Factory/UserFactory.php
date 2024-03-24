@@ -56,6 +56,7 @@ final class UserFactory extends ModelFactory
             'profile_image' => self::faker()->text(255),
             'roles' => [],
             'username' => self::faker()->text(180),
+            ];
     }
 
     /**
