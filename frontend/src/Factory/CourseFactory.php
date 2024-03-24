@@ -46,8 +46,9 @@ final class CourseFactory extends ModelFactory
      */
     protected function getDefaults(): array
     {
+        $courses = ["ASP","PHP","Symfony","DEV Ops"];
         return [
-            'course_name' => self::faker()->text(100),
+            'course_name' => self::random($courses),
         ];
     }
 

@@ -19,7 +19,7 @@ class Group
     #[ORM\Column(length: 100)]
     private ?string $group_name = null;
 
-    #[ORM\OneToMany(targetEntity: Student::class, mappedBy: 'grou_p')]
+    #[ORM\OneToMany(targetEntity: Student::class, mappedBy: 'group_')]
     private Collection $students;
 
     public function __construct()
@@ -56,7 +56,7 @@ class Group
     {
         if (!$this->students->contains($student)) {
             $this->students->add($student);
-            $student->setGrouP($this);
+            $student->setGroup($this);
         }
 
         return $this;
@@ -66,8 +66,8 @@ class Group
     {
         if ($this->students->removeElement($student)) {
             // set the owning side to null (unless already changed)
-            if ($student->getGrouP() === $this) {
-                $student->setGrouP(null);
+            if ($student->getGroup() === $this) {
+                $student->setGroup(null);
             }
         }
 

@@ -5,6 +5,6 @@
 return array (
   'APP_ENV' => 'dev',
   'APP_SECRET' => '9f5a5e4aba4cd66e32b318844f3c3ae3',
-  'MESSENGER_TRANSPORT_DSN' => 'doctrine://default?auto_setup=0',
-  'DATABASE_URL' => 'mysql://root:@127.0.0.1:3306/faceGuard?serverVersion=8.0.32&charset=utf8mb4',
+  'DATABASE_URL' => 'mysql://root:@127.0.0.1:3306/faceGuard?serverVersion=10.4.32-MariaDB&charset=utf8mb4',
+  'CORS_ALLOW_ORIGIN' => '^https?://(localhost|127\\.0\\.0\\.1)(:[0-9]+)?$',
 );
