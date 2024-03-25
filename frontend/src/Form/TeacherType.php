@@ -15,7 +15,6 @@ class TeacherType extends AbstractType
     {
         $builder
             ->add('username')
-            ->add('roles')
             ->add('password')
             ->add('first_name')
             ->add('last_name')
@@ -25,7 +24,7 @@ class TeacherType extends AbstractType
             ->add('email')
             ->add('levels', EntityType::class, [
                 'class' => Level::class,
-                'choice_label' => 'id',
+                'choice_label' => 'level_name',
                 'multiple' => true,
             ])
         ;
