@@ -17,17 +17,16 @@ class Level
 
     #[ORM\Column(length: 100)]
     private ?string $level_name = null;
-
-    #[ORM\OneToMany(targetEntity: Course::class, mappedBy: 'levels')]
-    private Collection $courses;
-
-    #[ORM\OneToMany(targetEntity: Student::class, mappedBy: 'level')]
+    #[ORM\OneToMany(targetEntity: Student::class, mappedBy: 'Level')]
     private Collection $students;
+
+    #[ORM\ManyToMany(targetEntity: Teacher::class, mappedBy: 'levels')]
+    private Collection $teachers;
 
     public function __construct()
     {
-        $this->courses = new ArrayCollection();
         $this->students = new ArrayCollection();
+        $this->teachers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -43,36 +42,6 @@ class Level
     public function setLevelName(string $level_name): static
     {
         $this->level_name = $level_name;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Course>
-     */
-    public function getCourses(): Collection
-    {
-        return $this->courses;
-    }
-
-    public function addCourse(Course $course): static
-    {
-        if (!$this->courses->contains($course)) {
-            $this->courses->add($course);
-            $course->setLevels($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCourse(Course $course): static
-    {
-        if ($this->courses->removeElement($course)) {
-            // set the owning side to null (unless already changed)
-            if ($course->getLevels() === $this) {
-                $course->setLevels(null);
-            }
-        }
 
         return $this;
     }
@@ -102,6 +71,33 @@ class Level
             if ($student->getLevel() === $this) {
                 $student->setLevel(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Teacher>
+     */
+    public function getTeachers(): Collection
+    {
+        return $this->teachers;
+    }
+
+    public function addTeacher(Teacher $teacher): static
+    {
+        if (!$this->teachers->contains($teacher)) {
+            $this->teachers->add($teacher);
+            $teacher->addLevel($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTeacher(Teacher $teacher): static
+    {
+        if ($this->teachers->removeElement($teacher)) {
+            $teacher->removeLevel($this);
         }
 
         return $this;

@@ -2,21 +2,21 @@
 
 namespace App\DataFixtures;
 
-use App\Factory\UserFactory;
+use App\Factory\AdminFactory;
+use App\Factory\CourseFactory;
+use App\Factory\TeacherFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactory;
 
 class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        UserFactory::createOne([
+        AdminFactory::createOne([
             "username" => "abdo",
         ]);
-        UserFactory::createOne([
+        TeacherFactory::createOne([
             "username" => "hanae",
-            "roles" => ["ROLE_TEACHER"]
         ]);
     }
 }

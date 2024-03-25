@@ -9,6 +9,12 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_USERNAME', fields: ['username'])]
+#[ORM\InheritanceType("JOINED")]
+#[ORM\DiscriminatorMap([
+    "teacher"  => Teacher::class,
+    "student"  => Student::class,
+    "admin"    => Admin::class
+])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -45,15 +51,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 10)]
     private ?string $gender = null;
-
     #[ORM\Column(length: 100)]
     private ?string $email = null;
-
-    #[ORM\OneToOne(inversedBy: 'user', cascade: ['persist', 'remove'])]
-    private ?Teacher $teacher = null;
-
-    #[ORM\OneToOne(inversedBy: 'user', cascade: ['persist', 'remove'])]
-    private ?Student $student = null;
 
     public function getId(): ?int
     {
@@ -208,27 +207,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->first_name." ".$this->last_name;
     }
 
-    public function getTeacher(): ?Teacher
+    public function getDtype(): ?string
     {
-        return $this->teacher;
+        return $this->dtype;
     }
 
-    public function setTeacher(?Teacher $teacher): static
+    public function setDtype(string $dtype): static
     {
-        $this->teacher = $teacher;
+        $this->dtype = $dtype;
 
         return $this;
     }
-
-    public function getStudent(): ?Student
+    public function getFullName(): string
     {
-        return $this->student;
-    }
-
-    public function setStudent(?Student $student): static
-    {
-        $this->student = $student;
-
-        return $this;
+        return $this->last_name." ".$this->first_name;
     }
 }
