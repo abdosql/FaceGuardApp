@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\UserServices;
+namespace App\Services\userServices;
 
 use App\Entity\Teacher;
 use Doctrine\ORM\EntityManagerInterface;

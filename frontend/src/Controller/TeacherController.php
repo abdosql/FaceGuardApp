@@ -4,10 +4,12 @@ namespace App\Controller;
 
 use App\Entity\Teacher;
 use App\Form\TeacherType;
-use App\Services\UserServices\TeacherService;
+use App\Services\notificationServices\EmailNotificationService;
+use App\Services\userServices\TeacherService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route("/teachers")]
@@ -28,8 +30,12 @@ class TeacherController extends AbstractController
             'teachers' => $teachers,
         ]);
     }
+
+    /**
+     * @throws TransportExceptionInterface
+     */
     #[Route("/new", name: "app_teacher_new", methods: ["GET","POST"])]
-    public function new(Request $request): Response
+    public function new(Request $request, EmailNotificationService $emailNotificationService): Response
     {
         $teacher = new Teacher();
         $form = $this->createForm(TeacherType::class, $teacher);
@@ -48,16 +54,19 @@ class TeacherController extends AbstractController
             $teacher->setDtype("teacher");
             $teacher->setProfileImage("something");
             $this->teacherService->saveTeacher($teacher);
-            $this->addFlash("success", [
+            $data = [
                 "username" => $teacher->getUsername(),
                 "password" => $password["password"]
-            ]);
+            ];
+            $this->addFlash("success", $data);
+            $emailNotificationService->sendMessage($teacher->getEmail(),"Here are you're credentials.", $data);
             return $this->redirectToRoute("app_teacher_index");
         }
         return $this->render("teacher/new.html.twig",[
             "teacherForm" => $form->createView()
         ]);
     }
+    #[Route("{id}/delete/", name: "app_teacher_delete", methods: ["POST"])]
     public function delete(Teacher $teacher): Response
     {
         $this->teacherService->deleteTeacher($teacher);

@@ -46,8 +46,54 @@ final class LevelFactory extends ModelFactory
      */
     protected function getDefaults(): array
     {
+        $engineering_domains = [
+            "Mechanical Engineering",
+            "Electrical Engineering",
+            "Civil Engineering",
+            "Chemical Engineering",
+            "Computer Engineering",
+            "Aerospace Engineering",
+            "Biomedical Engineering",
+            "Environmental Engineering",
+            "Industrial Engineering",
+            "Materials Science and Engineering",
+            "Nuclear Engineering",
+            "Petroleum Engineering",
+            "Software Engineering",
+            "Robotics Engineering",
+            "Ocean Engineering",
+            "Systems Engineering",
+            "Biomechanical Engineering",
+            "Geotechnical Engineering",
+            "Structural Engineering",
+            "Transportation Engineering",
+            "Water Resources Engineering",
+            "Telecommunication Engineering",
+            "Renewable Energy Engineering",
+            "Manufacturing Engineering",
+            "Control Systems Engineering",
+            "Optical Engineering",
+            "Biochemical Engineering",
+            "Mining Engineering",
+            "Metallurgical Engineering",
+            "Electronics Engineering",
+            "Power Engineering",
+            "Thermal Engineering",
+            "Acoustical Engineering",
+            "Instrumentation Engineering",
+            "Food Engineering",
+            "Hydraulic Engineering",
+            "Process Engineering",
+            "Textile Engineering",
+            "Urban Engineering",
+            "Fire Protection Engineering",
+            "Bioengineering",
+            "Photonics Engineering",
+            "Space Engineering"
+        ];
+
         return [
-            'level_name' => self::faker()->text(100),
+            'level_name' => self::faker()->randomElement($engineering_domains)
         ];
     }
 

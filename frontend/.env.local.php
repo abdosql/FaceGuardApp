@@ -7,4 +7,6 @@ return array (
   'APP_SECRET' => '9f5a5e4aba4cd66e32b318844f3c3ae3',
   'DATABASE_URL' => 'mysql://root:@127.0.0.1:3306/faceGuard?serverVersion=10.4.32-MariaDB&charset=utf8mb4',
   'CORS_ALLOW_ORIGIN' => '^https?://(localhost|127\\.0\\.0\\.1)(:[0-9]+)?$',
+    'MAILER_DSN' =>'smtp://localhost:1025'
+
 );

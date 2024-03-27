@@ -89,9 +89,12 @@
                                                         <li><a href="#!" class="dropdown-item"><i class="ri-eye-fill align-bottom me-2 text-muted"></i> View</a></li>
                                                         <li><a class="dropdown-item edit-item-btn"><i class="ri-pencil-fill align-bottom me-2 text-muted"></i> Edit</a></li>
                                                         <li>
-                                                            <a class="dropdown-item remove-item-btn">
-                                                                <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i> Delete
-                                                            </a>
+                                                            <form id="deleteForm_{{ teacher.getId }}" method="post" action="{{ path('app_teacher_delete', {'id': teacher.getId}) }}">
+                                                                <button type="button" class="dropdown-item remove-item-btn" onclick="confirmDelete('{{ teacher.getId }}')">
+                                                                    <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i> Delete
+                                                                </button>
+                                                            </form>
+
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -106,7 +109,9 @@
                     </div><!--end col-->
 
                 </div><!--end row-->
-                <button type="button" class="btn btn-primary" style="display: " id="custom-sa-success">Click me</button>
+                <button type="button" class="btn btn-primary" style="display: none" id="custom-sa-success">Click me</button>
+                <button type="button" class="btn btn-primary btn-sm" style="display: none" id="sa-warning">Click me</button>
+
 
             </div>
             <!-- container-fluid -->
@@ -125,10 +130,7 @@
 {{ include('partials/customizer.html.twig') }}
 
 {{ include('partials/vendor-scripts.html.twig') }}
-<!-- Sweet alert init js-->
-<script src="{{ asset("assets/js/pages/sweetalerts.init.js") }}"></script>
 
-<script src="{{ asset("assets/js/pages/datatables.init.js") }}"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
 <!--datatable js-->
@@ -150,6 +152,7 @@
 <script src="{{ asset("assets/js/pages/sweetalerts.init.js") }}"></script>
 <!-- App js -->
 <script src="{{ asset("assets/js/app.js") }}"></script>
+
 </body>
 
 </html>
