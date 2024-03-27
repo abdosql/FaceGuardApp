@@ -24,8 +24,8 @@ class TeacherController extends AbstractController
     #[Route('/', name: 'app_teacher_index', methods: ["GET"])]
     public function index(): Response
     {
-        $teachers = $this->teacherService->getAllTeachers();
         $this->denyAccessUnlessGranted("ROLE_ADMIN");
+        $teachers = $this->teacherService->getAllTeachers();
         return $this->render('teacher/index.html.twig', [
             'teachers' => $teachers,
         ]);
@@ -37,6 +37,7 @@ class TeacherController extends AbstractController
     #[Route("/new", name: "app_teacher_new", methods: ["GET","POST"])]
     public function new(Request $request, EmailNotificationService $emailNotificationService): Response
     {
+        $this->denyAccessUnlessGranted("ROLE_ADMIN");
         $teacher = new Teacher();
         $form = $this->createForm(TeacherType::class, $teacher);
         $form->handleRequest($request);
@@ -69,7 +70,14 @@ class TeacherController extends AbstractController
     #[Route("{id}/delete/", name: "app_teacher_delete", methods: ["POST"])]
     public function delete(Teacher $teacher): Response
     {
+        $this->denyAccessUnlessGranted("ROLE_ADMIN");
         $this->teacherService->deleteTeacher($teacher);
         return $this->redirectToRoute("app_teacher_index");
+    }
+
+    public function show(Teacher $teacher): Response
+    {
+        $this->denyAccessUnlessGranted("ROLE_ADMIN");
+        return $this->render("Teacher/show.html.twig");
     }
 }

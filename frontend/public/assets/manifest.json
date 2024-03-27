@@ -2065,6 +2065,7 @@
   "assets/libs/apexcharts/locales/hu.json": "/assets/libs/apexcharts/locales/hu.json",
   "assets/libs/prismjs/components/prism-lolcode.min.js": "/assets/libs/prismjs/components/prism-lolcode.min.js",
   "assets/libs/prismjs/components/prism-mata.min.js": "/assets/libs/prismjs/components/prism-mata.min.js",
+  "assets/js/custom.js": "/assets/js/custom.js",
   "assets/libs/swiper/modules/index.mjs": "/assets/libs/swiper/modules/index.mjs",
   "assets/libs/moment/src/locale/en-SG.js": "/assets/libs/moment/src/locale/en-SG.js",
   "assets/libs/moment/src/locale/en-gb.js": "/assets/libs/moment/src/locale/en-gb.js",
