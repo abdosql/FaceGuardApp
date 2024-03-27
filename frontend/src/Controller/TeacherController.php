@@ -4,9 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Teacher;
 use App\Form\TeacherType;
-use App\Repository\TeacherRepository;
-use App\Services\TeacherServices\TeacherService;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Services\UserServices\TeacherService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -31,20 +29,38 @@ class TeacherController extends AbstractController
         ]);
     }
     #[Route("/new", name: "app_teacher_new", methods: ["GET","POST"])]
-    public function new(EntityManagerInterface $entityManager, Request $request): Response
+    public function new(Request $request): Response
     {
         $teacher = new Teacher();
         $form = $this->createForm(TeacherType::class, $teacher);
         $form->handleRequest($request);
+        $password = $this->teacherService->generateRandomPassword($teacher);
         if ($form->isSubmitted() && $form->isValid()){
+
+            $teacher->setUsername(
+                $this->teacherService
+                    ->generateUniqueUsername(
+                        $teacher->getFirstName(),
+                        $teacher->getLastName())
+            );
+            $teacher->setPassword($password["hashedPassword"]);
             $teacher->setRoles(["ROLE_TEACHER"]);
             $teacher->setDtype("teacher");
-
-            $entityManager->persist($teacher);
-            $entityManager->flush();
+            $teacher->setProfileImage("something");
+            $this->teacherService->saveTeacher($teacher);
+            $this->addFlash("success", [
+                "username" => $teacher->getUsername(),
+                "password" => $password["password"]
+            ]);
+            return $this->redirectToRoute("app_teacher_index");
         }
         return $this->render("teacher/new.html.twig",[
             "teacherForm" => $form->createView()
         ]);
+    }
+    public function delete(Teacher $teacher): Response
+    {
+        $this->teacherService->deleteTeacher($teacher);
+        return $this->redirectToRoute("app_teacher_index");
     }
 }

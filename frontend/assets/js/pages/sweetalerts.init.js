@@ -341,14 +341,21 @@ if (document.getElementById("ajax-alert"))
 // Custom SweatAlerts
 
 //Custom success Message
-if (document.getElementById("custom-sa-success"))
-    document.getElementById("custom-sa-success").addEventListener("click", function () {
+if (document.getElementById("custom-sa-success")) {
+    document.getElementById("custom-sa-success").addEventListener("click", function (event) {
+        // Retrieve the data from the dataset
+        var successData = JSON.parse(event.target.dataset.successData);
+        var username = successData[0]["username"];
+        var password = successData[0]["password"];
         Swal.fire({
             html: '<div class="mt-3">' +
                 '<lord-icon src="https://cdn.lordicon.com/lupuorrc.json" trigger="loop" colors="primary:#0ab39c,secondary:#405189" style="width:120px;height:120px"></lord-icon>' +
                 '<div class="mt-4 pt-2 fs-15">' +
-                '<h4>Well done !</h4>' +
-                '<p class="text-muted mx-4 mb-0">Aww yeah, you successfully read this important message.</p>' +
+                '<h4>Teacher was added successfully!</h4>' +
+                '<br>' +
+                '<h4>User credentials:</h4>' +
+                '<p class="text-muted mx-4 mb-0"> Username: ' + username + '</p>' +
+                '<p class="text-muted mx-4 mb-0"> Password: ' + password + '</p>' +
                 '</div>' +
                 '</div>',
             showCancelButton: true,
@@ -359,8 +366,9 @@ if (document.getElementById("custom-sa-success"))
             cancelButtonText: 'Back',
             buttonsStyling: false,
             showCloseButton: true
-        })
+        });
     });
+}
 
 //Custom error Message
 if (document.getElementById("custom-sa-error"))
