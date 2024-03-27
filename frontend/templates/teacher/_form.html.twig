@@ -1,0 +1,54 @@
+
+{{ form_start(teacherForm) }}
+
+<div class="row">
+    <div class="col-6">
+        <div class="mb-3">
+            {{ form_label(teacherForm.first_name, 'First Name', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(teacherForm.first_name, {'attr': {'class': 'form-control', 'placeholder': 'Enter your firstname', 'id': 'firstNameinput'}}) }}
+            {{ form_errors(teacherForm.first_name) }}
+        </div>
+    </div><!--end col-->
+    <div class="col-6">
+        <div class="mb-3">
+            {{ form_label(teacherForm.last_name, 'Last Name', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(teacherForm.last_name, {'attr': {'class': 'form-control', 'placeholder': 'Enter your lastname', 'id': 'lastNameinput'}}) }}
+            {{ form_errors(teacherForm.last_name) }}
+        </div>
+    </div><!--end col-->
+    <div class="col-6">
+        <div class="mb-3">
+            {{ form_label(teacherForm.phone_number, 'Phone Number', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(teacherForm.phone_number, {'attr': {'class': 'form-control', 'placeholder': '+212 600000001', 'id': 'phonenumberInput'}}) }}
+            {{ form_errors(teacherForm.phone_number) }}
+        </div>
+    </div><!--end col-->
+    <div class="col-6">
+        <div class="mb-3">
+            {{ form_label(teacherForm.email, 'Email Address', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(teacherForm.email, {'attr': {'class': 'form-control', 'placeholder': 'example@gamil.com', 'id': 'emailidInput'}}) }}
+            {{ form_errors(teacherForm.email) }}
+        </div>
+    </div><!--end col-->
+    <div class="col-6">
+        <div class="mb-3">
+            {{ form_label(teacherForm.gender, 'Gender', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(teacherForm.gender, {'attr': {'class': 'fo', 'id': 'ForminputGender'}}) }}
+            {{ form_errors(teacherForm.gender) }}
+        </div>
+    </div><!--end col-->
+    <div class="col-6">
+        <div class="mb-3">
+            {{ form_label(teacherForm.levels, 'Gender', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(teacherForm.levels, {'attr': {'id': 'ForminputLevel'}}) }}
+            {{ form_errors(teacherForm.levels) }}
+        </div>
+    </div><!--end col-->
+    <div class="col-lg-12">
+        <div class="text-end">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </div><!--end col-->
+</div><!--end row-->
+{{ form_end(teacherForm) }}
+

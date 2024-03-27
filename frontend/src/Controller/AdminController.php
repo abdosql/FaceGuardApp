@@ -24,4 +24,10 @@ class AdminController extends AbstractController
             'courses' => $courses,
         ]);
     }
+    #[Route(['/profile'], name: 'app_admin_profile', methods: ["GET"])]
+    public function profile(Security $security): Response
+    {
+        $this->denyAccessUnlessGranted("ROLE_ADMIN");
+        return $this->render('admin/profile.html.twig');
+    }
 }
