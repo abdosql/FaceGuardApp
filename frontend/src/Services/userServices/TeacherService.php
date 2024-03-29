@@ -19,9 +19,9 @@ class TeacherService extends UserService
         return $this->entityManager->getRepository(Teacher::class)->findAll();
     }
 
-    public function getTeacherById(int $id): ?Teacher
+    public function getTeacherById(Teacher $teacher): ?Teacher
     {
-        return $this->entityManager->getRepository(Teacher::class)->find($id);
+        return $this->entityManager->getRepository(Teacher::class)->find($teacher);
     }
 
     public function saveTeacher(Teacher $teacher): void
@@ -30,12 +30,16 @@ class TeacherService extends UserService
         $this->entityManager->flush();
     }
 
+    public function countStudentsByTeacher(Teacher $teacher): int
+    {
+        return $this->entityManager->getRepository(Teacher::class)->countStudentsByTeacher($teacher);
+    }
     public function deleteTeacher(Teacher $teacher): void
     {
         $this->entityManager->remove($teacher);
         $this->entityManager->flush();
     }
-
+    
 
 
 

@@ -16,10 +16,14 @@ class Teacher extends User
     #[ORM\ManyToMany(targetEntity: Level::class, inversedBy: 'teachers')]
     private Collection $levels;
 
+    #[ORM\ManyToMany(targetEntity: Student::class, inversedBy: 'teachers')]
+    private Collection $students;
+
     public function __construct()
     {
         $this->courses = new ArrayCollection();
         $this->levels = new ArrayCollection();
+        $this->students = new ArrayCollection();
     }
 
     /**
@@ -72,6 +76,30 @@ class Teacher extends User
     public function removeLevel(Level $level): static
     {
         $this->levels->removeElement($level);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Student>
+     */
+    public function getStudents(): Collection
+    {
+        return $this->students;
+    }
+
+    public function addStudent(Student $student): static
+    {
+        if (!$this->students->contains($student)) {
+            $this->students->add($student);
+        }
+
+        return $this;
+    }
+
+    public function removeStudent(Student $student): static
+    {
+        $this->students->removeElement($student);
 
         return $this;
     }

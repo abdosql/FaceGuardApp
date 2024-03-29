@@ -1,0 +1,18 @@
+<div class="tab-pane {{ id == "Overview" ? status : '' }}" id="{{ id }}" role="tabpanel">
+    <div class="row">
+        {% if id == "Overview" %}
+            {{ include("partials/profile/content/_leftContent.html.twig") }}
+            <div class="col-xxl-9">
+                {{ include("partials/profile/content/_rightContent.html.twig") }}
+            </div>
+        {% else %}
+            <!--end col-->
+            <div class="col-xxl-12">
+                {{ include("partials/profile/content/_rightContent.html.twig") }}
+            </div>
+            <!--end col-->
+        {% endif %}
+
+    </div>
+    <!--end row-->
+</div>

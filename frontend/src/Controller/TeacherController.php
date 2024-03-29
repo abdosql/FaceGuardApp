@@ -74,10 +74,12 @@ class TeacherController extends AbstractController
         $this->teacherService->deleteTeacher($teacher);
         return $this->redirectToRoute("app_teacher_index");
     }
-
+    #[Route('/{id}', name: 'app_teacher_show', methods: ['GET'])]
     public function show(Teacher $teacher): Response
     {
-        $this->denyAccessUnlessGranted("ROLE_ADMIN");
-        return $this->render("Teacher/show.html.twig");
+        return $this->render('teacher/show.html.twig', [
+            'user' => $teacher,
+            'studentsCount' => $this->teacherService->countStudentsByTeacher($teacher)
+        ]);
     }
 }
