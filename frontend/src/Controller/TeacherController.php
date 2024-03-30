@@ -41,37 +41,23 @@ class TeacherController extends AbstractController
         $teacher = new Teacher();
         $form = $this->createForm(TeacherType::class, $teacher);
         $form->handleRequest($request);
-        $password = $this->teacherService->generateRandomPassword($teacher);
         if ($form->isSubmitted() && $form->isValid()){
-
-            $teacher->setUsername(
-                $this->teacherService
-                    ->generateUniqueUsername(
-                        $teacher->getFirstName(),
-                        $teacher->getLastName())
-            );
-            $teacher->setPassword($password["hashedPassword"]);
-            $teacher->setRoles(["ROLE_TEACHER"]);
-            $teacher->setDtype("teacher");
-            $teacher->setProfileImage("something");
-            $this->teacherService->saveTeacher($teacher);
-            $data = [
-                "username" => $teacher->getUsername(),
-                "password" => $password["password"]
-            ];
+            $data = $this->teacherService->saveTeacher($teacher);
             $this->addFlash("success", $data);
             $emailNotificationService->sendMessage($teacher->getEmail(),"Here are you're credentials.", $data);
-            return $this->redirectToRoute("app_teacher_index");
+            return $this->redirectToRoute("app_teacher_index",[], Response::HTTP_SEE_OTHER);
         }
         return $this->render("teacher/new.html.twig",[
             "teacherForm" => $form->createView()
         ]);
     }
     #[Route("{id}/delete/", name: "app_teacher_delete", methods: ["POST"])]
-    public function delete(Teacher $teacher): Response
+    public function delete(Request $request,Teacher $teacher): Response
     {
         $this->denyAccessUnlessGranted("ROLE_ADMIN");
-        $this->teacherService->deleteTeacher($teacher);
+        if ($this->isCsrfTokenValid('delete'.$teacher->getId(), $request->request->get('_token'))) {
+            $this->teacherService->deleteTeacher($teacher);
+        }
         return $this->redirectToRoute("app_teacher_index");
     }
     #[Route('/{id}', name: 'app_teacher_show', methods: ['GET'])]

@@ -24,10 +24,23 @@ class AdminService extends UserService
         return $this->entityManager->getRepository(Admin::class)->find($id);
     }
 
-    public function saveAdministrator(Admin $admin): void
+    public function saveAdministrator(Admin $admin): array
     {
+        $password = $this->generateRandomPassword($admin);
+        $admin->setUsername(
+            $this->generateUniqueUsername(
+                $admin->getFirstName(),
+                $admin->getLastName())
+        );
+        $admin->setPassword($password["hashedPassword"]);
+        $admin->setDtype("admin");
+        $data = [
+            "username" => $admin->getUsername(),
+            "password" => $password["password"]
+        ];
         $this->entityManager->persist($admin);
         $this->entityManager->flush();
+        return $data;
     }
 
     public function deleteAdministrator(Admin $admin): void

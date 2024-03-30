@@ -24,10 +24,25 @@ class TeacherService extends UserService
         return $this->entityManager->getRepository(Teacher::class)->find($teacher);
     }
 
-    public function saveTeacher(Teacher $teacher): void
+    public function saveTeacher(Teacher $teacher): array
     {
+        $password = $this->generateRandomPassword($teacher);
+        $teacher->setUsername(
+            $this->generateUniqueUsername(
+                    $teacher->getFirstName(),
+                    $teacher->getLastName())
+        );
+        $teacher->setPassword($password["hashedPassword"]);
+        $teacher->setRoles(["ROLE_TEACHER"]);
+        $teacher->setDtype("teacher");
+
+        $data = [
+            "username" => $teacher->getUsername(),
+            "password" => $password["password"]
+        ];
         $this->entityManager->persist($teacher);
         $this->entityManager->flush();
+        return $data;
     }
 
     public function countStudentsByTeacher(Teacher $teacher): int

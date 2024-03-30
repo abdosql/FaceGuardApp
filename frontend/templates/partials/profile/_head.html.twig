@@ -2,7 +2,7 @@
     <div class="row g-4">
         <div class="col-auto">
             <div class="avatar-lg">
-                <img src="{{ asset("assets/images/users/avatar-1.jpg") }}" alt="user-img" class="img-thumbnail rounded-circle" />
+                <img src="{{ asset('images/users/profile_pictures/' ~ user.getImageName) }}" alt="user-img" class="img-thumbnail rounded-circle" />
             </div>
         </div>
         <!--end col-->
@@ -18,19 +18,21 @@
                 </div>
             </div>
         </div>
-        <!--end col-->
-        <div class="col-12 col-lg-auto order-last order-lg-0">
-            <div class="row text text-white-50 text-center">
-                <div class="col-lg-12 col-4">
-                    <div class="p-2">
-                        <h4 class="text-white mb-1">{{ studentsCount }}</h4>
-                        <p class="fs-14 mb-0">Students</p>
+        {% if studentsCount is defined%}
+            <!--end col-->
+            <div class="col-12 col-lg-auto order-last order-lg-0">
+                <div class="row text text-white-50 text-center">
+                    <div class="col-lg-12 col-4">
+                        <div class="p-2">
+                            <h4 class="text-white mb-1">{{ studentsCount }}</h4>
+                            <p class="fs-14 mb-0">Students</p>
+                        </div>
                     </div>
-                </div>
 
+                </div>
             </div>
-        </div>
-        <!--end col-->
+            <!--end col-->
+        {% endif %}
 
     </div>
     <!--end row-->
