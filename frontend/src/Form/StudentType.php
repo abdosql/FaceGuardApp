@@ -2,8 +2,8 @@
 
 namespace App\Form;
 
+use App\Entity\Branch;
 use App\Entity\Group;
-use App\Entity\Level;
 use App\Entity\Student;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -40,8 +40,8 @@ class StudentType extends AbstractType
                 'class' => Group::class,
                 'choice_label' => 'id',
             ])
-            ->add('Level', EntityType::class, [
-                'class' => Level::class,
+            ->add('branch', EntityType::class, [
+                'class' => Branch::class,
                 'choice_label' => 'id',
             ])
         ;

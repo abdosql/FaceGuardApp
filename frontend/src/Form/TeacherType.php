@@ -2,6 +2,8 @@
 
 namespace App\Form;
 
+use App\Entity\Branch;
+use App\Entity\Course;
 use App\Entity\Level;
 use App\Entity\Teacher;
 use App\Form\inputTypes\FlipondImageType;
@@ -27,11 +29,11 @@ class TeacherType extends AbstractType
                 ],
             ])
             ->add('email')
-            ->add('levels', EntityType::class, [
-                'class' => Level::class,
-                'choice_label' => 'level_name',
+            ->add('branches', EntityType::class, [
+                'class' => Branch::class,
+                'choice_label' => 'branch_name',
                 'multiple' => true,
-                'expanded' => false, // Ensure it renders as a select input
+                'expanded' => true, // Ensure it renders as a select input
             ])
             ->add('imageFile', VichImageType::class, [
                 'label' => 'Image',

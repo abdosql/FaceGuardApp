@@ -46,29 +46,8 @@ final class GroupFactory extends ModelFactory
      */
     protected function getDefaults(): array
     {
-        $alphabets = range('A', 'Z');
-        $usedLetters = [];
-
-        // Generate 4 unique letters
-        $groupNames = [];
-        for ($i = 0; $i < 4; $i++) {
-            // Get a random letter from the remaining letters
-            $randomIndex = array_rand($alphabets);
-            $letter = $alphabets[$randomIndex];
-
-            // Remove the letter from the alphabet to ensure uniqueness
-            unset($alphabets[$randomIndex]);
-            $alphabets = array_values($alphabets);
-
-            // Store the used letter
-            $usedLetters[] = $letter;
-
-            // Store the generated group name
-            $groupNames[] = $letter;
-        }
-
         return [
-            'group_name' => implode(',', $groupNames), // Convert array to string
+            'group_name' => self::faker()->unique()->randomLetter(),
         ];
     }
 
