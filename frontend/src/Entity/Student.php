@@ -14,10 +14,6 @@ class Student extends User
     #[ORM\JoinColumn(nullable: false)]
     private ?Group $group_ = null;
 
-    #[ORM\ManyToOne(inversedBy: 'students')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Level $Level = null;
-
     #[ORM\ManyToMany(targetEntity: Teacher::class, mappedBy: 'students')]
     private Collection $teachers;
 
@@ -26,6 +22,10 @@ class Student extends User
 
     #[ORM\OneToOne(inversedBy: 'student', cascade: ['persist', 'remove'])]
     private ?FacialRecognitionLog $facialRecognition = null;
+
+    #[ORM\ManyToOne(inversedBy: 'students')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Branch $branch = null;
 
     public function __construct()
     {
@@ -40,18 +40,6 @@ class Student extends User
     public function setGroup(?Group $group_): static
     {
         $this->group_ = $group_;
-
-        return $this;
-    }
-
-    public function getLevel(): ?Level
-    {
-        return $this->Level;
-    }
-
-    public function setLevel(?Level $Level): static
-    {
-        $this->Level = $Level;
 
         return $this;
     }
@@ -103,6 +91,18 @@ class Student extends User
     public function setFacialRecognition(?FacialRecognitionLog $facialRecognition): static
     {
         $this->facialRecognition = $facialRecognition;
+
+        return $this;
+    }
+
+    public function getBranch(): ?Branch
+    {
+        return $this->branch;
+    }
+
+    public function setBranch(?Branch $branch): static
+    {
+        $this->branch = $branch;
 
         return $this;
     }

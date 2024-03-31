@@ -2,30 +2,30 @@
 
 namespace App\Factory;
 
-use App\Entity\Semestre;
+use App\Entity\Semester;
 use App\Repository\SemestreRepository;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
 use Zenstruck\Foundry\RepositoryProxy;
 
 /**
- * @extends ModelFactory<Semestre>
+ * @extends ModelFactory<Semester>
  *
- * @method        Semestre|Proxy                     create(array|callable $attributes = [])
- * @method static Semestre|Proxy                     createOne(array $attributes = [])
- * @method static Semestre|Proxy                     find(object|array|mixed $criteria)
- * @method static Semestre|Proxy                     findOrCreate(array $attributes)
- * @method static Semestre|Proxy                     first(string $sortedField = 'id')
- * @method static Semestre|Proxy                     last(string $sortedField = 'id')
- * @method static Semestre|Proxy                     random(array $attributes = [])
- * @method static Semestre|Proxy                     randomOrCreate(array $attributes = [])
+ * @method        Semester|Proxy                     create(array|callable $attributes = [])
+ * @method static Semester|Proxy                     createOne(array $attributes = [])
+ * @method static Semester|Proxy                     find(object|array|mixed $criteria)
+ * @method static Semester|Proxy                     findOrCreate(array $attributes)
+ * @method static Semester|Proxy                     first(string $sortedField = 'id')
+ * @method static Semester|Proxy                     last(string $sortedField = 'id')
+ * @method static Semester|Proxy                     random(array $attributes = [])
+ * @method static Semester|Proxy                     randomOrCreate(array $attributes = [])
  * @method static SemestreRepository|RepositoryProxy repository()
- * @method static Semestre[]|Proxy[]                 all()
- * @method static Semestre[]|Proxy[]                 createMany(int $number, array|callable $attributes = [])
- * @method static Semestre[]|Proxy[]                 createSequence(iterable|callable $sequence)
- * @method static Semestre[]|Proxy[]                 findBy(array $attributes)
- * @method static Semestre[]|Proxy[]                 randomRange(int $min, int $max, array $attributes = [])
- * @method static Semestre[]|Proxy[]                 randomSet(int $number, array $attributes = [])
+ * @method static Semester[]|Proxy[]                 all()
+ * @method static Semester[]|Proxy[]                 createMany(int $number, array|callable $attributes = [])
+ * @method static Semester[]|Proxy[]                 createSequence(iterable|callable $sequence)
+ * @method static Semester[]|Proxy[]                 findBy(array $attributes)
+ * @method static Semester[]|Proxy[]                 randomRange(int $min, int $max, array $attributes = [])
+ * @method static Semester[]|Proxy[]                 randomSet(int $number, array $attributes = [])
  */
 final class SemestreFactory extends ModelFactory
 {
@@ -47,7 +47,7 @@ final class SemestreFactory extends ModelFactory
     protected function getDefaults(): array
     {
         return [
-            'semestre_name' => self::faker()->text(100),
+            'semester_name' => self::faker()->text(100),
         ];
     }
 
@@ -63,6 +63,6 @@ final class SemestreFactory extends ModelFactory
 
     protected static function getClass(): string
     {
-        return Semestre::class;
+        return Semester::class;
     }
 }

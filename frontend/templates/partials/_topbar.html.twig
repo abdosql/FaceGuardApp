@@ -682,8 +682,8 @@
                         <span class="d-flex align-items-center">
                             <img class="rounded-circle header-profile-user" src="{{ asset('images/users/profile_pictures/' ~ app.user.getImageName) }}" alt="Header Avatar">
                             <span class="text-start ms-xl-2">
-                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">Anna Adame</span>
-                                <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text">Founder</span>
+                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">{{ app.user.getLastName }}</span>
+                                <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text">{{ app.user.getFirstname }}</span>
                             </span>
                         </span>
                     </button>

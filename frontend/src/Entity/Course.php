@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CourseRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CourseRepository::class)]
@@ -19,6 +21,14 @@ class Course
     #[ORM\ManyToOne(inversedBy: 'courses')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Teacher $teacher = null;
+
+    #[ORM\ManyToMany(targetEntity: Branch::class, mappedBy: 'courses')]
+    private Collection $branches;
+
+    public function __construct()
+    {
+        $this->branches = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -45,6 +55,33 @@ class Course
     public function setTeacher(?Teacher $teacher): static
     {
         $this->teacher = $teacher;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Branch>
+     */
+    public function getBranches(): Collection
+    {
+        return $this->branches;
+    }
+
+    public function addBranch(Branch $branch): static
+    {
+        if (!$this->branches->contains($branch)) {
+            $this->branches->add($branch);
+            $branch->addCourse($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBranch(Branch $branch): static
+    {
+        if ($this->branches->removeElement($branch)) {
+            $branch->removeCourse($this);
+        }
 
         return $this;
     }

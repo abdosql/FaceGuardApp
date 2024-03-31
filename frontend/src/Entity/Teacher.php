@@ -12,18 +12,17 @@ class Teacher extends User
 {
     #[ORM\OneToMany(targetEntity: Course::class, mappedBy: 'teacher')]
     private Collection $courses;
-
-    #[ORM\ManyToMany(targetEntity: Level::class, inversedBy: 'teachers')]
-    private Collection $levels;
-
     #[ORM\ManyToMany(targetEntity: Student::class, inversedBy: 'teachers')]
     private Collection $students;
+
+    #[ORM\ManyToMany(targetEntity: Branch::class, mappedBy: 'teachers')]
+    private Collection $branches;
 
     public function __construct()
     {
         $this->courses = new ArrayCollection();
-        $this->levels = new ArrayCollection();
         $this->students = new ArrayCollection();
+        $this->branches = new ArrayCollection();
     }
 
     /**
@@ -55,31 +54,7 @@ class Teacher extends User
 
         return $this;
     }
-
-    /**
-     * @return Collection<int, Level>
-     */
-    public function getLevels(): Collection
-    {
-        return $this->levels;
-    }
-
-    public function addLevel(Level $level): static
-    {
-        if (!$this->levels->contains($level)) {
-            $this->levels->add($level);
-        }
-
-        return $this;
-    }
-
-    public function removeLevel(Level $level): static
-    {
-        $this->levels->removeElement($level);
-
-        return $this;
-    }
-
+    
     /**
      * @return Collection<int, Student>
      */
@@ -100,6 +75,33 @@ class Teacher extends User
     public function removeStudent(Student $student): static
     {
         $this->students->removeElement($student);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Branch>
+     */
+    public function getBranches(): Collection
+    {
+        return $this->branches;
+    }
+
+    public function addBranch(Branch $branch): static
+    {
+        if (!$this->branches->contains($branch)) {
+            $this->branches->add($branch);
+            $branch->addTeacher($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBranch(Branch $branch): static
+    {
+        if ($this->branches->removeElement($branch)) {
+            $branch->removeTeacher($this);
+        }
 
         return $this;
     }
