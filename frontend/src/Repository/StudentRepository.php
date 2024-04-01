@@ -20,7 +20,15 @@ class StudentRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Student::class);
     }
-
+    public function studentsWithoutGroup(): int
+    {
+        return $this->createQueryBuilder("s")
+            ->select("COUNT(s)")
+            ->leftJoin("s.group_", "g")
+            ->andWhere("g IS NOT NULL")
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
     //    /**
     //     * @return Student[] Returns an array of Student objects
     //     */

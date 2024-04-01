@@ -22,7 +22,10 @@ class StudentService extends UserService
     {
         return $this->entityManager->getRepository(Student::class)->findAll();
     }
-
+    public function getStudentsCount(): int
+    {
+        return $this->entityManager->getRepository(Student::class)->count();
+    }
     public function getStudentById(Student $student): ?Student
     {
         return $this->entityManager->getRepository(Student::class)->find($student);
@@ -52,5 +55,28 @@ class StudentService extends UserService
     {
         $this->entityManager->remove($student);
         $this->entityManager->flush();
+    }
+
+    public function studentsWithoutGroupExist(): array
+    {
+        $students = $this->entityManager->getRepository(Student::class)->studentsWithoutGroup();
+        if ($students > 0){
+            if ($this->getStudentsCount() != $students){
+                return [
+                    'status' => false,
+                    "message" => "There are some students without groups. Sync them now.",
+                    'button' => "Sync"
+                ];
+            }
+            return [
+                'status' => true,
+            ];
+        }
+        return [
+            'status' => false,
+            "message" => "You haven't generated groups yet. Generate them now.",
+            'button' => "Generate"
+
+        ];
     }
 }

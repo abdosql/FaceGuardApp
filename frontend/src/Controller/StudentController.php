@@ -28,6 +28,7 @@ class StudentController extends AbstractController
         $this->denyAccessUnlessGranted("ROLE_ADMIN");
         return $this->render('student/index.html.twig', [
             'students' => $this->studentService->getAllStudents(),
+            'studentsWithoutGroupExists' => $this->studentService->studentsWithoutGroupExist()
         ]);
     }
 
