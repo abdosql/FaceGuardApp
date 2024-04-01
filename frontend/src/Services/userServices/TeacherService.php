@@ -2,14 +2,20 @@
 
 namespace App\Services\userServices;
 
+use App\Entity\Branch;
 use App\Entity\Teacher;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
 class TeacherService extends UserService
 {
-    public function __construct(EntityManagerInterface $entityManager, SluggerInterface $slugger, UserPasswordHasherInterface $passwordHasher)
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        SluggerInterface $slugger,
+        UserPasswordHasherInterface $passwordHasher
+    )
     {
         parent::__construct($entityManager, $slugger, $passwordHasher);
     }
@@ -24,8 +30,12 @@ class TeacherService extends UserService
         return $this->entityManager->getRepository(Teacher::class)->find($teacher);
     }
 
-    public function saveTeacher(Teacher $teacher): array
+    public function saveTeacher(Teacher $teacher, $form): array
     {
+        $selectedBranches = $form->get('branches')->getData();
+        foreach ($selectedBranches as $branch) {
+            $teacher->addBranch($branch);
+        }
         $password = $this->generateRandomPassword($teacher);
         $teacher->setUsername(
             $this->generateUniqueUsername(

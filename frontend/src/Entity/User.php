@@ -239,9 +239,4 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-    public function getRole(): string
-    {
-        $substrRole = explode("_",$this->getRoles()[0]);
-        return $substrRole[1];
-    }
 }

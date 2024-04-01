@@ -23,6 +23,7 @@ class AppFixtures extends Fixture
         TeacherFactory::createOne([
             "username" => "hanae",
         ]);
+        StudentFactory::createMany(100);
         BranchFactory::createOne([
             'branch_name' => "computer engineering"
         ]);

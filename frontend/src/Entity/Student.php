@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Student extends User
 {
     #[ORM\ManyToOne(inversedBy: 'students')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Group $group_ = null;
 
     #[ORM\ManyToMany(targetEntity: Teacher::class, mappedBy: 'students')]
@@ -24,7 +24,7 @@ class Student extends User
     private ?FacialRecognitionLog $facialRecognition = null;
 
     #[ORM\ManyToOne(inversedBy: 'students')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Branch $branch = null;
 
     public function __construct()

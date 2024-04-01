@@ -3,46 +3,48 @@
 namespace App\Form;
 
 use App\Entity\Branch;
+use App\Entity\FacialRecognitionLog;
 use App\Entity\Group;
+use App\Entity\RFIDCard;
 use App\Entity\Student;
+use App\Entity\Teacher;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class StudentType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('username')
-            ->add('roles')
-            ->add('password')
             ->add('first_name')
             ->add('last_name')
             ->add('phone_number')
-            ->add('profile_image')
-            ->add('gender')
+            ->add('gender', ChoiceType::class,[
+                'choices' => [
+                    'Male' => 'male',
+                    'Female' => 'female',
+                ],
+            ])
             ->add('email')
-            ->add('rfidCard', EntityType::class, [
-                'class' => Student::class,
-                'choice_label' => 'id',
-            ])
-            ->add('student', EntityType::class, [
-                'class' => Student::class,
-                'choice_label' => 'id',
-            ])
-            ->add('facialRecognition', EntityType::class, [
-                'class' => Student::class,
-                'choice_label' => 'id',
-            ])
-            ->add('group_', EntityType::class, [
-                'class' => Group::class,
-                'choice_label' => 'id',
-            ])
+            //->add('rfidCard', EntityType::class, [
+            //    'class' => RFIDCard::class,
+            //    'choice_label' => 'id',
+            //])
+            //->add('facialRecognition', EntityType::class, [
+            //    'class' => FacialRecognitionLog::class,
+            //    'choice_label' => 'id',
+            //])
             ->add('branch', EntityType::class, [
                 'class' => Branch::class,
-                'choice_label' => 'id',
+                'choice_label' => 'branch_name',
+            ])
+            ->add('imageFile', VichImageType::class, [
+                'label' => 'Image',
+                'required' => false,
             ])
         ;
     }

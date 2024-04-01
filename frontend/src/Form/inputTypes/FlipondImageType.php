@@ -2,12 +2,12 @@
 
 namespace App\Form\inputTypes;
 
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
-class FlipondImageType extends FileType
+class FlipondImageType extends VichImageType
 {
     public function configureOptions(OptionsResolver $resolver): void
     {

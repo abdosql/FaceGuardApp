@@ -25,9 +25,8 @@ class TeacherController extends AbstractController
     public function index(): Response
     {
         $this->denyAccessUnlessGranted("ROLE_ADMIN");
-        $teachers = $this->teacherService->getAllTeachers();
         return $this->render('teacher/index.html.twig', [
-            'teachers' => $teachers,
+            'teachers' => $this->teacherService->getAllTeachers(),
         ]);
     }
 
@@ -42,7 +41,7 @@ class TeacherController extends AbstractController
         $form = $this->createForm(TeacherType::class, $teacher);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){
-            $data = $this->teacherService->saveTeacher($teacher);
+            $data = $this->teacherService->saveTeacher($teacher, $form);
             $this->addFlash("success", $data);
             $emailNotificationService->sendMessage($teacher->getEmail(),"Here are you're credentials.", $data);
             return $this->redirectToRoute("app_teacher_index",[], Response::HTTP_SEE_OTHER);

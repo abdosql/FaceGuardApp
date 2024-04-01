@@ -32,6 +32,14 @@ class Teacher extends User
     {
         return $this->courses;
     }
+    public function getDisplayCourses(): string
+    {
+        $displayCourses = "";
+        foreach ($this->courses as $course){
+            $displayCourses .= $course->getCourseName(). ", ";
+        }
+        return $displayCourses;
+    }
 
     public function addCourse(Course $course): static
     {
@@ -85,6 +93,15 @@ class Teacher extends User
     public function getBranches(): Collection
     {
         return $this->branches;
+    }
+
+    public function getDisplayBranches(): string
+    {
+        $displayBranches = "";
+        foreach ($this->branches as $branch){
+            $displayBranches .= $branch->getBranchName(). ", ";
+        }
+        return $displayBranches;
     }
 
     public function addBranch(Branch $branch): static

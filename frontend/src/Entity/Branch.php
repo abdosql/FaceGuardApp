@@ -21,7 +21,7 @@ class Branch
     #[ORM\ManyToMany(targetEntity: Teacher::class, inversedBy: 'branches')]
     private Collection $teachers;
 
-    #[ORM\OneToMany(targetEntity: Student::class, mappedBy: 'branche')]
+    #[ORM\OneToMany(targetEntity: Student::class, mappedBy: 'branch')]
     private Collection $students;
 
     #[ORM\ManyToMany(targetEntity: Course::class, inversedBy: 'branches')]

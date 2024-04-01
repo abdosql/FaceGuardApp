@@ -3,8 +3,6 @@
 namespace App\Form;
 
 use App\Entity\Branch;
-use App\Entity\Course;
-use App\Entity\Level;
 use App\Entity\Teacher;
 use App\Form\inputTypes\FlipondImageType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -29,11 +27,13 @@ class TeacherType extends AbstractType
                 ],
             ])
             ->add('email')
+
             ->add('branches', EntityType::class, [
                 'class' => Branch::class,
                 'choice_label' => 'branch_name',
                 'multiple' => true,
-                'expanded' => true, // Ensure it renders as a select input
+                'expanded' => true,
+                'by_reference' => false,
             ])
             ->add('imageFile', VichImageType::class, [
                 'label' => 'Image',

@@ -4,41 +4,51 @@ namespace App\Controller;
 
 use App\Entity\Student;
 use App\Form\StudentType;
-use App\Repository\StudentRepository;
+use App\Services\notificationServices\EmailNotificationService;
+use App\Services\userServices\StudentService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/student')]
+#[Route('/students')]
 class StudentController extends AbstractController
 {
-    #[Route('/', name: 'app_student_index', methods: ['GET'])]
-    public function index(StudentRepository $studentRepository): Response
+    public function __construct(
+        private StudentService $studentService,
+    )
     {
+    }
+
+    #[Route('/', name: 'app_student_index', methods: ['GET'])]
+    public function index(): Response
+    {
+        $this->denyAccessUnlessGranted("ROLE_ADMIN");
         return $this->render('student/index.html.twig', [
-            'students' => $studentRepository->findAll(),
+            'students' => $this->studentService->getAllStudents(),
         ]);
     }
 
+    /**
+     * @throws TransportExceptionInterface
+     */
     #[Route('/new', name: 'app_student_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EmailNotificationService $emailNotificationService): Response
     {
+        $this->denyAccessUnlessGranted("ROLE_ADMIN");
         $student = new Student();
         $form = $this->createForm(StudentType::class, $student);
         $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($student);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_student_index', [], Response::HTTP_SEE_OTHER);
+        if ($form->isSubmitted() && $form->isValid()){
+            $data = $this->studentService->saveStudent($student);
+            $this->addFlash("success", $data);
+            $emailNotificationService->sendMessage($student->getEmail(),"Here are you're credentials.", $data);
+            return $this->redirectToRoute("app_student_index",[], Response::HTTP_SEE_OTHER);
         }
-
-        return $this->render('student/new.html.twig', [
-            'student' => $student,
-            'form' => $form,
+        return $this->render("student/new.html.twig",[
+            "studentForm" => $form->createView()
         ]);
     }
 
@@ -46,7 +56,7 @@ class StudentController extends AbstractController
     public function show(Student $student): Response
     {
         return $this->render('student/show.html.twig', [
-            'student' => $student,
+            'user' => $student,
         ]);
     }
 
@@ -68,14 +78,13 @@ class StudentController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_student_delete', methods: ['POST'])]
-    public function delete(Request $request, Student $student, EntityManagerInterface $entityManager): Response
+    #[Route("{id}/delete/", name: "app_student_delete", methods: ["POST"])]
+    public function delete(Request $request,Student $student): Response
     {
+        $this->denyAccessUnlessGranted("ROLE_ADMIN");
         if ($this->isCsrfTokenValid('delete'.$student->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($student);
-            $entityManager->flush();
+            $this->studentService->deleteStudent($student);
         }
-
-        return $this->redirectToRoute('app_student_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute("app_teacher_index");
     }
 }

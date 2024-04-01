@@ -9,11 +9,11 @@
         <div class="col">
             <div class="p-2">
                 <h3 class="text-white mb-1">{{ user.getDisplayName }}</h3>
-                <p class="text-white text-opacity-75">{{ user.getRole }}</p>
+                <p class="text-white text-opacity-75">{{ user.getRoles|first }}</p>
                 <div class="hstack text-white-50 gap-1">
-                    <div class="me-2"><i class="ri-map-pin-user-line me-1 text-white text-opacity-75 fs-16 align-middle"></i>California, United States</div>
+                    <div class="me-2"><i class="ri-presentation-line me-1 text-white text-opacity-75 fs-16 align-middle"></i>{{ user.getRoles()|first == 'ROLE_TEACHER' ? user.getDisplayCourses() : '' }}</div>
                     <div>
-                        <i class="ri-building-line me-1 text-white text-opacity-75 fs-16 align-middle"></i>Themesbrand
+                        <i class="ri-team-line me-1 text-white text-opacity-75 fs-16 align-middle"></i>{{ user.getRoles|first == "ROLE_TEACHER" ? user.getDisplayBranches : "" }}
                     </div>
                 </div>
             </div>
