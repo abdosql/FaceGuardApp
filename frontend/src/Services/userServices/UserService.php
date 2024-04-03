@@ -3,6 +3,7 @@
 namespace App\Services\userServices;
 
 use App\Entity\User;
+use App\Services\ServiceInterfaces\UserServiceInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;

@@ -29,6 +29,25 @@ class StudentRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
+
+    public function getStudentsByAcademicYear(): array
+    {
+        $studentsByAcademicYear = [];
+
+        // Retrieve students along with their academic years
+        $students = $this->createQueryBuilder("s")
+            ->leftJoin("s.academicYear", "ay")
+            ->getQuery()
+            ->getResult();
+
+        // Organize students by academic year
+        foreach ($students as $student) {
+            $academicYear = $student->getAcademicYear()->getYear();
+            $studentsByAcademicYear[$academicYear][] = $student;
+        }
+
+        return $studentsByAcademicYear;
+    }
     //    /**
     //     * @return Student[] Returns an array of Student objects
     //     */

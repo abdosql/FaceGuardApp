@@ -57,6 +57,10 @@ class StudentService extends UserService
         $this->entityManager->flush();
     }
 
+    public function getStudentsByAcademicYear(): array
+    {
+        return $this->entityManager->getRepository(Student::class)->getStudentsByAcademicYear();
+    }
     public function studentsWithoutGroupExist(): array
     {
         $students = $this->entityManager->getRepository(Student::class)->studentsWithoutGroup();

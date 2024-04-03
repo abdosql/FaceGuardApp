@@ -27,6 +27,9 @@ class Student extends User
     #[ORM\JoinColumn(nullable: true)]
     private ?Branch $branch = null;
 
+    #[ORM\ManyToOne(inversedBy: 'students')]
+    private ?AcademicYear $academicYear = null;
+
     public function __construct()
     {
         $this->teachers = new ArrayCollection();
@@ -103,6 +106,18 @@ class Student extends User
     public function setBranch(?Branch $branch): static
     {
         $this->branch = $branch;
+
+        return $this;
+    }
+
+    public function getAcademicYear(): ?AcademicYear
+    {
+        return $this->academicYear;
+    }
+
+    public function setAcademicYear(?AcademicYear $academicYear): static
+    {
+        $this->academicYear = $academicYear;
 
         return $this;
     }
