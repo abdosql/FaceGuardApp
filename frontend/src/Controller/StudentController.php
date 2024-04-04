@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Student;
 use App\Form\StudentType;
+use App\Services\GroupService;
 use App\Services\notificationServices\EmailNotificationService;
 use App\Services\userServices\StudentService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -18,6 +19,7 @@ class StudentController extends AbstractController
 {
     public function __construct(
         private StudentService $studentService,
+        private GroupService $groupService,
     )
     {
     }
@@ -87,5 +89,13 @@ class StudentController extends AbstractController
             $this->studentService->deleteStudent($student);
         }
         return $this->redirectToRoute("app_teacher_index");
+    }
+
+    #[Route('/groups/generate', name: 'app_students_generate_groups')]
+    public function generateGroups(): Response
+    {
+        $this->denyAccessUnlessGranted("ROLE_ADMIN");
+        $this->studentService->AssignStudentsToCovenantGroupRandomly($this->groupService, 36);
+        return $this->redirectToRoute("app_student_index");
     }
 }

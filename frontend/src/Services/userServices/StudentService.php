@@ -2,7 +2,10 @@
 
 namespace App\Services\userServices;
 
+use App\Entity\Group;
 use App\Entity\Student;
+use App\Services\GroupService;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
@@ -57,9 +60,9 @@ class StudentService extends UserService
         $this->entityManager->flush();
     }
 
-    public function getStudentsByAcademicYear(): array
+    public function getStudentsByAcademicYearAndBranch(): array
     {
-        return $this->entityManager->getRepository(Student::class)->getStudentsByAcademicYear();
+        return $this->entityManager->getRepository(Student::class)->getStudentsByAcademicYearAndBranch();
     }
     public function studentsWithoutGroupExist(): array
     {
@@ -82,5 +85,27 @@ class StudentService extends UserService
             'button' => "Generate"
 
         ];
+    }
+
+    public function AssignStudentsToCovenantGroupRandomly(GroupService $groupService, int $studentsNumberPerGroup): void
+    {
+        $studentsByAcademicYearAndBranch = $this->getStudentsByAcademicYearAndBranch();
+        $groupService->generateGroups($studentsByAcademicYearAndBranch, $studentsNumberPerGroup);
+
+        foreach ($studentsByAcademicYearAndBranch as $year => $branches)
+        {
+            foreach ($branches as $branch => $students)
+            {
+                $groups = $groupService->getGroupsLikeName($year . " " . $branch);
+                $groupsNumber = $groupService->calculateNumberOfGroups($students, $studentsNumberPerGroup);
+                $studentsChunked = array_chunk($students, $studentsNumberPerGroup);
+
+                for ($i = 0; $i < $groupsNumber; $i++) {
+                    $studentsChunkCollection = new ArrayCollection($studentsChunked[$i]);
+                    $groups[$i]->addStudents($studentsChunkCollection);
+                }
+            }
+            $this->entityManager->flush();
+        }
     }
 }

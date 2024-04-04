@@ -61,7 +61,12 @@ class Group
 
         return $this;
     }
-
+    public function addStudents(Collection $students): void
+    {
+        foreach ($students as $student) {
+            $this->addStudent($student);
+        }
+    }
     public function removeStudent(Student $student): static
     {
         if ($this->students->removeElement($student)) {

@@ -60,6 +60,10 @@ class AppFixtures extends Fixture
             'academicYear' => $firstYear,
             'branch' => $branch1
         ]);
+        StudentFactory::createMany(120,[
+            'academicYear' => $firstYear,
+            'branch' => $branch2
+        ]);
         StudentFactory::createMany(160,[
             'academicYear' => $secondYear,
             'branch' => $branch2
@@ -75,6 +79,10 @@ class AppFixtures extends Fixture
         StudentFactory::createMany(83,[
             'academicYear' => $fifthYear,
             'branch' => $branch1
+        ]);
+        StudentFactory::createMany(53,[
+            'academicYear' => $fifthYear,
+            'branch' => $branch2
         ]);
 
     }

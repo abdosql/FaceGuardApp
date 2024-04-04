@@ -40,7 +40,7 @@
                                     <i class="ri-error-warning-line me-3 align-middle fs-16 text-danger "></i><strong>Notice !</strong>
                                     - {{ studentsWithoutGroupExists["message"]}}<now class=""></now>
                                 </div>
-                                <button type="button" class="btn btn-danger btn-load btn-sm">
+                                <a href="{{ path("app_students_generate_groups") }}" class="btn btn-danger btn-load btn-sm">
                                                         <span class="d-flex align-items-center">
                                                             <span class="spinner-grow flex-shrink-0" role="status">
                                                                 <span class="visually-hidden">{{ studentsWithoutGroupExists["button"]}}</span>
@@ -49,7 +49,7 @@
                                                                 {{ studentsWithoutGroupExists["button"]}}
                                                             </span>
                                                         </span>
-                                </button>
+                                </a>
                             </div>
                         </div>
                         <!--end col-->
