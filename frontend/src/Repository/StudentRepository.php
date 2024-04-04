@@ -51,6 +51,15 @@ class StudentRepository extends ServiceEntityRepository
         return $studentsByAcademicYearAndBranch;
 
     }
+
+    public function countStudentsByGender(): array
+    {
+        return $this->createQueryBuilder("s")
+            ->select("s.gender, COUNT(s.gender) as gender_count")
+            ->groupBy("s.gender")
+            ->getQuery()
+            ->getResult();
+    }
     //    /**
     //     * @return Student[] Returns an array of Student objects
     //     */

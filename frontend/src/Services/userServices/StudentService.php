@@ -34,6 +34,16 @@ class StudentService extends UserService
         return $this->entityManager->getRepository(Student::class)->find($student);
     }
 
+    public function countStudentsPercentageByGender(): array
+    {
+        $genders = $this->entityManager->getRepository(Student::class)->countStudentsByGender();
+        $total = $genders[0]["gender_count"] + $genders[1]["gender_count"];
+        return [
+            "Female" => round(($genders[0]["gender_count"]/$total)*100, 2),
+            "Male" => round(($genders[1]["gender_count"]/$total)*100, 2),
+        ];
+
+    }
     public function saveStudent(Student $student): array
     {
         $password = $this->generateRandomPassword($student);
