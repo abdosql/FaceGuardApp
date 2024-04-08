@@ -1,0 +1,6 @@
+<form id="deleteForm_{{ admin.getId }}" method="post" action="{{ path('app_admin_delete', {'id': admin.getId}) }}">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ admin.id) }}">
+    <button type="button" class="dropdown-item remove-item-btn" onclick="confirmDelete('{{ admin.getId }}')">
+        <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i> Delete
+    </button>
+</form>

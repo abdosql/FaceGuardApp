@@ -1,2 +1,16 @@
 {{ include('partials/_topbar.html.twig') }}
 {{ include('partials/_sidebar.html.twig') }}
+{% if app.session.flashbag.peek("success")|length > 0 %}
+    {% set data = app.flashes("success") %}
+    <script>
+        var successData = {{ data|json_encode|raw }};
+
+        document.addEventListener("DOMContentLoaded", function() {
+            var customSaSuccess = document.getElementById("success_user");
+            if (customSaSuccess) {
+                customSaSuccess.dataset.successData = JSON.stringify(successData);
+                customSaSuccess.click();
+            }
+        });
+    </script>
+{% endif %}

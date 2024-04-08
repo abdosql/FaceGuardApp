@@ -6,6 +6,9 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\HttpFoundation\File\File;
+
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_USERNAME', fields: ['username'])]
@@ -15,6 +18,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
     "student"  => Student::class,
     "admin"    => Admin::class
 ])]
+#[Vich\Uploadable]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -45,10 +49,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 10)]
     private ?string $phone_number = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $profile_image = null;
-
+    #[Vich\UploadableField(mapping: 'user_profile', fileNameProperty: 'imageName', size: 'imageSize')]
+    private ?File $imageFile = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $imageName = null;
+    #[ORM\Column(nullable: true)]
+    private ?int $imageSize = null;
     #[ORM\Column(length: 10)]
     private ?string $gender = null;
     #[ORM\Column(length: 100)]
@@ -166,18 +172,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getProfileImage(): ?string
+    public function setImageFile(?File $imageFile = null): void
     {
-        return $this->profile_image;
+        $this->imageFile = $imageFile;
     }
 
-    public function setProfileImage(string $profile_image): static
+    public function getImageFile(): ?File
     {
-        $this->profile_image = $profile_image;
-
-        return $this;
+        return $this->imageFile;
+    }
+    public function setImageName(?string $imageName): void
+    {
+        $this->imageName = $imageName;
     }
 
+    public function getImageName(): ?string
+    {
+        return $this->imageName;
+    }
+    public function setImageSize(?int $imageSize): void
+    {
+        $this->imageSize = $imageSize;
+    }
+
+    public function getImageSize(): ?int
+    {
+        return $this->imageSize;
+    }
     public function getGender(): ?string
     {
         return $this->gender;
@@ -217,9 +238,5 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->dtype = $dtype;
 
         return $this;
-    }
-    public function getFullName(): string
-    {
-        return $this->last_name." ".$this->first_name;
     }
 }

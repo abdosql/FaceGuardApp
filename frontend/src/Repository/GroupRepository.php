@@ -21,6 +21,25 @@ class GroupRepository extends ServiceEntityRepository
         parent::__construct($registry, Group::class);
     }
 
+    public function getGroupByName($name): array
+    {
+        return $this->createQueryBuilder("g")
+            ->andWhere("g.group_name LIKE :name")
+            ->setParameter("name", '%' . $name . '%')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function countStudentsPerGroup(Group $group): array
+    {
+        return $this->createQueryBuilder("g")
+            ->leftJoin("g.students", "s")
+            ->andWhere("g = :group")
+            ->setParameter("group", $group)
+            ->select("g", "COUNT(s) AS studentCount")
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
     //    /**
     //     * @return Group[] Returns an array of Group objects
     //     */

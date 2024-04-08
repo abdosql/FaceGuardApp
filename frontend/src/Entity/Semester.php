@@ -6,7 +6,7 @@ use App\Repository\SemestreRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SemestreRepository::class)]
-class Semestre
+class Semester
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -14,21 +14,21 @@ class Semestre
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
-    private ?string $semestre_name = null;
+    private ?string $semester_name = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getSemestreName(): ?string
+    public function getSemesterName(): ?string
     {
-        return $this->semestre_name;
+        return $this->semester_name;
     }
 
-    public function setSemestreName(string $semestre_name): static
+    public function setSemesterName(string $semester_name): static
     {
-        $this->semestre_name = $semestre_name;
+        $this->semester_name = $semester_name;
 
         return $this;
     }

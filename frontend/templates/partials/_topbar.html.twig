@@ -138,7 +138,7 @@
 
                 <div class="dropdown ms-1 topbar-head-dropdown header-item">
                     <button type="button" class="btn btn-icon btn-topbar material-shadow-none btn-ghost-secondary rounded-circle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img id="header-lang-img" src="{{ asset("assets/images/flags/us.svg") }}" alt="Header Language" height="20" class="rounded">
+                        <img id="header-lang-img" src="{{ absolute_url(asset("assets/images/flags/us.svg")) }}" alt="Header Language" height="20" class="rounded">
                     </button>
                     <div class="dropdown-menu dropdown-menu-end">
 
@@ -680,10 +680,10 @@
                 <div class="dropdown ms-sm-3 header-item topbar-user">
                     <button type="button" class="btn material-shadow-none" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="d-flex align-items-center">
-                            <img class="rounded-circle header-profile-user" src="{{ asset("assets/images/users/avatar-1.jpg") }}" alt="Header Avatar">
+                            <img class="rounded-circle header-profile-user" src="{{ asset('images/users/profile_pictures/' ~ app.user.getImageName) }}" alt="Header Avatar">
                             <span class="text-start ms-xl-2">
-                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">Anna Adame</span>
-                                <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text">Founder</span>
+                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">{{ app.user.getLastName }}</span>
+                                <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text">{{ app.user.getFirstname }}</span>
                             </span>
                         </span>
                     </button>

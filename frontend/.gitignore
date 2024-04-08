@@ -28,6 +28,5 @@
 !/var/log/.gitkeep
 /var/sessions/*
 !/var/sessions/.gitkeep
+/public/images/
 
-# Environment file
-.env

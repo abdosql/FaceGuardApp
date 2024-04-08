@@ -12,14 +12,17 @@ class Teacher extends User
 {
     #[ORM\OneToMany(targetEntity: Course::class, mappedBy: 'teacher')]
     private Collection $courses;
+    #[ORM\ManyToMany(targetEntity: Student::class, inversedBy: 'teachers')]
+    private Collection $students;
 
-    #[ORM\ManyToMany(targetEntity: Level::class, inversedBy: 'teachers')]
-    private Collection $levels;
+    #[ORM\ManyToMany(targetEntity: Branch::class, mappedBy: 'teachers')]
+    private Collection $branches;
 
     public function __construct()
     {
         $this->courses = new ArrayCollection();
-        $this->levels = new ArrayCollection();
+        $this->students = new ArrayCollection();
+        $this->branches = new ArrayCollection();
     }
 
     /**
@@ -28,6 +31,14 @@ class Teacher extends User
     public function getCourses(): Collection
     {
         return $this->courses;
+    }
+    public function getDisplayCourses(): string
+    {
+        $displayCourses = "";
+        foreach ($this->courses as $course){
+            $displayCourses .= $course->getCourseName(). ", ";
+        }
+        return $displayCourses;
     }
 
     public function addCourse(Course $course): static
@@ -51,27 +62,63 @@ class Teacher extends User
 
         return $this;
     }
-
+    
     /**
-     * @return Collection<int, Level>
+     * @return Collection<int, Student>
      */
-    public function getLevels(): Collection
+    public function getStudents(): Collection
     {
-        return $this->levels;
+        return $this->students;
     }
 
-    public function addLevel(Level $level): static
+    public function addStudent(Student $student): static
     {
-        if (!$this->levels->contains($level)) {
-            $this->levels->add($level);
+        if (!$this->students->contains($student)) {
+            $this->students->add($student);
         }
 
         return $this;
     }
 
-    public function removeLevel(Level $level): static
+    public function removeStudent(Student $student): static
     {
-        $this->levels->removeElement($level);
+        $this->students->removeElement($student);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Branch>
+     */
+    public function getBranches(): Collection
+    {
+        return $this->branches;
+    }
+
+    public function getDisplayBranches(): string
+    {
+        $displayBranches = "";
+        foreach ($this->branches as $branch){
+            $displayBranches .= $branch->getBranchName(). ", ";
+        }
+        return $displayBranches;
+    }
+
+    public function addBranch(Branch $branch): static
+    {
+        if (!$this->branches->contains($branch)) {
+            $this->branches->add($branch);
+            $branch->addTeacher($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBranch(Branch $branch): static
+    {
+        if ($this->branches->removeElement($branch)) {
+            $branch->removeTeacher($this);
+        }
 
         return $this;
     }

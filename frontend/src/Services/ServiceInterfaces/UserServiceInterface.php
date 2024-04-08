@@ -1,10 +1,8 @@
 <?php
 
-namespace App\Services\UserServices;
+namespace App\Services\ServiceInterfaces;
 
 use App\Entity\User;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\String\Slugger\SluggerInterface;
 
 interface UserServiceInterface
 {

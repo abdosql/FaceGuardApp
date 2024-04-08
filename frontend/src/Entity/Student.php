@@ -3,69 +3,36 @@
 namespace App\Entity;
 
 use App\Repository\StudentRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: StudentRepository::class)]
 class Student extends User
 {
-    #[ORM\OneToOne(targetEntity: self::class, inversedBy: 'student', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?self $rfidCard = null;
-
-    #[ORM\OneToOne(targetEntity: self::class, mappedBy: 'rfidCard', cascade: ['persist', 'remove'])]
-    private ?self $student = null;
-
-    #[ORM\OneToOne(targetEntity: self::class, inversedBy: 'student', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?self $facialRecognition = null;
-
     #[ORM\ManyToOne(inversedBy: 'students')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Group $group_ = null;
 
+    #[ORM\ManyToMany(targetEntity: Teacher::class, mappedBy: 'students')]
+    private Collection $teachers;
+
+    #[ORM\OneToOne(inversedBy: 'student', cascade: ['persist', 'remove'])]
+    private ?RFIDCard $rfidCard = null;
+
+    #[ORM\OneToOne(inversedBy: 'student', cascade: ['persist', 'remove'])]
+    private ?FacialRecognitionLog $facialRecognition = null;
+
     #[ORM\ManyToOne(inversedBy: 'students')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Level $Level = null;
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Branch $branch = null;
 
-    public function getRfidCard(): ?self
+    #[ORM\ManyToOne(inversedBy: 'students')]
+    private ?AcademicYear $academicYear = null;
+
+    public function __construct()
     {
-        return $this->rfidCard;
-    }
-
-    public function setRfidCard(self $rfidCard): static
-    {
-        $this->rfidCard = $rfidCard;
-
-        return $this;
-    }
-
-    public function getStudent(): ?self
-    {
-        return $this->student;
-    }
-
-    public function setStudent(self $student): static
-    {
-        // set the owning side of the relation if necessary
-        if ($student->getRfidCard() !== $this) {
-            $student->setRfidCard($this);
-        }
-
-        $this->student = $student;
-
-        return $this;
-    }
-
-    public function getFacialRecognition(): ?self
-    {
-        return $this->facialRecognition;
-    }
-
-    public function setFacialRecognition(self $facialRecognition): static
-    {
-        $this->facialRecognition = $facialRecognition;
-
-        return $this;
+        $this->teachers = new ArrayCollection();
     }
 
     public function getGroup(): ?Group
@@ -80,14 +47,77 @@ class Student extends User
         return $this;
     }
 
-    public function getLevel(): ?Level
+    /**
+     * @return Collection<int, Teacher>
+     */
+    public function getTeachers(): Collection
     {
-        return $this->Level;
+        return $this->teachers;
     }
 
-    public function setLevel(?Level $Level): static
+    public function addTeacher(Teacher $teacher): static
     {
-        $this->Level = $Level;
+        if (!$this->teachers->contains($teacher)) {
+            $this->teachers->add($teacher);
+            $teacher->addStudent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTeacher(Teacher $teacher): static
+    {
+        if ($this->teachers->removeElement($teacher)) {
+            $teacher->removeStudent($this);
+        }
+
+        return $this;
+    }
+
+    public function getRfidCard(): ?RFIDCard
+    {
+        return $this->rfidCard;
+    }
+
+    public function setRfidCard(?RFIDCard $rfidCard): static
+    {
+        $this->rfidCard = $rfidCard;
+
+        return $this;
+    }
+
+    public function getFacialRecognition(): ?FacialRecognitionLog
+    {
+        return $this->facialRecognition;
+    }
+
+    public function setFacialRecognition(?FacialRecognitionLog $facialRecognition): static
+    {
+        $this->facialRecognition = $facialRecognition;
+
+        return $this;
+    }
+
+    public function getBranch(): ?Branch
+    {
+        return $this->branch;
+    }
+
+    public function setBranch(?Branch $branch): static
+    {
+        $this->branch = $branch;
+
+        return $this;
+    }
+
+    public function getAcademicYear(): ?AcademicYear
+    {
+        return $this->academicYear;
+    }
+
+    public function setAcademicYear(?AcademicYear $academicYear): static
+    {
+        $this->academicYear = $academicYear;
 
         return $this;
     }

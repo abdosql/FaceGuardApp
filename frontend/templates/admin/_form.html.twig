@@ -1,0 +1,52 @@
+{{ form_start(adminForm) }}
+<div class="row">
+    <div class="col-6">
+        <div class="mb-3">
+            {{ form_label(adminForm.first_name, 'First Name', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(adminForm.first_name, {'attr': {'class': 'form-control', 'placeholder': 'Enter your firstname', 'id': 'firstNameinput'}}) }}
+            {{ form_errors(adminForm.first_name) }}
+        </div>
+    </div><!--end col-->
+    <div class="col-6">
+        <div class="mb-3">
+            {{ form_label(adminForm.last_name, 'Last Name', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(adminForm.last_name, {'attr': {'class': 'form-control', 'placeholder': 'Enter your lastname', 'id': 'lastNameinput'}}) }}
+            {{ form_errors(adminForm.last_name) }}
+        </div>
+    </div><!--end col-->
+    <div class="col-6">
+        <div class="mb-3">
+            {{ form_label(adminForm.phone_number, 'Phone Number', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(adminForm.phone_number, {'attr': {'class': 'form-control', 'placeholder': '+212 600000001', 'id': 'phonenumberInput'}}) }}
+            {{ form_errors(adminForm.phone_number) }}
+        </div>
+    </div><!--end col-->
+    <div class="col-6">
+        <div class="mb-3">
+            {{ form_label(adminForm.email, 'Email Address', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(adminForm.email, {'attr': {'class': 'form-control', 'placeholder': 'example@gamil.com', 'id': 'emailidInput'}}) }}
+            {{ form_errors(adminForm.email) }}
+        </div>
+    </div><!--end col-->
+    <div class="col-6">
+        <div class="mb-3">
+            {{ form_label(adminForm.gender, 'Gender', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(adminForm.gender, {'attr': {'class': 'fo', 'id': 'ForminputGender'}}) }}
+            {{ form_errors(adminForm.gender) }}
+        </div>
+    </div><!--end col-->
+    <div class="col-4">
+        <div class="mb-3">
+            {{ form_label(adminForm.roles, 'Roles', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(adminForm.roles, {'attr': {'class': 'fo', 'id': 'ForminputGender'}}) }}
+            {{ form_errors(adminForm.roles) }}
+        </div>
+    </div><!--end col-->
+    <div class="col-lg-12">
+        <div class="text-end">
+            <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+        </div>
+    </div><!--end col-->
+</div><!--end row-->
+{{ form_end(adminForm) }}
+

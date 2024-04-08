@@ -53,7 +53,6 @@ final class UserFactory extends ModelFactory
             'last_name' => self::faker()->lastName(),
             'password' => '$2y$13$RgSrTjVqoKV4j9wt/psV/.TUwT.m5O4Bkp5lbCD.dg5/ySVjgkR.6',
             'phone_number' => self::faker()->text(10),
-            'profile_image' => self::faker()->text(255),
             'roles' => [],
             'username' => self::faker()->text(180),
             ];

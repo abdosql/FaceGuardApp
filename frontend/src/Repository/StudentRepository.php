@@ -20,7 +20,58 @@ class StudentRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Student::class);
     }
+    public function countStudentsWithoutGroup(): int
+    {
+        return $this->createQueryBuilder("s")
+            ->select("COUNT(s)")
+            ->leftJoin("s.group_", "g")
+            ->andWhere("g IS NOT NULL")
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+    public function OrganizeStudentsByAcademicYearAndBranch(array $students): array
+    {
+        $studentsByAcademicYearAndBranch = [];
 
+        // Organize students by academic year and branch
+        foreach ($students as $student) {
+            $academicYear = $student->getAcademicYear()->getYear();
+            $branch = $student->getBranch()->getBranchName();
+            $studentsByAcademicYearAndBranch[$academicYear][$branch][] = $student;
+        }
+        return $studentsByAcademicYearAndBranch;
+    }
+    public function getStudentsByAcademicYearAndBranch(): array
+    {
+        $students = $this->createQueryBuilder("s")
+            ->select('s', 'ay', 'b')
+            ->leftJoin("s.academicYear", "ay")
+            ->leftJoin("s.branch", "b")
+            ->getQuery()
+            ->getResult();
+        return $this->OrganizeStudentsByAcademicYearAndBranch($students);
+
+    }
+    public function getStudentsWithoutGroup(): array
+    {
+        $students = $this->createQueryBuilder("s")
+            ->select('s', 'ay', 'b')
+            ->leftJoin("s.academicYear", "ay")
+            ->leftJoin("s.branch", "b")
+            ->leftJoin("s.group_", "g")
+            ->andWhere("g IS NULL")
+            ->getQuery()
+            ->getResult();
+        return $this->OrganizeStudentsByAcademicYearAndBranch($students);
+    }
+    public function countStudentsByGender(): array
+    {
+        return $this->createQueryBuilder("s")
+            ->select("s.gender, COUNT(s.gender) as gender_count")
+            ->groupBy("s.gender")
+            ->getQuery()
+            ->getResult();
+    }
     //    /**
     //     * @return Student[] Returns an array of Student objects
     //     */

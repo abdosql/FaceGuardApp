@@ -20,7 +20,16 @@ class TeacherRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Teacher::class);
     }
-
+    public function countStudentsByTeacher(Teacher $teacher): int
+    {
+        return $this->createQueryBuilder("t")
+            ->select('COUNT(s.id)')
+            ->leftJoin('t.students', 's')
+            ->andWhere('t = :teacher')
+            ->setParameter('teacher', $teacher)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 //    /**
 //     * @return Teacher[] Returns an array of Teacher objects
 //     */

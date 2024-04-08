@@ -47,7 +47,7 @@ final class GroupFactory extends ModelFactory
     protected function getDefaults(): array
     {
         return [
-            'group_name' => self::faker()->text(100),
+            'group_name' => self::faker()->unique()->randomLetter(),
         ];
     }
 
