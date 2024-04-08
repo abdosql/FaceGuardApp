@@ -29,6 +29,17 @@ class GroupRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function countStudentsPerGroup(Group $group): array
+    {
+        return $this->createQueryBuilder("g")
+            ->leftJoin("g.students", "s")
+            ->andWhere("g = :group")
+            ->setParameter("group", $group)
+            ->select("g", "COUNT(s) AS studentCount")
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
     //    /**
     //     * @return Group[] Returns an array of Group objects
     //     */

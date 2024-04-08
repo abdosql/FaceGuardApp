@@ -34,7 +34,6 @@ class AppFixtures extends Fixture
         $branch3 = BranchFactory::createOne([
             'branch_name' => "IT and management engineer "
         ]);
-        GroupFactory::createMany(5);
         SemestreFactory::createOne([
             'semester_name' => "First Semester"
         ]);
@@ -56,7 +55,7 @@ class AppFixtures extends Fixture
         $fifthYear = AcademicYearsFactory::createOne([
             'year' => AcademicYearEnum::FIFTH_YEAR
         ]);
-        StudentFactory::createMany(190,[
+        StudentFactory::createMany(143,[
             'academicYear' => $firstYear,
             'branch' => $branch1
         ]);

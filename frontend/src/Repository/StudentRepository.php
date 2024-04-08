@@ -20,7 +20,7 @@ class StudentRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Student::class);
     }
-    public function studentsWithoutGroup(): int
+    public function countStudentsWithoutGroup(): int
     {
         return $this->createQueryBuilder("s")
             ->select("COUNT(s)")
@@ -29,17 +29,9 @@ class StudentRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
-
-    public function getStudentsByAcademicYearAndBranch(): array
+    public function OrganizeStudentsByAcademicYearAndBranch(array $students): array
     {
         $studentsByAcademicYearAndBranch = [];
-
-        $students = $this->createQueryBuilder("s")
-            ->select('s', 'ay', 'b')
-            ->leftJoin("s.academicYear", "ay")
-            ->leftJoin("s.branch", "b")
-            ->getQuery()
-            ->getResult();
 
         // Organize students by academic year and branch
         foreach ($students as $student) {
@@ -47,11 +39,31 @@ class StudentRepository extends ServiceEntityRepository
             $branch = $student->getBranch()->getBranchName();
             $studentsByAcademicYearAndBranch[$academicYear][$branch][] = $student;
         }
-
         return $studentsByAcademicYearAndBranch;
+    }
+    public function getStudentsByAcademicYearAndBranch(): array
+    {
+        $students = $this->createQueryBuilder("s")
+            ->select('s', 'ay', 'b')
+            ->leftJoin("s.academicYear", "ay")
+            ->leftJoin("s.branch", "b")
+            ->getQuery()
+            ->getResult();
+        return $this->OrganizeStudentsByAcademicYearAndBranch($students);
 
     }
-
+    public function getStudentsWithoutGroup(): array
+    {
+        $students = $this->createQueryBuilder("s")
+            ->select('s', 'ay', 'b')
+            ->leftJoin("s.academicYear", "ay")
+            ->leftJoin("s.branch", "b")
+            ->leftJoin("s.group_", "g")
+            ->andWhere("g IS NULL")
+            ->getQuery()
+            ->getResult();
+        return $this->OrganizeStudentsByAcademicYearAndBranch($students);
+    }
     public function countStudentsByGender(): array
     {
         return $this->createQueryBuilder("s")

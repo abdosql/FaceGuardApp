@@ -13,7 +13,6 @@ class GroupService
     )
     {
     }
-
     public function getGroupsLikeName($name): array
     {
         return $this->entityManager->getRepository(Group::class)->getGroupByName($name);
@@ -28,10 +27,19 @@ class GroupService
     {
         return $this->entityManager->getRepository(Group::class)->count();
     }
-    public function createGroup(Group $group):void
+
+    public function saveGroup(Group $group): void
     {
         $this->entityManager->persist($group);
         $this->entityManager->flush();
+    }
+    public function createGroup($group_name): Group
+    {
+        $group = new Group();
+        $group->setGroupName($group_name);
+        $this->saveGroup($group);
+
+        return $group;
     }
     public function groupsExists(): ?bool
     {
@@ -65,6 +73,11 @@ class GroupService
         return $numberOfGroupsPerAcademicYearAndBranch;
     }
 
+    public function groupIsSaturated(int $maxNumberOfStudents, Group $group): bool
+    {
+        $studentsCountPerGroup = $this->entityManager->getRepository(Group::class)->countStudentsPerGroup($group);
+        return $studentsCountPerGroup["studentCount"] <= $maxNumberOfStudents;
+    }
     public function generateGroups(array $StudentsByAcademicYearAndBranch, int $numberOfStudentsPerGroup): void
     {
         $numberOfGroupsPerAcademicYearAndBranch = $this->calculateNumberOfGroupsNeededPerAcademicYearAndBranch($StudentsByAcademicYearAndBranch, $numberOfStudentsPerGroup);
@@ -75,10 +88,8 @@ class GroupService
             foreach ($branches as $branch => $numberOfGroups)
             {
                 for ($i = 0; $i < $numberOfGroups; $i++) {
-                    $groupName = $year." ".$branch." ".$uppercaseLetters[$i];
-                    $group = new Group();
-                    $group->setGroupName($groupName);
-                    $this->createGroup($group);
+                    $group_name = $year." ".$branch." ".$uppercaseLetters[$i];
+                    $this->createGroup($group_name);
                 }
             }
         }

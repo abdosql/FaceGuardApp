@@ -9,13 +9,15 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Validator\Constraints\Collection;
 
 class StudentService extends UserService
 {
     public function __construct(
         EntityManagerInterface $entityManager,
         SluggerInterface $slugger,
-        UserPasswordHasherInterface $passwordHasher
+        UserPasswordHasherInterface $passwordHasher,
+        private GroupService $groupService
     )
     {
         parent::__construct($entityManager, $slugger, $passwordHasher);
@@ -76,7 +78,7 @@ class StudentService extends UserService
     }
     public function studentsWithoutGroupExist(): array
     {
-        $students = $this->entityManager->getRepository(Student::class)->studentsWithoutGroup();
+        $students = $this->entityManager->getRepository(Student::class)->countStudentsWithoutGroup();
         if ($students > 0){
             if ($this->getStudentsCount() != $students){
                 return [
@@ -96,26 +98,56 @@ class StudentService extends UserService
 
         ];
     }
-
-    public function AssignStudentsToCovenantGroupRandomly(GroupService $groupService, int $studentsNumberPerGroup): void
+    public function AssignStudentsToCovenantGroupRandomly(int $studentsNumberPerGroup): void
     {
-        $studentsByAcademicYearAndBranch = $this->getStudentsByAcademicYearAndBranch();
-        $groupService->generateGroups($studentsByAcademicYearAndBranch, $studentsNumberPerGroup);
-
-        foreach ($studentsByAcademicYearAndBranch as $year => $branches)
+        if(!$this->groupService->groupsExists())
         {
-            foreach ($branches as $branch => $students)
+            $studentsByAcademicYearAndBranch = $this->getStudentsByAcademicYearAndBranch();
+            $this->groupService->generateGroups($studentsByAcademicYearAndBranch, $studentsNumberPerGroup);
+            foreach ($studentsByAcademicYearAndBranch as $year => $branches)
             {
-                $groups = $groupService->getGroupsLikeName($year . " " . $branch);
-                $groupsNumber = $groupService->calculateNumberOfGroups($students, $studentsNumberPerGroup);
-                $studentsChunked = array_chunk($students, $studentsNumberPerGroup);
+                foreach ($branches as $branch => $students)
+                {
+                    $groups = $this->groupService->getGroupsLikeName($year . " " . $branch);
+                    $groupsNumber = $this->groupService->calculateNumberOfGroups($students, $studentsNumberPerGroup);
+                    $studentsChunked = array_chunk($students, $studentsNumberPerGroup);
 
-                for ($i = 0; $i < $groupsNumber; $i++) {
-                    $studentsChunkCollection = new ArrayCollection($studentsChunked[$i]);
-                    $groups[$i]->addStudents($studentsChunkCollection);
+                    for ($i = 0; $i < $groupsNumber; $i++)
+                    {
+                        $studentsChunkCollection = new ArrayCollection($studentsChunked[$i]);
+                        $groups[$i]->addStudents($studentsChunkCollection);
+                    }
+                }
+                $this->entityManager->flush();
+            }
+        }else{
+            $this->syncNewStudentsToCovenantGroup($studentsNumberPerGroup);
+        }
+
+    }
+
+    public function syncNewStudentsToCovenantGroup(int $maxNumberOfStudents): void
+    {
+
+            $studentsWithoutGroup = $this->entityManager->getRepository(Student::class)->getStudentsWithoutGroup();
+            foreach ($studentsWithoutGroup as $year => $branches)
+            {
+                foreach ($branches as $branch => $students)
+                {
+                    $group_name = $year . " " . $branch;
+                    $groups = $this->groupService->getGroupsLikeName($group_name);
+                    $latestGroup = $groups[count($groups) - 1];
+                    $latestGroupName = explode(" ", $latestGroup->getGroupName());
+                    $groupLetter = $latestGroupName[count($latestGroupName) - 1];
+                    foreach ($students as $student){
+                        if ($this->groupService->groupIsSaturated($maxNumberOfStudents, $latestGroup)){
+                            $uppercaseLetters = range($groupLetter, 'Z');
+                            $latestGroup = $this->groupService->createGroup($group_name. " ".$uppercaseLetters[1]);
+                        }
+                        $latestGroup->addStudent($student);
+                        $this->entityManager->flush();
+                    }
                 }
             }
-            $this->entityManager->flush();
         }
-    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Group;
 use App\Entity\Student;
 use App\Form\StudentType;
 use App\Services\GroupService;
@@ -28,6 +29,7 @@ class StudentController extends AbstractController
     public function index(): Response
     {
         $this->denyAccessUnlessGranted("ROLE_ADMIN");
+        //dd($this->studentService->syncNewStudentsToCovenantGroup($this->groupService, 36));
         return $this->render('student/index.html.twig', [
             'students' => $this->studentService->getAllStudents(),
             'studentsWithoutGroupExists' => $this->studentService->studentsWithoutGroupExist(),
@@ -98,7 +100,7 @@ class StudentController extends AbstractController
     public function generateGroups(): Response
     {
         $this->denyAccessUnlessGranted("ROLE_ADMIN");
-        $this->studentService->AssignStudentsToCovenantGroupRandomly($this->groupService, 36);
+        $this->studentService->AssignStudentsToCovenantGroupRandomly(36);
         return $this->redirectToRoute("app_student_index");
     }
 }
