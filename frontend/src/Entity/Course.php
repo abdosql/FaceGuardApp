@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\CourseRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CourseRepository::class)]
@@ -24,6 +25,10 @@ class Course
 
     #[ORM\ManyToMany(targetEntity: Branch::class, mappedBy: 'courses')]
     private Collection $branches;
+
+    #[ORM\Column(type: Types::TIME_MUTABLE)]
+    private ?\DateTimeInterface $course_duration = null;
+
 
     public function __construct()
     {
@@ -85,4 +90,17 @@ class Course
 
         return $this;
     }
+
+    public function getCourseDuration(): ?\DateTimeInterface
+    {
+        return $this->course_duration;
+    }
+
+    public function setCourseDuration(\DateTimeInterface $course_duration): static
+    {
+        $this->course_duration = $course_duration;
+
+        return $this;
+    }
+
 }

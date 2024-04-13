@@ -27,7 +27,7 @@ use Zenstruck\Foundry\RepositoryProxy;
  * @method static Semester[]|Proxy[]                 randomRange(int $min, int $max, array $attributes = [])
  * @method static Semester[]|Proxy[]                 randomSet(int $number, array $attributes = [])
  */
-final class SemestreFactory extends ModelFactory
+final class SemesterFactory extends ModelFactory
 {
     /**
      * @see https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#factories-as-services

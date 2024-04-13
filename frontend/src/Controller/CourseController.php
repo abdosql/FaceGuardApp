@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Branch;
 use App\Entity\Course;
 use App\Form\CourseType;
 use App\Repository\CourseRepository;
+use App\Services\BranchService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,11 +16,15 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/course')]
 class CourseController extends AbstractController
 {
+    public function __construct(private BranchService $branchService)
+    {
+    }
+
     #[Route('/', name: 'app_course_index', methods: ['GET'])]
-    public function index(CourseRepository $courseRepository): Response
+    public function index(): Response
     {
         return $this->render('course/index.html.twig', [
-            'courses' => $courseRepository->findAll(),
+            'branches' => $this->branchService->getAllBranches(),
         ]);
     }
 
@@ -28,7 +34,6 @@ class CourseController extends AbstractController
         $course = new Course();
         $form = $this->createForm(CourseType::class, $course);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($course);
             $entityManager->flush();
@@ -38,7 +43,7 @@ class CourseController extends AbstractController
 
         return $this->render('course/new.html.twig', [
             'course' => $course,
-            'form' => $form,
+            'courseForm' => $form,
         ]);
     }
 

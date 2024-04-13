@@ -1,4 +1,38 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
-{{ form_end(form) }}
+{{ form_start(courseForm) }}
+<div class="row">
+    <div class="col-9">
+        <div class="mb-3">
+            {{ form_label(courseForm.course_name, 'Course Name', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(courseForm.course_name, {'attr': {'class': 'form-control', 'placeholder': 'Enter course name', 'id': 'courseNameinput'}}) }}
+            {{ form_errors(courseForm.course_name) }}
+        </div>
+    </div><!--end col-->
+    <div class="col-3">
+        <div class="mb-3">
+            {{ form_label(courseForm.course_duration, 'Course duration', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(courseForm.course_duration, {'attr': {'class': 'form-control', 'id': 'courseDurationinput'}}) }}
+            {{ form_errors(courseForm.course_duration) }}
+        </div>
+    </div><!--end col-->
+    <div class="col-8">
+        <div class="mb-3">
+            {{ form_label(courseForm.teacher, 'Teacher', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(courseForm.teacher, {'attr': {'class': 'form-control', 'id': 'teacherInput'}}) }}
+            {{ form_errors(courseForm.teacher) }}
+        </div>
+    </div><!--end col-->
+    <div class="col-4">
+        <div class="mb-3">
+            {{ form_label(courseForm.branches, 'Branches', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(courseForm.branches, {'attr': {'id': 'branchesInput'}}) }}
+            {{ form_errors(courseForm.branches) }}
+        </div>
+    </div><!--end col-->
+    <div class="col-lg-12">
+        <div class="text-end">
+            <button class="btn btn-primary">{{ button_label|default('Save') }}</button>
+        </div>
+    </div><!--end col-->
+</div><!--end row-->
+{{ form_end(courseForm) }}
+
