@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\ServiceInterfaces;
+namespace App\Services\serviceInterfaces;
 
 use App\Entity\User;
 
