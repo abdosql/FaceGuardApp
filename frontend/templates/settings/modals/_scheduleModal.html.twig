@@ -16,11 +16,11 @@
                                 <div class="row">
                                     <div class="col-6">
                                         <label for="eveningStart" class="form-label">Start</label>
-                                        <input type="time" class="form-control" id="eveningStart" name="eveningStart">
+                                        <input value="{{ scheduleSettings.eveningStart }}" type="time" class="form-control" id="eveningStart" name="eveningStart">
                                     </div>
                                     <div class="col-6">
                                         <label for="eveningEnd" class="form-label">End</label>
-                                        <input type="time" class="form-control" id="eveningEnd" name="eveningEnd">
+                                        <input value="{{ scheduleSettings.eveningEnd }}" type="time" class="form-control" id="eveningEnd" name="eveningEnd">
                                     </div>
                                 </div>
                             </div>
@@ -31,11 +31,11 @@
                                 <div class="row">
                                     <div class="col-6">
                                         <label for="morningStart" class="form-label">Start</label>
-                                        <input type="time" class="form-control" id="morningStart" name="morningStart">
+                                        <input value="{{ scheduleSettings.morningStart }}" type="time" class="form-control" id="morningStart" name="morningStart">
                                     </div>
                                     <div class="col-6">
                                         <label for="morningEnd" class="form-label">End</label>
-                                        <input type="time" class="form-control" id="morningEnd" name="morningEnd">
+                                        <input  value="{{ scheduleSettings.morningEnd }}" type="time" class="form-control" id="morningEnd" name="morningEnd">
                                     </div>
                                 </div>
                             </div>
@@ -43,13 +43,13 @@
                         <div class="col-xxl-2 col-md-6 mb-3">
                             <div>
                                 <label for="sessionDuration" class="form-label">Session duration</label>
-                                <input type="time" class="form-control" id="sessionDuration" name="sessionDuration">
+                                <input  value="{{ scheduleSettings.sessionDuration }}" type="time" class="form-control" id="sessionDuration" name="sessionDuration">
                             </div>
                         </div>
                         <div class="col-xxl-2 col-md-6 mb-3">
                             <div>
                                 <label for="pauseDuration" class="form-label">Pause duration <span class="text-muted">(30min)</span></label>
-                                <input type="time" class="form-control" id="pauseDuration" name="pauseDuration">
+                                <input value="{{ scheduleSettings.pauseDuration }}" type="time" class="form-control" id="pauseDuration" name="pauseDuration">
                             </div>
                         </div>
                         <div class="col-lg-4 mb-3">
@@ -57,15 +57,15 @@
                                 <label for="exampleInputtime" class="form-label">Weekend days</label>
                                 <select class="form-select mb-3" aria-label="Default select example" id="weekendDays" name="weekendDays">
                                     <option selected>Select an option</option>
-                                    <option value="Sunday">Sunday</option>
-                                    <option value="SaturdayAndSunday">Saturday & Sunday</option>
+                                    <option {{ scheduleSettings.weekendDays == "Sunday" ? "selected" : "" }} value="Sunday">Sunday</option>
+                                    <option {{ scheduleSettings.weekendDays == "SaturdayAndSunday" ? "selected" : "" }}  value="SaturdayAndSunday">Saturday & Sunday</option>
                                 </select>
                             </div>
                         </div>
                         <div class="col-lg-4 mb-3">
                             <div class="form-group">
                                 <label class="form-label mb-0">Select holidays</label>
-                                <input type="text" class="form-control" data-provider="flatpickr" data-date-format="d M, Y" data-multiple-date="true" id="holidays" name="holidays">
+                                <input value="{{ scheduleSettings.holidays }}" type="text" class="form-control" data-provider="flatpickr" data-date-format="d M, Y" data-multiple-date="true" id="holidays" name="holidays">
                                 <p class="text-muted">You can select multiple days</p>
                             </div>
                         </div>
