@@ -9,7 +9,7 @@ use App\Factory\BranchFactory;
 use App\Factory\CourseFactory;
 use App\Factory\GroupFactory;
 use App\Factory\LevelFactory;
-use App\Factory\SemestreFactory;
+use App\Factory\SemesterFactory;
 use App\Factory\StudentFactory;
 use App\Factory\TeacherFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -34,10 +34,10 @@ class AppFixtures extends Fixture
         $branch3 = BranchFactory::createOne([
             'branch_name' => "IT and management engineer "
         ]);
-        SemestreFactory::createOne([
+        SemesterFactory::createOne([
             'semester_name' => "First Semester"
         ]);
-        SemestreFactory::createOne([
+        SemesterFactory::createOne([
             'semester_name' => "Second Semester"
         ]);
         $firstYear = AcademicYearsFactory::createOne([

@@ -16,14 +16,19 @@ class CourseType extends AbstractType
     {
         $builder
             ->add('course_name')
+            ->add("course_duration")
             ->add('teacher', EntityType::class, [
                 'class' => Teacher::class,
-                'choice_label' => 'id',
+                'choice_label' => 'getDisplayName',
+                'by_reference' => false,
             ])
             ->add('branches', EntityType::class, [
                 'class' => Branch::class,
-                'choice_label' => 'id',
+                'choice_label' => 'branch_name',
                 'multiple' => true,
+                'expanded' => true,
+                'by_reference' => false,
+
             ])
         ;
     }

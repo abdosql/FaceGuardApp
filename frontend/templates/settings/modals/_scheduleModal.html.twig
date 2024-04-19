@@ -1,0 +1,85 @@
+
+<!--  Extra Large modal example -->
+<div class="modal fade bs-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myExtraLargeModalLabel">Time Schedule Settings</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ path("app_schedule_settings_index") }}" method="post">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-xxl-12 col-md-6 mb-3">
+                            <div class="form-group">
+                                <label for="exampleInputtime" class="form-label">Evening slot</label>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label for="eveningStart" class="form-label">Start</label>
+                                        <input value="{{ scheduleSettings.eveningStart }}" type="time" class="form-control" id="eveningStart" name="eveningStart">
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="eveningEnd" class="form-label">End</label>
+                                        <input value="{{ scheduleSettings.eveningEnd }}" type="time" class="form-control" id="eveningEnd" name="eveningEnd">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xxl-12 col-md-6 mb-3">
+                            <div class="form-group">
+                                <label for="exampleInputtime" class="form-label">Morning slot</label>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label for="morningStart" class="form-label">Start</label>
+                                        <input value="{{ scheduleSettings.morningStart }}" type="time" class="form-control" id="morningStart" name="morningStart">
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="morningEnd" class="form-label">End</label>
+                                        <input  value="{{ scheduleSettings.morningEnd }}" type="time" class="form-control" id="morningEnd" name="morningEnd">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xxl-2 col-md-6 mb-3">
+                            <div>
+                                <label for="sessionDuration" class="form-label">Session duration</label>
+                                <input  value="{{ scheduleSettings.sessionDuration }}" type="time" class="form-control" id="sessionDuration" name="sessionDuration">
+                            </div>
+                        </div>
+                        <div class="col-xxl-2 col-md-6 mb-3">
+                            <div>
+                                <label for="pauseDuration" class="form-label">Pause duration <span class="text-muted">(30min)</span></label>
+                                <input value="{{ scheduleSettings.pauseDuration }}" type="time" class="form-control" id="pauseDuration" name="pauseDuration">
+                            </div>
+                        </div>
+                        <div class="col-lg-4 mb-3">
+                            <div class="form-group">
+                                <label for="exampleInputtime" class="form-label">Weekend days</label>
+                                <select class="form-select mb-3" aria-label="Default select example" id="weekendDays" name="weekendDays">
+                                    <option selected>Select an option</option>
+                                    <option {{ scheduleSettings.weekendDays == "Sunday" ? "selected" : "" }} value="Sunday">Sunday</option>
+                                    <option {{ scheduleSettings.weekendDays == "SaturdayAndSunday" ? "selected" : "" }}  value="SaturdayAndSunday">Saturday & Sunday</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 mb-3">
+                            <div class="form-group">
+                                <label class="form-label mb-0">Select holidays</label>
+                                <input value="{{ scheduleSettings.holidays }}" type="text" class="form-control" data-provider="flatpickr" data-date-format="d M, Y" data-multiple-date="true" id="holidays" name="holidays">
+                                <p class="text-muted">You can select multiple days</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="javascript:void(0);" class="btn btn-link link-success fw-medium material-shadow-none" data-bs-dismiss="modal">
+                        <i class="ri-close-line me-1 align-middle"></i> Close
+                    </a>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

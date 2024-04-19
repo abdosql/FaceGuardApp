@@ -76,7 +76,7 @@ class GroupService
     public function groupIsSaturated(int $maxNumberOfStudents, Group $group): bool
     {
         $studentsCountPerGroup = $this->entityManager->getRepository(Group::class)->countStudentsPerGroup($group);
-        return $studentsCountPerGroup["studentCount"] <= $maxNumberOfStudents;
+        return $studentsCountPerGroup["studentCount"] >= $maxNumberOfStudents;
     }
     public function generateGroups(array $StudentsByAcademicYearAndBranch, int $numberOfStudentsPerGroup): void
     {

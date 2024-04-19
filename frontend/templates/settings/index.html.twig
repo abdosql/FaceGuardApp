@@ -1,0 +1,99 @@
+{{ include('partials/main.html.twig') }}
+
+<head>
+
+    {{ include('partials/title-meta.html.twig', {title: 'Settings'}) }}
+    <!-- One of the following themes -->
+    <link rel="stylesheet" href="{{ asset('assets/libs/@simonwep/pickr/themes/classic.min.css') }}" /> <!-- 'classic' theme -->
+    <link rel="stylesheet" href="{{ asset('assets/libs/@simonwep/pickr/themes/monolith.min.css') }}" /> <!-- 'monolith' theme -->
+    <link rel="stylesheet" href="{{ asset('assets/libs/@simonwep/pickr/themes/nano.min.css') }}" /> <!-- 'nano' theme -->
+    {{ include('partials/head-css.html.twig') }}
+
+    <!-- Flatpickr library -->
+    <script src="{{ asset('assets/libs/flatpickr/flatpickr.min.js') }}"></script>
+
+</head>
+
+<body>
+
+<!-- Begin page -->
+<div id="layout-wrapper">
+
+    {{ include('partials/menu.html.twig') }}
+
+    <!-- ============================================================== -->
+    <!-- Start right Content here -->
+    <!-- ============================================================== -->
+    <div class="main-content">
+
+        <div class="page-content">
+            <div class="container-fluid">
+
+                {{ include('partials/page-title.html.twig', {pagetitle: 'Pages', title: 'App Settings'}) }}
+                <div class="row">
+                    <div class="col-xl-3 col-md-6">
+                        <a href="#" class="card card-animate">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div>
+                                        <div class="avatar-sm flex-shrink-0">
+                                            <span class="avatar-title bg-info-subtle rounded-circle fs-4 material-shadow">
+                                                <i class="text-dark ri-settings-2-line"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex flex-column justify-content-around" style="width: 20rem">
+                                        <h5 class="mb-0 important">Genaral</h5>
+                                        <p class="fw-light text-muted mb-0">Session</p>
+                                    </div>
+                                </div>
+                            </div><!-- end card body -->
+                        </a> <!-- end card-->
+
+                    </div> <!-- end col-->
+                    <div class="col-xl-3 col-md-6">
+                        <a data-bs-toggle="modal" data-bs-target=".bs-example-modal-xl" href="" class="card card-animate">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div>
+                                        <div class="avatar-sm flex-shrink-0">
+                                            <span class="avatar-title bg-info-subtle rounded-circle fs-4 material-shadow">
+                                                <i class="text-dark  ri-timer-2-line"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex flex-column justify-content-around" style="width: 20rem">
+                                        <h5 class="mb-0 important">Time Schedule</h5>
+                                        <p class="fw-light text-muted mb-0">View and change time schedule constraints</p>
+                                    </div>
+                                </div>
+                            </div><!-- end card body -->
+                        </a> <!-- end card-->
+                    </div> <!-- end col-->
+
+                </div>
+
+                {{ include("settings/modals/_scheduleModal.html.twig") }}
+            </div>
+            <!-- container-fluid -->
+        </div>
+        <!-- End Page-content -->
+
+        {{ include('partials/footer.html.twig') }}
+    </div>
+    <!-- end main content-->
+
+</div>
+<!-- END layout-wrapper -->
+
+
+
+{{ include('partials/customizer.html.twig') }}
+
+{{ include('partials/vendor-scripts.html.twig') }}
+
+<!-- App js -->
+<script src="{{ asset("assets/js/app.js") }}"></script>
+</body>
+
+</html>
