@@ -1,0 +1,60 @@
+@startuml
+interface ClassroomServiceInterface {
+    +createClassroom(): void
+    +createMany(number: int): void
+    +removeClassroom(classroom: Classroom): void
+    +getClassroom(classroom: Classroom): Classroom
+    +selectRandomClassroom(classroom: Classroom): Classroom
+}
+
+interface ScheduleServiceInterface {
+    +createSchedule(): void
+    +getAllSchedules(): array
+}
+
+interface ScheduleGeneratorInterface {
+    +generate(): void
+}
+
+interface SessionServiceInterface {
+    +createSession(start, finish, classroom: Classroom, course: Course): void
+    +checkSessionValidity(session): boolean
+}
+
+interface CourseServiceInterface {
+    +generateNumberOfSessionsNeeded(): int
+}
+
+interface TimeGeneratorInterface {
+    +generateSessionDuration(): string
+}
+
+class ClassroomService {
+    <<implements>> ClassroomServiceInterface
+}
+
+class ScheduleFactory {
+    <<implements>> ScheduleServiceInterface
+}
+
+class SimpleScheduleGenerator {
+    <<implements>> ScheduleGeneratorInterface
+}
+
+class SessionService {
+    <<implements>> SessionServiceInterface
+}
+
+class CourseService {
+    <<implements>> CourseServiceInterface
+}
+
+class TimeGenerator {
+    <<implements>> TimeGeneratorInterface
+}
+
+ClassroomService ..> Classroom : uses
+SessionService ..> Classroom : uses
+SessionService ..> Course : uses
+CourseService ..> Course : uses
+@enduml

@@ -5,6 +5,7 @@ namespace App\Services\settingsServices;
 
 use App\Services\serviceInterfaces\SettingsServiceInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Validator\Constraints\Time;
 
 class ScheduleSettingsService extends SettingsService
 {
@@ -26,5 +27,37 @@ class ScheduleSettingsService extends SettingsService
     public function getAllSettings(): array
     {
         return $this->settings;
+    }
+    public function getMorningSlot(): array
+    {
+        return [
+            "start" => $this->getSettings("morningStart"),
+            "end" => $this->getSettings("morningEnd"),
+        ];
+    }
+    public function getEveningSlot(): array
+    {
+        return [
+            "start" => $this->getSettings("eveningStart"),
+            "end" => $this->getSettings("eveningEnd"),
+        ];
+    }
+    public function getSessionDuration (): string
+    {
+        return $this->getSettings("sessionDuration");
+    }
+    public function pauseDuration(): string
+    {
+        return $this->getSettings("pauseDuration");
+    }
+
+    public function weekendDays(): string
+    {
+        return $this->getSettings("weekendDays");
+    }
+
+    public function getHolidays(): array
+    {
+        $holidays = explode(",", $this->getSettings("holidays"));
     }
 }

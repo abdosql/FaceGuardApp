@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\AcademicYear;
 use App\Entity\Branch;
 use App\Entity\FacialRecognitionLog;
 use App\Entity\Group;
@@ -41,6 +42,10 @@ class StudentType extends AbstractType
             ->add('branch', EntityType::class, [
                 'class' => Branch::class,
                 'choice_label' => 'branch_name',
+            ])
+            ->add('academicYear', EntityType::class, [
+                'class' => AcademicYear::class,
+                'choice_label' => 'year',
             ])
             ->add('imageFile', VichImageType::class, [
                 'label' => 'Image',
