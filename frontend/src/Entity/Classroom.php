@@ -21,6 +21,9 @@ class Classroom
     #[ORM\OneToOne(mappedBy: 'classroom', cascade: ['persist', 'remove'])]
     private ?Session $session = null;
 
+    #[ORM\Column]
+    private ?bool $available = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -51,6 +54,18 @@ class Classroom
         }
 
         $this->session = $session;
+
+        return $this;
+    }
+
+    public function isAvailable(): ?bool
+    {
+        return $this->available;
+    }
+
+    public function setAvailable(bool $available): static
+    {
+        $this->available = $available;
 
         return $this;
     }

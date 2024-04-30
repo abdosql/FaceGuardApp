@@ -2,11 +2,6 @@
 
 namespace App\Services\settingsServices;
 
-
-use App\Services\serviceInterfaces\SettingsServiceInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Validator\Constraints\Time;
-
 class ScheduleSettingsService extends SettingsService
 {
     protected function getSettingsFilePath(): string
