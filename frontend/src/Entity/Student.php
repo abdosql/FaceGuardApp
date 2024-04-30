@@ -30,6 +30,9 @@ class Student extends User
     #[ORM\ManyToOne(inversedBy: 'students')]
     private ?AcademicYear $academicYear = null;
 
+    #[ORM\OneToOne(mappedBy: 'student', cascade: ['persist', 'remove'])]
+    private ?Attendance $attendance = null;
+
     public function __construct()
     {
         $this->teachers = new ArrayCollection();
@@ -118,6 +121,23 @@ class Student extends User
     public function setAcademicYear(?AcademicYear $academicYear): static
     {
         $this->academicYear = $academicYear;
+
+        return $this;
+    }
+
+    public function getAttendance(): ?Attendance
+    {
+        return $this->attendance;
+    }
+
+    public function setAttendance(Attendance $attendance): static
+    {
+        // set the owning side of the relation if necessary
+        if ($attendance->getStudent() !== $this) {
+            $attendance->setStudent($this);
+        }
+
+        $this->attendance = $attendance;
 
         return $this;
     }

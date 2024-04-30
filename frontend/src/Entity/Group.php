@@ -22,6 +22,9 @@ class Group
     #[ORM\OneToMany(targetEntity: Student::class, mappedBy: 'group_')]
     private Collection $students;
 
+    #[ORM\OneToOne(mappedBy: 'group_', cascade: ['persist', 'remove'])]
+    private ?TimeSchedule $timeSchedule = null;
+
     public function __construct()
     {
         $this->students = new ArrayCollection();
@@ -78,4 +81,22 @@ class Group
 
         return $this;
     }
+
+    public function getTimeSchedule(): ?TimeSchedule
+    {
+        return $this->timeSchedule;
+    }
+
+    public function setTimeSchedule(TimeSchedule $timeSchedule): static
+    {
+        // set the owning side of the relation if necessary
+        if ($timeSchedule->getGroup() !== $this) {
+            $timeSchedule->setGroup($this);
+        }
+
+        $this->timeSchedule = $timeSchedule;
+
+        return $this;
+    }
+
 }

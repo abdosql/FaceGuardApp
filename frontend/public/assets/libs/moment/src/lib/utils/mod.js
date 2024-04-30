@@ -1,1 +1,3 @@
-export default function mod(t,e){return(t%e+e)%e}
+export default function mod(n, x) {
+    return ((n % x) + x) % x;
+}

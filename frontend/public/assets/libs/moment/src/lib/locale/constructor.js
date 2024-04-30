@@ -1,1 +1,5 @@
-export function Locale(t){null!=t&&this.set(t)}
+export function Locale(config) {
+    if (config != null) {
+        this.set(config);
+    }
+}

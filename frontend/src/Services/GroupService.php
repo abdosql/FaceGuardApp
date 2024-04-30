@@ -13,6 +13,11 @@ class GroupService
     )
     {
     }
+
+    public function getAllGroups(): array
+    {
+        return $this->entityManager->getRepository(Group::class)->findAll();
+    }
     public function getGroupsLikeName($name): array
     {
         return $this->entityManager->getRepository(Group::class)->getGroupByName($name);
@@ -23,6 +28,35 @@ class GroupService
         $this->entityManager->getRepository(Group::class)->addStudents($students);
         return $this;
     }
+
+    public function explodedGroupName(): array
+    {
+        $explodedGroups = [];
+        foreach ($this->getAllGroups() as $group) {
+            $groupName = $group->getGroupName();
+            $explodedGroup = explode(" Year", $groupName, 2);
+            $year = trim($explodedGroup[0]);
+            $text = trim($explodedGroup[1] ?? '');
+            $yearKey = strtolower($year) . "-year";
+            if (!isset($explodedGroups[$yearKey])) {
+                $explodedGroups[$yearKey] = [];
+            }
+            $explodedGroups[$yearKey][] = $text;
+        }
+
+        // Transform the associative array to the desired format
+        $result = [];
+        foreach ($explodedGroups as $year => $groups) {
+            $result[] = [
+                "year" => $year,
+                "groups" => $groups
+            ];
+        }
+
+        return $result;
+    }
+
+
     public function countGroups(): int
     {
         return $this->entityManager->getRepository(Group::class)->count();

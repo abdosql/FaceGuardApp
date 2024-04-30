@@ -1,1 +1,3 @@
-export default function isArray(r){return r instanceof Array||"[object Array]"===Object.prototype.toString.call(r)}
+export default function isArray(input) {
+    return input instanceof Array || Object.prototype.toString.call(input) === '[object Array]';
+}

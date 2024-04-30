@@ -29,10 +29,16 @@ class Course
     #[ORM\Column(type: Types::TIME_MUTABLE)]
     private ?\DateTimeInterface $course_duration = null;
 
+    #[ORM\OneToOne(mappedBy: 'course', cascade: ['persist', 'remove'])]
+    private ?Session $session = null;
+
+    #[ORM\ManyToMany(targetEntity: Semester::class, inversedBy: 'courses')]
+    private Collection $semesters;
 
     public function __construct()
     {
         $this->branches = new ArrayCollection();
+        $this->semesters = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -102,5 +108,47 @@ class Course
 
         return $this;
     }
+
+    public function getSession(): ?Session
+    {
+        return $this->session;
+    }
+
+    public function setSession(Session $session): static
+    {
+        // set the owning side of the relation if necessary
+        if ($session->getCourse() !== $this) {
+            $session->setCourse($this);
+        }
+
+        $this->session = $session;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Semester>
+     */
+    public function getSemesters(): Collection
+    {
+        return $this->semesters;
+    }
+
+    public function addSemester(Semester $semester): static
+    {
+        if (!$this->semesters->contains($semester)) {
+            $this->semesters->add($semester);
+        }
+
+        return $this;
+    }
+
+    public function removeSemester(Semester $semester): static
+    {
+        $this->semesters->removeElement($semester);
+
+        return $this;
+    }
+
 
 }

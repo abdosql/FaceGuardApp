@@ -1,1 +1,2 @@
-import{l as s,c as i}from"./utils.min.mjs";function e(e,t,o){const r=`swiper-slide-shadow${o?`-${o}`:""}${e?` swiper-slide-shadow-${e}`:""}`,l=s(t);let p=l.querySelector(`.${r.split(" ").join(".")}`);return p||(p=i("div",r.split(" ")),l.append(p)),p}export{e as c};
+import{l as getSlideTransformEl,c as createElement}from"./utils.min.mjs";function createShadow(e,t,r){const s=`swiper-slide-shadow${r?`-${r}`:""}${e?` swiper-slide-shadow-${e}`:""}`,a=getSlideTransformEl(t);let i=a.querySelector(`.${s.split(" ").join(".")}`);return i||(i=createElement("div",s.split(" ")),a.append(i)),i}export{createShadow as c};
+//# sourceMappingURL=create-shadow.min.mjs.map

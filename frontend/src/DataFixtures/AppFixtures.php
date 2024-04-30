@@ -14,9 +14,14 @@ use App\Factory\StudentFactory;
 use App\Factory\TeacherFactory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class AppFixtures extends Fixture
 {
+    public function __construct(private SluggerInterface $slugger)
+    {
+    }
+
     public function load(ObjectManager $manager): void
     {
         AdminFactory::createOne([
@@ -41,19 +46,24 @@ class AppFixtures extends Fixture
             'semester_name' => "Second Semester"
         ]);
         $firstYear = AcademicYearsFactory::createOne([
-            'year' => AcademicYearEnum::FIRST_YEAR
+            'year' => AcademicYearEnum::FIRST_YEAR,
+            'slug' => $this->slugger->slug(AcademicYearEnum::FIRST_YEAR)
         ]);
         $secondYear = AcademicYearsFactory::createOne([
-            'year' => AcademicYearEnum::SECOND_YEAR
+            'year' => AcademicYearEnum::SECOND_YEAR,
+            'slug' => $this->slugger->slug(AcademicYearEnum::SECOND_YEAR)
         ]);
         $thirdYear = AcademicYearsFactory::createOne([
-            'year' => AcademicYearEnum::THIRD_YEAR
+            'year' => AcademicYearEnum::THIRD_YEAR,
+            'slug' => $this->slugger->slug(AcademicYearEnum::THIRD_YEAR)
         ]);
         $fourthYear = AcademicYearsFactory::createOne([
-            'year' => AcademicYearEnum::FOURTH_YEAR
+            'year' => AcademicYearEnum::FOURTH_YEAR,
+            'slug' => $this->slugger->slug(AcademicYearEnum::FOURTH_YEAR)
         ]);
         $fifthYear = AcademicYearsFactory::createOne([
-            'year' => AcademicYearEnum::FIFTH_YEAR
+            'year' => AcademicYearEnum::FIFTH_YEAR,
+            'slug' => $this->slugger->slug(AcademicYearEnum::FIFTH_YEAR)
         ]);
         StudentFactory::createMany(143,[
             'academicYear' => $firstYear,

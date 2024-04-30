@@ -6,6 +6,7 @@ use App\Repository\AcademicYearRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation\Slug;
 
 #[ORM\Entity(repositoryClass: AcademicYearRepository::class)]
 class AcademicYear
@@ -21,9 +22,17 @@ class AcademicYear
     #[ORM\OneToMany(targetEntity: Student::class, mappedBy: 'academicYear')]
     private Collection $students;
 
+    #[ORM\Column(length: 255, unique: true)]
+    #[Slug(fields: ["year"])]
+    private ?string $slug = null;
+
+    #[ORM\ManyToMany(targetEntity: Branch::class, inversedBy: 'academicYears')]
+    private Collection $branches;
+
     public function __construct()
     {
         $this->students = new ArrayCollection();
+        $this->branches = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -69,6 +78,42 @@ class AcademicYear
                 $student->setAcademicYear(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): static
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Branch>
+     */
+    public function getBranches(): Collection
+    {
+        return $this->branches;
+    }
+
+    public function addBranch(Branch $branch): static
+    {
+        if (!$this->branches->contains($branch)) {
+            $this->branches->add($branch);
+        }
+
+        return $this;
+    }
+
+    public function removeBranch(Branch $branch): static
+    {
+        $this->branches->removeElement($branch);
 
         return $this;
     }

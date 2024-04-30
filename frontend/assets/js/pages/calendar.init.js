@@ -273,11 +273,8 @@ document.addEventListener("DOMContentLoaded", function () {
         navLinks: true,
         initialView: getInitialView(),
         themeSystem: 'bootstrap',
-        headerToolbar: {
-            left: 'prev,next today',
-            center: 'title',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
-        },
+        firstDay: 1,
+        headerToolbar: false,
         windowResize: function (view) {
             var newView = getInitialView();
             calendar.changeView(newView);
@@ -441,10 +438,31 @@ document.addEventListener("DOMContentLoaded", function () {
                 defaultEvents[indexOfSelectedEvent].location = (info.event._def.extendedProps.location) ? info.event._def.extendedProps.location : '';
             }
             upcomingEvent(defaultEvents);
+
         }
     });
 
     calendar.render();
+    function deleteEvent(eventId) {
+        // Make AJAX call to delete event from the database
+        fetch("/schedules/delete-event", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ id: eventId }) // Pass the event ID in the request body
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                console.log('Event deleted successfully');
+                // Optionally, you might want to refresh the calendar or update the UI here
+            })
+            .catch(error => {
+                console.error('Error deleting event:', error);
+            });
+    }
 
     upcomingEvent(defaultEvents);
     /*Add new event*/
@@ -533,6 +551,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     defaultEvents.splice(i, 1);
                     i--;
                 }
+                deleteEvent(selectedEvent.id);
             }
             upcomingEvent(defaultEvents);
             selectedEvent.remove();

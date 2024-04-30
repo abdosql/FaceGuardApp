@@ -48,6 +48,7 @@ final class AcademicYearsFactory extends ModelFactory
     {
         return [
             'year' => self::faker()->text(100),
+            'slug' => self::faker()->slug(),
         ];
     }
 

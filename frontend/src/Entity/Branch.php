@@ -27,11 +27,15 @@ class Branch
     #[ORM\ManyToMany(targetEntity: Course::class, inversedBy: 'branches')]
     private Collection $courses;
 
+    #[ORM\ManyToMany(targetEntity: AcademicYear::class, mappedBy: 'branches')]
+    private Collection $academicYears;
+
     public function __construct()
     {
         $this->teachers = new ArrayCollection();
         $this->students = new ArrayCollection();
         $this->courses = new ArrayCollection();
+        $this->academicYears = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -87,7 +91,7 @@ class Branch
     {
         if (!$this->students->contains($student)) {
             $this->students->add($student);
-            $student->setBranche($this);
+            $student->setBranch($this);
         }
 
         return $this;
@@ -97,8 +101,8 @@ class Branch
     {
         if ($this->students->removeElement($student)) {
             // set the owning side to null (unless already changed)
-            if ($student->getBranche() === $this) {
-                $student->setBranche(null);
+            if ($student->getBranch() === $this) {
+                $student->setBranch(null);
             }
         }
 
@@ -125,6 +129,33 @@ class Branch
     public function removeCourse(Course $course): static
     {
         $this->courses->removeElement($course);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, AcademicYear>
+     */
+    public function getAcademicYears(): Collection
+    {
+        return $this->academicYears;
+    }
+
+    public function addAcademicYear(AcademicYear $academicYear): static
+    {
+        if (!$this->academicYears->contains($academicYear)) {
+            $this->academicYears->add($academicYear);
+            $academicYear->addBranch($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAcademicYear(AcademicYear $academicYear): static
+    {
+        if ($this->academicYears->removeElement($academicYear)) {
+            $academicYear->removeBranch($this);
+        }
 
         return $this;
     }

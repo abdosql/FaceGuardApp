@@ -1,1 +1,6 @@
-import{createDuration}from"./create";export function clone(){return createDuration(this)}
+import { createDuration } from './create';
+
+export function clone () {
+    return createDuration(this);
+}
+
