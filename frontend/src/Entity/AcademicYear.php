@@ -29,10 +29,14 @@ class AcademicYear
     #[ORM\ManyToMany(targetEntity: Branch::class, inversedBy: 'academicYears')]
     private Collection $branches;
 
+    #[ORM\ManyToMany(targetEntity: Group::class, mappedBy: 'academicYear')]
+    private Collection $groups;
+
     public function __construct()
     {
         $this->students = new ArrayCollection();
         $this->branches = new ArrayCollection();
+        $this->groups = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -114,6 +118,33 @@ class AcademicYear
     public function removeBranch(Branch $branch): static
     {
         $this->branches->removeElement($branch);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Group>
+     */
+    public function getGroups(): Collection
+    {
+        return $this->groups;
+    }
+
+    public function addGroup(Group $group): static
+    {
+        if (!$this->groups->contains($group)) {
+            $this->groups->add($group);
+            $group->addAcademicYear($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGroup(Group $group): static
+    {
+        if ($this->groups->removeElement($group)) {
+            $group->removeAcademicYear($this);
+        }
 
         return $this;
     }
