@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Entity\AcademicYear;
+use App\Entity\Branch;
 use App\Entity\Group;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Constraints\Collection;
@@ -10,6 +12,8 @@ class GroupService
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
+        private AcademicYearService $academicYearService,
+        private BranchService $branchService
     )
     {
     }
@@ -22,7 +26,13 @@ class GroupService
     {
         return $this->entityManager->getRepository(Group::class)->getGroupByName($name);
     }
+    public function getGroupsByBranchAndYear(string $yearName, string $branchName): array
+    {
+        $branchId = $this->entityManager->getRepository(Branch::class)->findOneBy(['branch_name' => $branchName])->getId();
+        $yearId = $this->entityManager->getRepository(AcademicYear::class)->findOneBy(['year' => $yearName])->getId();
 
+        return $this->entityManager->getRepository(Group::class)->getGroupsByBranchAndYear($yearId, $branchId);
+    }
     public function addStudents(Collection $students): static
     {
         $this->entityManager->getRepository(Group::class)->addStudents($students);
@@ -67,13 +77,14 @@ class GroupService
         $this->entityManager->persist($group);
         $this->entityManager->flush();
     }
-    public function createGroup($group_name): Group
+
+    public function createGroup(string $groupName, AcademicYear $academicYear, Branch $branch): ?Group
     {
         $group = new Group();
-        $group->setGroupName($group_name);
+        $group->setGroupName($groupName);
+        $group->addAcademicYear($academicYear);
+        $group->addBranch($branch);
         $this->saveGroup($group);
-
-        return $group;
     }
     public function groupsExists(): ?bool
     {
@@ -122,8 +133,9 @@ class GroupService
             foreach ($branches as $branch => $numberOfGroups)
             {
                 for ($i = 0; $i < $numberOfGroups; $i++) {
-                    $group_name = $year." ".$branch." ".$uppercaseLetters[$i];
-                    $this->createGroup($group_name);
+                    $academicYear = $this->academicYearService->getAcademicYearByYear($year);
+                    $branchEntity = $this->branchService->getBranchByName($branch);
+                    $this->createGroup($uppercaseLetters[$i], $academicYear, $branchEntity);
                 }
             }
         }

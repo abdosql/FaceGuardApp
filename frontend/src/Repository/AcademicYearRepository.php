@@ -21,6 +21,14 @@ class AcademicYearRepository extends ServiceEntityRepository
         parent::__construct($registry, AcademicYear::class);
     }
 
+    public function getAcademicYearWithBranches(): array
+    {
+        return $this->createQueryBuilder('a')
+            ->leftJoin('a.branches', 'b')
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return AcademicYears[] Returns an array of AcademicYears objects
     //     */
