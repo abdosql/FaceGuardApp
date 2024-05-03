@@ -30,7 +30,7 @@ class StudentController extends AbstractController
     {
         $this->denyAccessUnlessGranted("ROLE_ADMIN");
         //dd($this->studentService->syncNewStudentsToCovenantGroup($this->groupService, 36));
-        dd($this->studentService->getStudentsByAcademicYearAndBranch());
+//        dd($this->groupService->getGroupsByBranchAndYear("First Year", "computer engineering"));
 
         return $this->render('student/index.html.twig', [
             'students' => $this->studentService->getAllStudents(),

@@ -29,7 +29,19 @@ class GroupRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-
+    public function getGroupsByBranchAndYear(int $yearId, int $branchId): array
+    {
+        // Use the IDs to filter groups
+        return $this->createQueryBuilder("g")
+            ->leftJoin("g.branches", "branch")
+            ->leftJoin("g.academicYear", "year")
+            ->andWhere("branch.id = :branchId")
+            ->andWhere("year.id = :yearId")
+            ->setParameter("branchId", $branchId)
+            ->setParameter("yearId", $yearId)
+            ->getQuery()
+            ->getResult();
+    }
     public function countStudentsPerGroup(Group $group): array
     {
         return $this->createQueryBuilder("g")

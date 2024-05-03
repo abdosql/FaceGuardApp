@@ -4,6 +4,8 @@ namespace App\Services\userServices;
 
 use App\Entity\Group;
 use App\Entity\Student;
+use App\Services\AcademicYearService;
+use App\Services\BranchService;
 use App\Services\GroupService;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,7 +19,10 @@ class StudentService extends UserService
         EntityManagerInterface $entityManager,
         SluggerInterface $slugger,
         UserPasswordHasherInterface $passwordHasher,
-        private GroupService $groupService
+        private GroupService $groupService,
+        private AcademicYearService $academicYearService,
+        private BranchService $branchService
+
     )
     {
         parent::__construct($entityManager, $slugger, $passwordHasher);
@@ -108,7 +113,7 @@ class StudentService extends UserService
             {
                 foreach ($branches as $branch => $students)
                 {
-                    $groups = $this->groupService->getGroupsLikeName($year . " " . $branch);
+                    $groups = $this->groupService->getGroupsByBranchAndYear($year, $branch);
                     $groupsNumber = $this->groupService->calculateNumberOfGroups($students, $studentsNumberPerGroup);
                     $studentsChunked = array_chunk($students, $studentsNumberPerGroup);
 
@@ -134,15 +139,15 @@ class StudentService extends UserService
             {
                 foreach ($branches as $branch => $students)
                 {
-                    $group_name = $year . " " . $branch;
-                    $groups = $this->groupService->getGroupsLikeName($group_name);
+                    $groups = $this->groupService->getGroupsByBranchAndYear($year, $branch);
                     $latestGroup = $groups[count($groups) - 1];
-                    $latestGroupName = explode(" ", $latestGroup->getGroupName());
-                    $groupLetter = $latestGroupName[count($latestGroupName) - 1];
+                    $groupLetter = $latestGroup->getGroupName();
                     foreach ($students as $student){
                         if ($this->groupService->groupIsSaturated($maxNumberOfStudents, $latestGroup)){
                             $uppercaseLetters = range($groupLetter, 'Z');
-                            $latestGroup = $this->groupService->createGroup($group_name. " ".$uppercaseLetters[1]);
+                            $academicYear = $this->academicYearService->getAcademicYearByYear($year);
+                            $branchEntity = $this->branchService->getBranchByName($branch);
+                            $latestGroup = $this->groupService->createGroup($uppercaseLetters[1], $academicYear, $branchEntity);
                         }
                         $latestGroup->addStudent($student);
                         $this->entityManager->flush();

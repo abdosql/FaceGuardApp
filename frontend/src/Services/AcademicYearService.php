@@ -14,4 +14,12 @@ class AcademicYearService
     {
         return $this->entityManager->getRepository(AcademicYear::class)->findAll();
     }
+    public function getAcademicYearWithBranches():array
+    {
+        return $this->entityManager->getRepository(AcademicYear::class)->getAcademicYearWithBranches();
+    }
+    public function getAcademicYearByYear(string $year): AcademicYear
+    {
+        return $this->entityManager->getRepository(AcademicYear::class)->findOneBy(["year" => $year]);
+    }
 }

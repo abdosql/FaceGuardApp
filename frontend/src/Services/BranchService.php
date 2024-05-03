@@ -19,4 +19,10 @@ class BranchService
     {
         return $this->entityManager->getRepository(Branch::class)->find($branch);
     }
+
+    public function getBranchByName(string $branch)
+    {
+        return $this->entityManager->getRepository(Branch::class)->findOneBy(['branch_name' => $branch]);
+    }
+
 }
