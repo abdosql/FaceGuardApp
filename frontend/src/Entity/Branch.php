@@ -30,12 +30,16 @@ class Branch
     #[ORM\ManyToMany(targetEntity: AcademicYear::class, mappedBy: 'branches')]
     private Collection $academicYears;
 
+    #[ORM\ManyToMany(targetEntity: Group::class, mappedBy: 'branches')]
+    private Collection $groups;
+
     public function __construct()
     {
         $this->teachers = new ArrayCollection();
         $this->students = new ArrayCollection();
         $this->courses = new ArrayCollection();
         $this->academicYears = new ArrayCollection();
+        $this->groups = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -155,6 +159,33 @@ class Branch
     {
         if ($this->academicYears->removeElement($academicYear)) {
             $academicYear->removeBranch($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Group>
+     */
+    public function getGroups(): Collection
+    {
+        return $this->groups;
+    }
+
+    public function addGroup(Group $group): static
+    {
+        if (!$this->groups->contains($group)) {
+            $this->groups->add($group);
+            $group->addBranch($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGroup(Group $group): static
+    {
+        if ($this->groups->removeElement($group)) {
+            $group->removeBranch($this);
         }
 
         return $this;

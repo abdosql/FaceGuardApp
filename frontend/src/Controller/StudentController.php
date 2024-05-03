@@ -30,6 +30,8 @@ class StudentController extends AbstractController
     {
         $this->denyAccessUnlessGranted("ROLE_ADMIN");
         //dd($this->studentService->syncNewStudentsToCovenantGroup($this->groupService, 36));
+        dd($this->studentService->getStudentsByAcademicYearAndBranch());
+
         return $this->render('student/index.html.twig', [
             'students' => $this->studentService->getAllStudents(),
             'studentsWithoutGroupExists' => $this->studentService->studentsWithoutGroupExist(),
@@ -103,4 +105,5 @@ class StudentController extends AbstractController
         $this->studentService->AssignStudentsToCovenantGroupRandomly(36);
         return $this->redirectToRoute("app_student_index");
     }
+
 }

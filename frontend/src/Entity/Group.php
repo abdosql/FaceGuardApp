@@ -25,9 +25,17 @@ class Group
     #[ORM\OneToOne(mappedBy: 'group_', cascade: ['persist', 'remove'])]
     private ?TimeSchedule $timeSchedule = null;
 
+    #[ORM\ManyToMany(targetEntity: AcademicYear::class, inversedBy: 'groups')]
+    private Collection $academicYear;
+
+    #[ORM\ManyToMany(targetEntity: Branch::class, inversedBy: 'groups')]
+    private Collection $branches;
+
     public function __construct()
     {
         $this->students = new ArrayCollection();
+        $this->academicYear = new ArrayCollection();
+        $this->branches = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -95,6 +103,54 @@ class Group
         }
 
         $this->timeSchedule = $timeSchedule;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, AcademicYear>
+     */
+    public function getAcademicYear(): Collection
+    {
+        return $this->academicYear;
+    }
+
+    public function addAcademicYear(AcademicYear $academicYear): static
+    {
+        if (!$this->academicYear->contains($academicYear)) {
+            $this->academicYear->add($academicYear);
+        }
+
+        return $this;
+    }
+
+    public function removeAcademicYear(AcademicYear $academicYear): static
+    {
+        $this->academicYear->removeElement($academicYear);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Branch>
+     */
+    public function getBranches(): Collection
+    {
+        return $this->branches;
+    }
+
+    public function addBranch(Branch $branch): static
+    {
+        if (!$this->branches->contains($branch)) {
+            $this->branches->add($branch);
+        }
+
+        return $this;
+    }
+
+    public function removeBranch(Branch $branch): static
+    {
+        $this->branches->removeElement($branch);
 
         return $this;
     }
