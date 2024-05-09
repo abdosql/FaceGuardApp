@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Branch;
 use App\Entity\Course;
+use App\Entity\Semester;
 use App\Entity\Teacher;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -29,6 +30,13 @@ class CourseType extends AbstractType
                 'expanded' => true,
                 'by_reference' => false,
 
+            ])
+            ->add('semesters', EntityType::class, [
+                'class' => Semester::class,
+                'choice_label' => 'semester_name',
+                'multiple' => true,
+                'expanded' => true,
+                'by_reference' => false,
             ])
         ;
     }

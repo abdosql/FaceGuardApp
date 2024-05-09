@@ -21,9 +21,16 @@ class Semester
     #[ORM\ManyToMany(targetEntity: Course::class, mappedBy: 'semesters')]
     private Collection $courses;
 
+    /**
+     * @var Collection<int, TimeSchedule>
+     */
+    #[ORM\OneToMany(targetEntity: TimeSchedule::class, mappedBy: 'semester', orphanRemoval: true)]
+    private Collection $timeSchedules;
+
     public function __construct()
     {
         $this->courses = new ArrayCollection();
+        $this->timeSchedules = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -65,6 +72,36 @@ class Semester
     {
         if ($this->courses->removeElement($course)) {
             $course->removeSemester($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, TimeSchedule>
+     */
+    public function getTimeSchedules(): Collection
+    {
+        return $this->timeSchedules;
+    }
+
+    public function addTimeSchedule(TimeSchedule $timeSchedule): static
+    {
+        if (!$this->timeSchedules->contains($timeSchedule)) {
+            $this->timeSchedules->add($timeSchedule);
+            $timeSchedule->setSemester($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTimeSchedule(TimeSchedule $timeSchedule): static
+    {
+        if ($this->timeSchedules->removeElement($timeSchedule)) {
+            // set the owning side to null (unless already changed)
+            if ($timeSchedule->getSemester() === $this) {
+                $timeSchedule->setSemester(null);
+            }
         }
 
         return $this;

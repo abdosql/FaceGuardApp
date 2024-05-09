@@ -85,6 +85,7 @@ class GroupService
         $group->addAcademicYear($academicYear);
         $group->addBranch($branch);
         $this->saveGroup($group);
+        return $group;
     }
     public function groupsExists(): ?bool
     {

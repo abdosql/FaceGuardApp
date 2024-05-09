@@ -22,6 +22,10 @@ class TimeSchedule
     #[ORM\JoinColumn(nullable: false)]
     private ?Group $group_ = null;
 
+    #[ORM\ManyToOne(inversedBy: 'timeSchedules')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Semester $semester = null;
+
     public function __construct()
     {
         $this->sessions = new ArrayCollection();
@@ -64,6 +68,18 @@ class TimeSchedule
     public function setGroup(Group $group_): static
     {
         $this->group_ = $group_;
+
+        return $this;
+    }
+
+    public function getSemester(): ?Semester
+    {
+        return $this->semester;
+    }
+
+    public function setSemester(?Semester $semester): static
+    {
+        $this->semester = $semester;
 
         return $this;
     }

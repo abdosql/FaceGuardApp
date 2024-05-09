@@ -11,7 +11,7 @@ class ScheduleSettingsService extends SettingsService
 
     public function getSettings(string $key): string
     {
-        return "";
+        return $this->settings[$key];
     }
 
     public function setSetting(string $key, string $value): void
@@ -23,27 +23,47 @@ class ScheduleSettingsService extends SettingsService
     {
         return $this->settings;
     }
+
+    public function getFallSemesterPeriod(): array
+    {
+        $semesterPeriod = explode(' to ', $this->getSettings('fallSemester'));
+        $start = $semesterPeriod[0];
+        $end = $semesterPeriod[1];
+        return [
+            "start" => \DateTime::createFromFormat('d M, Y', $start),
+            "end" => \DateTime::createFromFormat('d M, Y', $end),
+        ];
+    }
+
+    public function getSpringSemesterPeriod(): array
+{
+    $semesterPeriod = explode('to', $this->getSettings('springSemester'));
+    return [
+        "start" => \DateTime::createFromFormat('d:m:Y', $semesterPeriod[0]),
+        "end" => \DateTime::createFromFormat('d:m:Y', $semesterPeriod[1]),
+    ];
+}
     public function getMorningSlot(): array
     {
         return [
-            "start" => $this->getSettings("morningStart"),
-            "end" => $this->getSettings("morningEnd"),
+            "start" => \DateTime::createFromFormat('H:i', $this->getSettings("morningStart")),
+            "end" => \DateTime::createFromFormat('H:i', $this->getSettings("morningEnd")),
         ];
     }
     public function getEveningSlot(): array
     {
         return [
-            "start" => $this->getSettings("eveningStart"),
-            "end" => $this->getSettings("eveningEnd"),
+            "start" => \DateTime::createFromFormat('H:i', $this->getSettings("eveningStart")),
+            "end" => \DateTime::createFromFormat('H:i', $this->getSettings("eveningEnd")),
         ];
     }
-    public function getSessionDuration (): string
+    public function getSessionDuration (): \DateTime|false
     {
-        return $this->getSettings("sessionDuration");
+        return \DateTime::createFromFormat('H:i', $this->getSettings("sessionDuration"));
     }
-    public function pauseDuration(): string
+    public function pauseDuration(): \DateTime|false
     {
-        return $this->getSettings("pauseDuration");
+        return \DateTime::createFromFormat('H:i', $this->getSettings("pauseDuration"));
     }
 
     public function weekendDays(): string
@@ -54,5 +74,18 @@ class ScheduleSettingsService extends SettingsService
     public function getHolidays(): array
     {
         $holidays = explode(",", $this->getSettings("holidays"));
+        $formattedHolidays = [];
+
+        foreach ($holidays as $holiday) {
+            $dateParts = explode(" ", $holiday);
+            if (count($dateParts) === 2) {
+                $date = \DateTime::createFromFormat('d M Y', $dateParts[0]);
+                if ($date !== false) {
+                    $formattedHolidays[] = $date;
+                }
+            }
+        }
+
+        return $formattedHolidays;
     }
 }

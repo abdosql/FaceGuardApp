@@ -26,8 +26,8 @@ class Course
     #[ORM\ManyToMany(targetEntity: Branch::class, mappedBy: 'courses')]
     private Collection $branches;
 
-    #[ORM\Column(type: Types::TIME_MUTABLE)]
-    private ?\DateTimeInterface $course_duration = null;
+    #[ORM\Column(type: Types::INTEGER)]
+    private ?int $course_duration = null;
 
     #[ORM\OneToOne(mappedBy: 'course', cascade: ['persist', 'remove'])]
     private ?Session $session = null;
@@ -97,12 +97,12 @@ class Course
         return $this;
     }
 
-    public function getCourseDuration(): ?\DateTimeInterface
+    public function getCourseDuration(): int
     {
         return $this->course_duration;
     }
 
-    public function setCourseDuration(\DateTimeInterface $course_duration): static
+    public function setCourseDuration(int $course_duration): static
     {
         $this->course_duration = $course_duration;
 

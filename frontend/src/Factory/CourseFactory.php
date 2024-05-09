@@ -4,6 +4,7 @@ namespace App\Factory;
 
 use App\Entity\Course;
 use App\Repository\CourseRepository;
+use Symfony\Component\Validator\Constraints\DateTime;
 use Zenstruck\Foundry\ModelFactory;
 use Zenstruck\Foundry\Proxy;
 use Zenstruck\Foundry\RepositoryProxy;
@@ -47,8 +48,14 @@ final class CourseFactory extends ModelFactory
     protected function getDefaults(): array
     {
         $courses = ["ASP","PHP","Symfony","DEV Ops"];
+        $course_duration = "2:30";
+        $duration_parts = explode(":", $course_duration);
+        $hours = $duration_parts[0];
+        $minutes = $duration_parts[1];
+        $course_duration_format = $hours.":".$minutes;
+
         return [
-            'course_name' => self::faker()->unique()->randomElement($courses),
+            "course_duration" => \DateTime::createFromFormat('H:i', self::faker()->time($course_duration_format)),
         ];
     }
 

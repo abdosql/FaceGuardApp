@@ -12,6 +12,21 @@
                     <div class="row">
                         <div class="col-xxl-12 col-md-6 mb-3">
                             <div class="form-group">
+                                <label for="exampleInputtime" class="form-label">Morning slot</label>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label for="morningStart" class="form-label">Start</label>
+                                        <input value="{{ scheduleSettings.morningStart }}" type="time" class="form-control" id="morningStart" name="morningStart">
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="morningEnd" class="form-label">End</label>
+                                        <input  value="{{ scheduleSettings.morningEnd }}" type="time" class="form-control" id="morningEnd" name="morningEnd">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xxl-12 col-md-6 mb-3">
+                            <div class="form-group">
                                 <label for="exampleInputtime" class="form-label">Evening slot</label>
                                 <div class="row">
                                     <div class="col-6">
@@ -25,18 +40,31 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xxl-12 col-md-6 mb-3">
+                        <div class="col-xxl-6 col-md-3 mb-3">
                             <div class="form-group">
-                                <label for="exampleInputtime" class="form-label">Morning slot</label>
+                                <label for="exampleInputTime" class="form-label">Fall Semester - <span class="text-muted">You can select range</span></label>
                                 <div class="row">
-                                    <div class="col-6">
-                                        <label for="morningStart" class="form-label">Start</label>
-                                        <input value="{{ scheduleSettings.morningStart }}" type="time" class="form-control" id="morningStart" name="morningStart">
+                                    <!-- end col -->
+                                    <div class="col-lg-12">
+                                        <div>
+                                            <input name="fallSemester" type="text" class="form-control" data-provider="flatpickr" data-date-format="d M, Y" data-range-date="true">
+                                        </div>
                                     </div>
-                                    <div class="col-6">
-                                        <label for="morningEnd" class="form-label">End</label>
-                                        <input  value="{{ scheduleSettings.morningEnd }}" type="time" class="form-control" id="morningEnd" name="morningEnd">
+                                    <!-- end col -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xxl-6 col-md-3 mb-3">
+                            <div class="form-group">
+                                <label for="exampleInputTime" class="form-label">Spring Semester - <span class="text-muted">You can select range</span></label>
+                                <div class="row">
+                                    <!-- end col -->
+                                    <div class="col-lg-12">
+                                        <div>
+                                            <input name="springSemester" type="text" class="form-control" data-provider="flatpickr" data-date-format="d M, Y" data-range-date="true">
+                                        </div>
                                     </div>
+                                    <!-- end col -->
                                 </div>
                             </div>
                         </div>

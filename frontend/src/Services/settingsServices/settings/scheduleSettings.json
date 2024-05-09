@@ -1,10 +1,12 @@
 {
-    "eveningStart": "03:57",
-    "eveningEnd": "04:03",
-    "morningStart": "04:05",
-    "morningEnd": "04:03",
-    "sessionDuration": "04:04",
-    "pauseDuration": "07:01",
+    "eveningStart": "14:00",
+    "eveningEnd": "18:30",
+    "morningStart": "08:30",
+    "morningEnd": "13:00",
+    "sessionDuration": "02:00",
+    "pauseDuration": "00:30",
     "weekendDays": "SaturdayAndSunday",
-    "holidays": "08 Apr, 2024, 20 Jan, 2024, 16 Apr, 2024, 20 Jan, 2024, 23 Apr, 2024, 20 Jan, 2024, 24 Apr, 2024, 20 Jan, 2024"
+    "holidays": "01 Jan, 2024, 20 Jan, 2024, 20 Jan, 2024, 20 Jan, 2024, 01 May, 2024, 20 Jan, 2024, 20 Jan, 2024, 20 Jan, 2024, 30 Jul, 2024, 20 Jan, 2024, 20 Jan, 2024, 20 Jan, 2024, 20 Aug, 2024, 20 Jan, 2024, 20 Jan, 2024, 20 Jan, 2024, 21 Aug, 2024, 20 Jan, 2024, 20 Jan, 2024, 20 Jan, 2024, 06 Nov, 2024, 20 Jan, 2024, 20 Jan, 2024, 20 Jan, 2024, 18 Nov, 2024, 20 Jan, 2024, 20 Jan, 2024, 20 Jan, 2024",
+    "fallSemester": "10 Oct, 2023 to 01 Feb, 2024",
+    "springSemester": "10 Feb, 2024 to 01 Jul, 2024"
 }
