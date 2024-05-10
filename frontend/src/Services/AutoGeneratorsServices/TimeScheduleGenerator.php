@@ -36,21 +36,22 @@ class TimeScheduleGenerator
      */
     public function generateSchedules(): void
     {
-        foreach ($this->academicYearService->getAllAcademicYears() as $academicYear)
-        {
-            foreach ($academicYear->getBranches() as $branch){
-                foreach ($branch->getCourses() as $course)
-                {
-                    foreach ($branch->getGroups() as $group)
-                    {
-                        $timeSchedule = new TimeSchedule();
-                        $group->setTimeSchedule($timeSchedule);
-                        $this->entityManager->persist($timeSchedule);
-                        dd($this->generateSessionsForCourse($group, $course, "Fall"));
-                    }
-                }
-            }
-        }
+        dd($this->generateSessionsTimeSlots());
+//        foreach ($this->academicYearService->getAllAcademicYears() as $academicYear)
+//        {
+//            foreach ($academicYear->getBranches() as $branch){
+//                foreach ($branch->getCourses() as $course)
+//                {
+//                    foreach ($branch->getGroups() as $group)
+//                    {
+//                        $timeSchedule = new TimeSchedule();
+//                        $group->setTimeSchedule($timeSchedule);
+//                        $this->entityManager->persist($timeSchedule);
+//                        dd($this->generateSessionsForCourse($group, $course, "Fall"));
+//                    }
+//                }
+//            }
+//        }
     }
 
     /**
@@ -181,6 +182,53 @@ class TimeScheduleGenerator
         
     }
 
+
+    public function prompt(): string
+    {
+        $exp = '
+        {
+   "dayName": {
+      "sessionId": {
+         "slot": "08:30 to 12:00",
+         "group": "Group A",
+         "branch": "Branch 1",
+         "subject": "Mathematics",
+         "teacher": "Mr. Smith"
+      },
+      "essionId": {
+         "slot": "14:00 to 16:00",
+         "group": "Group B",
+         "branch": "Branch 2",
+         "subject": "Physics",
+         "teacher": "Mrs. Johnson"
+      }
+   },
+        ';
+        return "
+                    You are an AI assistant tasked with generating a comprehensive time schedule for a school. The school has multiple branches, each with several groups of students, and these groups are divided by academic year. The time schedules need to be created for each group, in each branch, for each academic year.
+                    you will have each group one by one.
+                    Details:
+                    
+                    Constraints:
+                    Academic year: First year
+                    Courses: ['PHP => teacher: Abdelaziz Saqqal', 'ASP => teacher: khiro', 'Spring => teacher: Haddouti', 'Economics => teacher: latifa', 'Business => teacher: mani', 'Big Data => teacher: Mohammed']
+                    Session Duration: Each session lasts for 2 hours.
+                    Pause Duration: Each break between sessions is 30 minutes.
+                    Daily Time Slots:
+                    Morning: 08:30 to 13:00.
+                    Evening: 14:00 to 18:30.
+                    Weekend Days: Saturday and Sunday.
+                    Fall Semester: 10 Oct, 2023 to 01 Feb, 2024.
+                    Spring Semester: 10 Feb, 2024 to 01 Jul, 2024.
+                    Additional Constraints:
+                    Ensure teachers do not have back-to-back classes without a break.
+                    Task: Generate a detailed, conflict-free time schedule based on the provided entities and constraints. The schedule should optimize for the best use of resources while ensuring that all educational and administrative requirements are met. Include error handling for scenarios where constraints cannot be fully satisfied, suggesting alternative solutions.
+                    
+                    Output: Provide the generated schedules in a structured JSON format, like the following example:
+                    .'$exp'.
+                    Return the complete time schedules for each day of the week, branch, and group in this format.
+        ";
+    }
 
 
 

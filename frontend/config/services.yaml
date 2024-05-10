@@ -6,6 +6,7 @@
 parameters:
 
 services:
+
     # default configuration for services in *this* file
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
@@ -19,6 +20,9 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
+    App\Services\llamaService:
+        arguments:
+            $apiKey: 6759c386cdc8ad94aa1ab93299f20b30e4e1a0373b53fee98edf36f2a371e85e
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
