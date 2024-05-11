@@ -48,14 +48,10 @@ final class CourseFactory extends ModelFactory
     protected function getDefaults(): array
     {
         $courses = ["ASP","PHP","Symfony","DEV Ops"];
-        $course_duration = "2:30";
-        $duration_parts = explode(":", $course_duration);
-        $hours = $duration_parts[0];
-        $minutes = $duration_parts[1];
-        $course_duration_format = $hours.":".$minutes;
+        $course_duration = [45, 25, 30];
 
         return [
-            "course_duration" => \DateTime::createFromFormat('H:i', self::faker()->time($course_duration_format)),
+            "course_duration" => self::faker()->randomElement($course_duration)
         ];
     }
 

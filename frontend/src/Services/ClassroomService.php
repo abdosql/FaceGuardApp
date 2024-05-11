@@ -15,7 +15,10 @@ class ClassroomService
     {
         return $this->entityManager->getRepository(Classroom::class)->findAll();
     }
-
+    public function getNumberOfClassrooms(): int
+    {
+        return $this->entityManager->getRepository(Classroom::class)->findAll()->count();
+    }
     public function getClassroomById(Classroom $classroom): Classroom
     {
         return $this->entityManager->getRepository(Classroom::class)->find($classroom);

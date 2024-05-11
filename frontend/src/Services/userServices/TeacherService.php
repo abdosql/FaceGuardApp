@@ -25,6 +25,10 @@ class TeacherService extends UserService
         return $this->entityManager->getRepository(Teacher::class)->findAll();
     }
 
+    public function getCoursesByTeacher(Teacher $teacher): array
+    {
+        return $this->entityManager->getRepository(Teacher::class)->getCoursesByTeacher($teacher);
+    }
     public function getTeacherById(Teacher $teacher): ?Teacher
     {
         return $this->entityManager->getRepository(Teacher::class)->find($teacher);

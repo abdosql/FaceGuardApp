@@ -8,8 +8,6 @@ use App\Factory\AdminFactory;
 use App\Factory\BranchFactory;
 use App\Factory\ClassroomFactory;
 use App\Factory\CourseFactory;
-use App\Factory\GroupFactory;
-use App\Factory\LevelFactory;
 use App\Factory\SemesterFactory;
 use App\Factory\StudentFactory;
 use App\Factory\TeacherFactory;
@@ -25,28 +23,57 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
+        SemesterFactory::createOne([
+                'semester_name' => "First Semester"
+        ]);
+        SemesterFactory::createOne([
+                'semester_name' => "Second Semester"
+        ]);
+        // Create Admin User
         AdminFactory::createOne([
             "username" => "abdo",
         ]);
+
+        // Create Teachers
         $t1 = TeacherFactory::createOne([
             "username" => "hanae",
+            'roles' => ["ROLE_TEACHER"]
         ]);
+
         $t2 = TeacherFactory::createOne([
             "username" => "teacher1",
             'roles' => ["ROLE_TEACHER"]
         ]);
+
         $t3 = TeacherFactory::createOne([
             "username" => "teacher2",
             'roles' => ["ROLE_TEACHER"]
         ]);
+
         $t4 = TeacherFactory::createOne([
             "username" => "teacher3",
             'roles' => ["ROLE_TEACHER"]
         ]);
+
         $t5 = TeacherFactory::createOne([
-            "username" => "teacher4",
+            "username" => "teacher5",
             'roles' => ["ROLE_TEACHER"]
         ]);
+        $t6 = TeacherFactory::createOne([
+            "username" => "teacher6",
+            'roles' => ["ROLE_TEACHER"]
+        ]);
+
+        $t7 = TeacherFactory::createOne([
+            "username" => "teacher7",
+            'roles' => ["ROLE_TEACHER"]
+        ]);
+        $t8 = TeacherFactory::createOne([
+            "username" => "teacher8",
+            'roles' => ["ROLE_TEACHER"]
+        ]);
+
+        // Create Courses
         $aspCourse = CourseFactory::createOne([
             "course_name" => "ASP",
             "teacher" => $t1
@@ -71,97 +98,119 @@ class AppFixtures extends Fixture
             "course_name" => "JAVA",
             "teacher" => $t5
         ]);
+
         $networkingCourse = CourseFactory::createOne([
             "course_name" => "Networking",
-            "teacher" => $t2 // Assuming $t6 is the teacher for Networking course
+            "teacher" => $t6
         ]);
 
         $databaseCourse = CourseFactory::createOne([
             "course_name" => "Database Systems",
-            "teacher" => $t4 // Assuming $t7 is the teacher for Database Systems course
+            "teacher" => $t7
         ]);
 
         $architectureCourse = CourseFactory::createOne([
             "course_name" => "Computer Architecture",
-            "teacher" => $t3 // Assuming $t8 is the teacher for Computer Architecture course
+            "teacher" => $t8
         ]);
 
         $branch1 = BranchFactory::createOne([
-            'branch_name' => "computer engineering",
-            "courses" => [$phpCourse, $networkingCourse, $databaseCourse, $architectureCourse],
+            'branch_name' => "Computer Engineering",
+            "courses" => [
+                $phpCourse,
+                $networkingCourse,
+                $databaseCourse,
+                $architectureCourse
+            ],
         ]);
 
         $branch2 = BranchFactory::createOne([
-            'branch_name' => "industrial engineering",
-            "courses" => [$aspCourse, $javaCourse, $networkingCourse],
+            'branch_name' => "Industrial Engineering",
+            "courses" => [
+                $aspCourse,
+                $javaCourse,
+                $networkingCourse
+            ],
         ]);
 
         $branch3 = BranchFactory::createOne([
-            'branch_name' => "IT and management engineer",
-            "courses" => [$phpCourse, $devopsCourse, $databaseCourse],
+            'branch_name' => "IT and Management Engineering",
+            "courses" => [
+                $phpCourse,
+                $devopsCourse,
+                $databaseCourse
+            ],
         ]);
-        SemesterFactory::createOne([
-            'semester_name' => "First Semester"
-        ]);
-        SemesterFactory::createOne([
-            'semester_name' => "Second Semester"
-        ]);
+
+
+        // Create Academic Years
         $firstYear = AcademicYearsFactory::createOne([
             'year' => AcademicYearEnum::FIRST_YEAR,
-            'slug' => $this->slugger->slug(AcademicYearEnum::FIRST_YEAR)
+            'slug' => $this->slugger->slug(AcademicYearEnum::FIRST_YEAR),
+            'branches' => [$branch1, $branch2]
         ]);
+
         $secondYear = AcademicYearsFactory::createOne([
             'year' => AcademicYearEnum::SECOND_YEAR,
-            'slug' => $this->slugger->slug(AcademicYearEnum::SECOND_YEAR)
+            'slug' => $this->slugger->slug(AcademicYearEnum::SECOND_YEAR),
+            'branches' => [$branch2]
         ]);
+
         $thirdYear = AcademicYearsFactory::createOne([
             'year' => AcademicYearEnum::THIRD_YEAR,
             'slug' => $this->slugger->slug(AcademicYearEnum::THIRD_YEAR),
             'branches' => [$branch1, $branch2, $branch3]
-
         ]);
+
         $fourthYear = AcademicYearsFactory::createOne([
             'year' => AcademicYearEnum::FOURTH_YEAR,
             'slug' => $this->slugger->slug(AcademicYearEnum::FOURTH_YEAR),
             'branches' => [$branch1, $branch2, $branch3]
-
         ]);
+
         $fifthYear = AcademicYearsFactory::createOne([
             'year' => AcademicYearEnum::FIFTH_YEAR,
             'slug' => $this->slugger->slug(AcademicYearEnum::FIFTH_YEAR),
             'branches' => [$branch1, $branch2, $branch3]
         ]);
-        StudentFactory::createMany(143,[
+
+        // Create Students
+        StudentFactory::createMany(70, [
             'academicYear' => $firstYear,
             'branch' => $branch1
         ]);
-        StudentFactory::createMany(120,[
+
+        StudentFactory::createMany(70, [
             'academicYear' => $firstYear,
             'branch' => $branch2
         ]);
-        StudentFactory::createMany(160,[
+
+        StudentFactory::createMany(60, [
             'academicYear' => $secondYear,
             'branch' => $branch2
         ]);
-        StudentFactory::createMany(95,[
+
+        StudentFactory::createMany(50, [
             'academicYear' => $thirdYear,
             'branch' => $branch1
         ]);
-        StudentFactory::createMany(90,[
+
+        StudentFactory::createMany(60, [
             'academicYear' => $fourthYear,
             'branch' => $branch2
         ]);
-        StudentFactory::createMany(83,[
+
+        StudentFactory::createMany(83, [
             'academicYear' => $fifthYear,
             'branch' => $branch1
         ]);
-        StudentFactory::createMany(53,[
+
+        StudentFactory::createMany(53, [
             'academicYear' => $fifthYear,
             'branch' => $branch2
         ]);
 
-
-        //classrooms
+        // Create Classrooms
         ClassroomFactory::createMany(20);
     }
 }

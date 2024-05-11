@@ -12,9 +12,9 @@ class CourseService
     {
     }
 
-    public function getAllCourses()
+    public function getAllCourses(): array
     {
-        
+        return $this->entityManager->getRepository(Course::class)->findAll();
     }
 
     public function getCourseDuration(Course $course): int
