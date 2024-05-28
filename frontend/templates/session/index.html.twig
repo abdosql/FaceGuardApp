@@ -1,0 +1,371 @@
+{{ include('partials/main.html.twig') }}
+
+<head>
+
+    {{ include('partials/title-meta.html.twig', {title: 'Sessions'}) }}
+    <!-- Sweet Alert css-->
+    <link href="{{ asset("assets/libs/sweetalert2/sweetalert2.min.css") }}" rel="stylesheet" type="text/css" />
+    <!--datatable css-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" />
+    <!--datatable responsive css-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" />
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
+
+
+    {{ include('partials/head-css.html.twig') }}
+
+</head>
+
+<body>
+
+<!-- Begin page -->
+<div id="layout-wrapper">
+
+    {{ include('partials/menu.html.twig') }}
+
+    <!-- ============================================================== -->
+    <!-- Start right Content here -->
+    <!-- ============================================================== -->
+    <div class="main-content">
+        <div class="page-content">
+            <div class="container-fluid">
+                {{ include('partials/page-title.html.twig', {pagetitle: 'Sessions', title: 'Current Session'}) }}
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title mb-3">Info</h5>
+                                <div class="table-responsive">
+                                    <table class="table table-borderless mb-0">
+                                        <tbody>
+                                        <tr>
+                                            <th class="ps-0" scope="row">Academic Year :</th>
+                                            <td class="text-muted">First Year</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="ps-0" scope="row">Branch :</th>
+                                            <td class="text-muted">Genie informatics</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="ps-0" scope="row">Group :</th>
+                                            <td class="text-muted">A</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="ps-0" scope="row">Number students</th>
+                                            <td class="text-muted">36</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div><!-- end card body -->
+                        </div><!-- end card -->
+
+                    </div>
+                    <div class="col-lg-8">
+                        <div class="card">
+                            <div class="card-header d-flex justify-content-between">
+                                <h5 class="card-title mb-0">students List</h5>
+                            </div>
+                            <div class="card-body">
+                                <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col" style="width: 10px;">
+                                            <div class="form-check">
+                                                <input class="form-check-input fs-15" type="checkbox" id="checkAll" value="option">
+                                            </div>
+                                        </th>
+                                        <th data-ordering="false">ID</th>
+                                        <th data-ordering="false">FullName</th>
+                                        <th data-ordering="false">Email</th>
+                                        <th>Present</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <th scope="row">
+                                            <div class="form-check">
+                                                <input class="form-check-input fs-15" type="checkbox" name="checkAll" value="option2">
+                                            </div>
+                                        </th>
+                                        <td>2</td>
+                                        <td>Aisha Karim</td>
+                                        <td>aisha.karim@example.com</td>
+                                        <td>
+                                            <div class="d-flex justify-content-center">
+                                                <div class="form-check form-switch form-switch-lg">
+                                                    <input type="checkbox" class="form-check-input" id="customSwitchsizelg2" checked="" control-id="ControlID-67">
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">
+                                            <div class="form-check">
+                                                <input class="form-check-input fs-15" type="checkbox" name="checkAll" value="option4">
+                                            </div>
+                                        </th>
+                                        <td>4</td>
+                                        <td>Fatima Zahra</td>
+                                        <td>fatima.zahra@example.com</td>
+                                        <td>
+                                            <div class="d-flex justify-content-center">
+                                                <div class="form-check form-switch form-switch-lg">
+                                                    <input type="checkbox" class="form-check-input" id="customSwitchsizelg4" checked="" control-id="ControlID-68">
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">
+                                            <div class="form-check">
+                                                <input class="form-check-input fs-15" type="checkbox" name="checkAll" value="option5">
+                                            </div>
+                                        </th>
+                                        <td>5</td>
+                                        <td>Omar El-Farouq</td>
+                                        <td>omar.elfarouq@example.com</td>
+                                        <td>
+                                            <div class="d-flex justify-content-center">
+                                                <div class="form-check form-switch form-switch-lg">
+                                                    <input type="checkbox" class="form-check-input" id="customSwitchsizelg5" checked="" control-id="ControlID-69">
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">
+                                            <div class="form-check">
+                                                <input class="form-check-input fs-15" type="checkbox" name="checkAll" value="option6">
+                                            </div>
+                                        </th>
+                                        <td>6</td>
+                                        <td>Layla Hassan</td>
+                                        <td>layla.hassan@example.com</td>
+                                        <td>
+                                            <div class="d-flex justify-content-center">
+                                                <div class="form-check form-switch form-switch-lg">
+                                                    <input type="checkbox" class="form-check-input" id="customSwitchsizelg6" checked="" control-id="ControlID-70">
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">
+                                            <div class="form-check">
+                                                <input class="form-check-input fs-15" type="checkbox" name="checkAll" value="option7">
+                                            </div>
+                                        </th>
+                                        <td>7</td>
+                                        <td>Youssef Ibrahim</td>
+                                        <td>youssef.ibrahim@example.com</td>
+                                        <td>
+                                            <div class="d-flex justify-content-center">
+                                                <div class="form-check form-switch form-switch-lg">
+                                                    <input type="checkbox" class="form-check-input" id="customSwitchsizelg7" checked="" control-id="ControlID-71">
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">
+                                            <div class="form-check">
+                                                <input class="form-check-input fs-15" type="checkbox" name="checkAll" value="option8">
+                                            </div>
+                                        </th>
+                                        <td>8</td>
+                                        <td>Sara Ahmed</td>
+                                        <td>sara.ahmed@example.com</td>
+                                        <td>
+                                            <div class="d-flex justify-content-center">
+                                                <div class="form-check form-switch form-switch-lg">
+                                                    <input type="checkbox" class="form-check-input" id="customSwitchsizelg8" checked="" control-id="ControlID-72">
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">
+                                            <div class="form-check">
+                                                <input class="form-check-input fs-15" type="checkbox" name="checkAll" value="option9">
+                                            </div>
+                                        </th>
+                                        <td>9</td>
+                                        <td>Hassan Younes</td>
+                                        <td>hassan.younes@example.com</td>
+                                        <td>
+                                            <div class="d-flex justify-content-center">
+                                                <div class="form-check form-switch form-switch-lg">
+                                                    <input type="checkbox" class="form-check-input" id="customSwitchsizelg9" checked="" control-id="ControlID-73">
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">
+                                            <div class="form-check">
+                                                <input class="form-check-input fs-15" type="checkbox" name="checkAll" value="option10">
+                                            </div>
+                                        </th>
+                                        <td>10</td>
+                                        <td>Najlaa Ezzine</td>
+                                        <td>najlaa.ezzine@example.com</td>
+                                        <td>
+                                            <div class="d-flex justify-content-center">
+                                                <div class="form-check form-switch form-switch-lg">
+                                                    <input type="checkbox" class="form-check-input" id="customSwitchsizelg10" checked="" control-id="ControlID-74">
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">
+                                            <div class="form-check">
+                                                <input class="form-check-input fs-15" type="checkbox" name="checkAll" value="option11">
+                                            </div>
+                                        </th>
+                                        <td>11</td>
+                                        <td>Khaled Mansour</td>
+                                        <td>khaled.mansour@example.com</td>
+                                        <td>
+                                            <div class="d-flex justify-content-center">
+                                                <div class="form-check form-switch form-switch-lg">
+                                                    <input type="checkbox" class="form-check-input" id="customSwitchsizelg11" checked="" control-id="ControlID-75">
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">
+                                            <div class="form-check">
+                                                <input class="form-check-input fs-15" type="checkbox" name="checkAll" value="option12">
+                                            </div>
+                                        </th>
+                                        <td>12</td>
+                                        <td>Laila Jamil</td>
+                                        <td>laila.jamil@example.com</td>
+                                        <td>
+                                            <div class="d-flex justify-content-center">
+                                                <div class="form-check form-switch form-switch-lg">
+                                                    <input type="checkbox" class="form-check-input" id="customSwitchsizelg12" checked="" control-id="ControlID-76">
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">
+                                            <div class="form-check">
+                                                <input class="form-check-input fs-15" type="checkbox" name="checkAll" value="option13">
+                                            </div>
+                                        </th>
+                                        <td>13</td>
+                                        <td>Bilal Khan</td>
+                                        <td>bilal.khan@example.com</td>
+                                        <td>
+                                            <div class="d-flex justify-content-center">
+                                                <div class="form-check form-switch form-switch-lg">
+                                                    <input type="checkbox" class="form-check-input" id="customSwitchsizelg13" checked="" control-id="ControlID-77">
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">
+                                            <div class="form-check">
+                                                <input class="form-check-input fs-15" type="checkbox" name="checkAll" value="option14">
+                                            </div>
+                                        </th>
+                                        <td>14</td>
+                                        <td>Amina Qureshi</td>
+                                        <td>amina.qureshi@example.com</td>
+                                        <td>
+                                            <div class="d-flex justify-content-center">
+                                                <div class="form-check form-switch form-switch-lg">
+                                                    <input type="checkbox" class="form-check-input" id="customSwitchsizelg14" checked="" control-id="ControlID-78">
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">
+                                            <div class="form-check">
+                                                <input class="form-check-input fs-15" type="checkbox" name="checkAll" value="option15">
+                                            </div>
+                                        </th>
+                                        <td>15</td>
+                                        <td>Zainab Hussain</td>
+                                        <td>zainab.hussain@example.com</td>
+                                        <td>
+                                            <div class="d-flex justify-content-center">
+                                                <div class="form-check form-switch form-switch-lg">
+                                                    <input type="checkbox" class="form-check-input" id="customSwitchsizelg15" checked="" control-id="ControlID-79">
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div><!--end col-->
+
+                </div><!--end row-->
+
+
+
+
+
+            </div>
+            <!-- container-fluid -->
+        </div>
+        <!-- End Page-content -->
+
+        {{ include('partials/footer.html.twig') }}
+    </div>
+    <!-- end main content-->
+
+</div>
+<!-- END layout-wrapper -->
+
+
+
+{{ include('partials/customizer.html.twig') }}
+
+{{ include('partials/vendor-scripts.html.twig') }}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+<!--datatable js-->
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.9/js/dataTables.responsive.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.print.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.html5.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+
+<script src="{{ asset("assets/js/pages/datatables.init.js") }}"></script>
+<!-- Sweet Alerts js -->
+<script src="{{ asset("assets/libs/sweetalert2/sweetalert2.min.js") }}"></script>
+
+<!-- Sweet alert init js-->
+<script src="{{ asset("assets/js/pages/sweetalerts.init.js") }}"></script>
+<!-- App js -->
+<script src="{{ asset("assets/js/app.js") }}"></script>
+<!-- glightbox js -->
+<script src="{{ asset("assets/libs/glightbox/js/glightbox.min.js") }}"></script>
+
+<!-- isotope-layout -->
+<script src="{{ asset("assets/libs/isotope-layout/isotope.pkgd.min.js") }}"></script>
+
+<script src="{{ asset("assets/js/pages/gallery.init.js") }}"></script>
+<script src="https://kit.fontawesome.com/000a7e5c15.js" crossorigin="anonymous"></script>
+
+</body>
+
+</html>

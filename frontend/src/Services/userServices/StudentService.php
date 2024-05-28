@@ -4,6 +4,7 @@ namespace App\Services\userServices;
 
 use App\Entity\Group;
 use App\Entity\Student;
+use App\Entity\Teacher;
 use App\Services\AcademicYearService;
 use App\Services\BranchService;
 use App\Services\GroupService;
@@ -154,5 +155,10 @@ class StudentService extends UserService
                     }
                 }
             }
-        }
+    }
+
+    public function getStudentsByTeacher(Teacher $teacher): array
+    {
+        return $this->entityManager->getRepository(Student::class)->getStudentsByTeacher($teacher);
+    }
 }

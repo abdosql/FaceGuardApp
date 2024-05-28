@@ -23,6 +23,7 @@
         "symfony/flex": "^2",
         "symfony/form": "7.0.*",
         "symfony/framework-bundle": "7.0.*",
+        "symfony/http-client": "7.0.*",
         "symfony/mailer": "7.0.*",
         "symfony/messenger": "7.0.*",
         "symfony/monolog-bundle": "^3.0",
@@ -92,6 +93,6 @@
         "symfony/phpunit-bridge": "^6.4",
         "symfony/stopwatch": "6.4.*",
         "symfony/web-profiler-bundle": "7.0.*",
-        "zenstruck/foundry": "^1.36"
+        "zenstruck/foundry": "^1.37"
     }
 }

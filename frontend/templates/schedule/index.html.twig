@@ -22,7 +22,32 @@
         <div class="page-content">
             <div class="container-fluid">
                 {{ include('partials/page-title.html.twig', {pagetitle: 'Management', title: 'Schedules'}) }}
-                {{ include("schedule/_calendar.html.twig") }}
+
+                <div class="row">
+                    {% for year in years %}
+                    <div class="col-12">
+                        <div class="justify-content-between d-flex align-items-center mt-3 mb-4">
+                            <h5 class="mb-0 pb-1 text-decoration-underline">{{ year.getYear }}</h5>
+                        </div>
+                        <div class="row row-cols-xxl-4 row-cols-lg-3 row-cols-1">
+                            {% for branch in year.getBranches %}
+                                    <div class="col">
+                                        <div class="card card-body">
+                                            <div class="d-flex mb-4 align-items-center">
+                                                <div class="flex-grow-1 ms-2">
+                                                    <h5 class="card-title mb-1">{{ branch.getBranchName }}</h5>
+                                                </div>
+                                            </div>
+                                            <p class="card-text text-muted">Number Of Groups : {{ groupService.countNumberOfGroups(year, branch) }}</p>
+                                            <a href="{{ path("app_getGroups", {'academicYear': year.getId, 'branch': branch.getId }) }}" class="btn btn-primary btn-sm">See Details</a>
+                                        </div>
+                                    </div><!-- end col -->
+                            {% endfor %}
+
+                        </div><!-- end row -->
+                    </div><!-- end col -->
+                    {% endfor %}
+                </div><!-- end row -->
 
             </div>
             <!-- container-fluid -->
@@ -44,6 +69,8 @@
 
 <!-- App js -->
 <script src="{{ absolute_url(asset("assets/js/app.js")) }}"></script>
+<!-- calendar min js -->
+
 
 </body>
 

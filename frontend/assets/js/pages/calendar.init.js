@@ -30,195 +30,22 @@ document.addEventListener("DOMContentLoaded", function () {
     var y = date.getFullYear();
     var Draggable = FullCalendar.Draggable;
     var externalEventContainerEl = document.getElementById('external-events');
-    var defaultEvents = [{
+    var defaultEvents = [
+        {
             id: 1,
-            title: "World Braille Day",
-            start: "2022-01-04",
-            className: "bg-info-subtle",
-            allDay: true
-
+            title: "Meeting",
+            start: "2024-05-24T09:00:00", // Start time (format: YYYY-MM-DDTHH:MM:SS)
+            end: "2024-05-24T10:30:00",   // End time (format: YYYY-MM-DDTHH:MM:SS)
+            className: "bg-primary",      // Custom class for styling (optional)
         },
         {
             id: 2,
-            title: "World Leprosy Day",
-            start: "2022-01-30",
-            className: "bg-info-subtle",
-            allDay: true
+            title: "Training",
+            start: "2024-05-25T13:00:00",
+            end: "2024-05-25T15:00:00",
+            className: "bg-info",
         },
-
-        {
-            id: 3,
-            title: "International Mother Language Day",
-            start: "2022-02-21",
-            className: "bg-info-subtle",
-            allDay: true
-        },
-
-        {
-            id: 4,
-            title: "International Women's Day",
-            start: "2022-03-08",
-            className: "bg-info-subtle",
-            allDay: true
-        },
-
-        {
-            id: 5,
-            title: "World Thinking Day",
-            start: "2022-02-22",
-            className: "bg-info-subtle",
-            allDay: true
-        },
-
-        {
-            id: 6,
-            title: "International Mother Language Day",
-            start: "2022-03-21",
-            className: "bg-info-subtle",
-            allDay: true
-        },
-
-        {
-            id: 7,
-            title: "World Water Day",
-            start: "2022-03-22",
-            className: "bg-info-subtle",
-            allDay: true
-        },
-
-        {
-            id: 8,
-            title: "World Health Day",
-            start: "2022-04-07",
-            className: "bg-info-subtle",
-            allDay: true
-        },
-
-
-        {
-            id: 9,
-            title: "International Special Librarians Day",
-            start: "2022-04-16",
-            className: "bg-info-subtle",
-            allDay: true
-        },
-
-        {
-            id: 10,
-            title: "Earth Day",
-            start: "2022-04-22",
-            className: "bg-info-subtle",
-            allDay: true
-        },
-        {
-            id: 153,
-            title: 'All Day Event',
-            start: new Date(y, m, 1),
-            className: 'bg-primary-subtle',
-            location: 'San Francisco, US',
-            allDay: true,
-            extendedProps: {
-                department: 'All Day Event'
-            },
-            description: 'An all-day event is an event that lasts an entire day or longer'
-        },
-        {
-            id: 136,
-            title: 'Visit Online Course',
-            start: new Date(y, m, d - 5),
-            end: new Date(y, m, d - 2),
-            allDay: true,
-            className: 'bg-warning-subtle',
-            extendedProps: {
-                department: 'Long Event'
-            },
-            description: 'Long Term Event means an incident that last longer than 12 hours.'
-        },
-        {
-            id: 999,
-            title: 'Client Meeting with Alexis',
-            start: new Date(y, m, d + 22, 20, 0),
-            end: new Date(y, m, d + 24, 16, 0),
-            allDay: true,
-            className: 'bg-danger-subtle',
-            location: 'California, US',
-            extendedProps: {
-                department: 'Meeting with Alexis'
-            },
-            description: 'A meeting is a gathering of two or more people that has been convened for the purpose of achieving a common goal through verbal interaction, such as sharing information or reaching agreement.'
-        },
-        {
-            id: 991,
-            title: 'Repeating Event',
-            start: new Date(y, m, d + 4, 16, 0),
-            end: new Date(y, m, d + 9, 16, 0),
-            allDay: true,
-            className: 'bg-primary-subtle',
-            location: 'Las Vegas, US',
-            extendedProps: {
-                department: 'Repeating Event'
-            },
-            description: 'A recurring or repeating event is simply any event that you will occur more than once on your calendar. ',
-        },
-        {
-            id: 112,
-            title: 'Meeting With Designer',
-            start: new Date(y, m, d, 12, 30),
-            allDay: true,
-            className: 'bg-success-subtle',
-            location: 'Head Office, US',
-            extendedProps: {
-                department: 'Meeting'
-            },
-            description: 'Tell how to boost website traffic'
-        },
-        {
-            id: 113,
-            title: 'Weekly Strategy Planning',
-            start: new Date(y, m, d + 9),
-            end: new Date(y, m, d + 11),
-            allDay: true,
-            className: 'bg-danger-subtle',
-            location: 'Head Office, US',
-            extendedProps: {
-                department: 'Lunch'
-            },
-            description: 'Strategies for Creating Your Weekly Schedule'
-        },
-        {
-            id: 875,
-            title: 'Birthday Party',
-            start: new Date(y, m, d + 1, 19, 0),
-            allDay: true,
-            className: 'bg-success-subtle',
-            location: 'Los Angeles, US',
-            extendedProps: {
-                department: 'Birthday Party'
-            },
-            description: 'Family slumber party – Bring out the blankets and pillows and have a family slumber party! Play silly party games, share special snacks and wind down the fun with a special movie.'
-        },
-        {
-            id: 783,
-            title: 'Click for Google',
-            start: new Date(y, m, 28),
-            end: new Date(y, m, 29),
-            allDay: true,
-            url: 'http://google.com/',
-            className: 'bg-dark-subtle',
-        },
-        {
-            id: 456,
-            title: 'Velzon Project Discussion with Team',
-            start: new Date(y, m, d + 23, 20, 0),
-            end: new Date(y, m, d + 24, 16, 0),
-            allDay: true,
-            className: 'bg-info-subtle',
-            location: 'Head Office, US',
-            extendedProps: {
-                department: 'Discussion'
-            },
-            description: 'Tell how to boost website traffic'
-        },
+        // Add more events as needed
     ];
 
     // init draggable
@@ -236,7 +63,51 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     var calendarEl = document.getElementById('calendar');
+    var schedules = JSON.parse(calendarEl.getAttribute("data-schedule"));
 
+// Get the start date and end date of the range
+    var startDate = new Date("2024-05-20");
+// Array of possible class names
+    var classNames = ['bg-primary', 'bg-secondary', 'bg-success', 'bg-danger', 'bg-warning', 'bg-info', 'bg-light', 'bg-dark'];
+
+// Function to get a random class name
+    function getRandomClassName() {
+        return classNames[Math.floor(Math.random() * classNames.length)];
+    }
+// Helper function to format date parts with leading zeros
+    function formatDatePart(value) {
+        return ('0' + value).slice(-2);
+    }
+
+// Map the schedules data to the format expected by FullCalendar
+    var eventData = schedules.map(function(schedule) {
+        // Extracting the day number and time
+        var dayAndTimeParts = schedule.start.split("T");
+        var dayNumber = parseInt(dayAndTimeParts[0]);
+        var startTime = dayAndTimeParts[1];
+        var endTime = schedule.end.split("T")[1];
+
+        // Calculate the specific date within the range for the given day number
+        var eventDate = new Date(startDate);
+        eventDate.setDate(startDate.getDate() + dayNumber - 1); // Adjust to the correct day in the range
+
+        // Constructing the full datetime strings
+        var formattedMonth = formatDatePart(eventDate.getMonth() + 1); // Month is zero-based
+        var formattedDate = formatDatePart(eventDate.getDate());
+        var startDateTime = eventDate.getFullYear() + "-" + formattedMonth + "-" + formattedDate + "T" + startTime;
+        var endDateTime = eventDate.getFullYear() + "-" + formattedMonth + "-" + formattedDate + "T" + endTime;
+
+        return {
+            title: schedule.title,
+            start: startDateTime,
+            end: endDateTime,
+            description: schedule.description,
+            className: getRandomClassName()
+            // Add other properties as needed
+        };
+    });
+    console.log("test")
+    console.log(eventData);
     function addNewEvent(info) {
         document.getElementById('form-event').reset();
         document.getElementById('btn-delete-event').setAttribute('hidden', true);
@@ -270,11 +141,53 @@ document.addEventListener("DOMContentLoaded", function () {
         editable: true,
         droppable: true,
         selectable: true,
-        navLinks: true,
-        initialView: getInitialView(),
+        navLinks: false,
+        initialView: 'timeGridWeek', // Display time slots vertically
         themeSystem: 'bootstrap',
-        firstDay: 1,
         headerToolbar: false,
+        eventOverlap: false,
+        allDaySlot: false,
+        slotDuration: '00:30:00', // Adjust time slot duration as needed
+        slotLabelInterval: { hours: 1 }, // Show time labels for every hour
+        slotMinTime: '08:30:00', // Set the start time for the schedule
+        slotMaxTime: '18:30:00', // Set the end time for the schedule
+        slotEventOverlap: false, // Prevent events from overlapping in the time slots
+        firstDay: 1,
+        views: {
+            timeGridWeek: {
+                titleFormat: { weekday: 'long' } // Display only the weekday name in the title
+            }
+        },
+        slotLabelFormat: {
+            hour: 'numeric',
+            minute: '2-digit',
+            hour12: false,
+        },
+        // Customize the day headers to start with Monday
+        columnHeaderFormat: { weekday: 'long' },
+        eventSources: [
+            {
+                events: defaultEvents // Add the event data to the calendar
+            }
+        ],
+        eventContent: function(arg) {
+            // Create a wrapper element
+            let customContent = document.createElement('div');
+
+            // Create title element
+            let titleElement = document.createElement('div');
+            titleElement.innerHTML = arg.event.title;
+
+            // Create description element
+            let descriptionElement = document.createElement('div');
+            descriptionElement.innerHTML = arg.event.extendedProps.description;
+
+            // Append title and description to the wrapper
+            customContent.appendChild(titleElement);
+            customContent.appendChild(descriptionElement);
+
+            return { domNodes: [customContent] };
+        },
         windowResize: function (view) {
             var newView = getInitialView();
             calendar.changeView(newView);
@@ -343,7 +256,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 var endUpdateDay = new Date(ed_date);
                 updateDay = endUpdateDay.setDate(endUpdateDay.getDate() - 1);
             }
-            
+
             var r_date = ed_date == null ? (str_dt(st_date)) : (str_dt(st_date)) + ' to ' + (str_dt(updateDay));
             var er_date = ed_date == null ? (date_r(st_date)) : (date_r(st_date)) + ' to ' + (date_r(updateDay));
 
@@ -411,7 +324,7 @@ document.addEventListener("DOMContentLoaded", function () {
         dateClick: function (info) {
             addNewEvent(info);
         },
-        events: defaultEvents,
+
         eventReceive: function (info) {
             var newid = parseInt(info.event.id);
             var newEvent = {
@@ -441,7 +354,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         }
     });
-
     calendar.render();
     function deleteEvent(eventId) {
         // Make AJAX call to delete event from the database
@@ -757,16 +669,3 @@ function tConvert(time) {
     minutes = minutes < 10 ? '0' + minutes : minutes;
     return (hours + ':' + minutes + ' ' + newformat);
 }
-
-var str_dt = function formatDate(date) {
-    var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    var d = new Date(date),
-        month = '' + monthNames[(d.getMonth())],
-        day = '' + d.getDate(),
-        year = d.getFullYear();
-    if (month.length < 2)
-        month = '0' + month;
-    if (day.length < 2)
-        day = '0' + day;
-    return [day + " " + month, year].join(',');
-};

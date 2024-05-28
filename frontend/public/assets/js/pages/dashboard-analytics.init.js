@@ -411,8 +411,8 @@ function loadCharts() {
     dountchartUserDeviceColors = getChartColorsArray("user_device_pie_charts");
     if (dountchartUserDeviceColors) {
         var options = {
-            series: [78.56, 105.02, 42.89],
-            labels: ["Desktop", "Mobile", "Tablet"],
+            series: [50.21, 49.79],
+            labels: ["Male", "Females"],
             chart: {
                 type: "donut",
                 height: 219,

@@ -22,9 +22,9 @@ class GroupService
     {
         return $this->entityManager->getRepository(Group::class)->findAll();
     }
-    public function getGroupsLikeName($name): array
+    public function getGroupById(int $id): Group
     {
-        return $this->entityManager->getRepository(Group::class)->getGroupByName($name);
+        return $this->entityManager->getRepository(Group::class)->find($id);
     }
     public function getGroupsByBranchAndYear(string $yearName, string $branchName): array
     {
@@ -38,34 +38,6 @@ class GroupService
         $this->entityManager->getRepository(Group::class)->addStudents($students);
         return $this;
     }
-
-    public function explodedGroupName(): array
-    {
-        $explodedGroups = [];
-        foreach ($this->getAllGroups() as $group) {
-            $groupName = $group->getGroupName();
-            $explodedGroup = explode(" Year", $groupName, 2);
-            $year = trim($explodedGroup[0]);
-            $text = trim($explodedGroup[1] ?? '');
-            $yearKey = strtolower($year) . "-year";
-            if (!isset($explodedGroups[$yearKey])) {
-                $explodedGroups[$yearKey] = [];
-            }
-            $explodedGroups[$yearKey][] = $text;
-        }
-
-        // Transform the associative array to the desired format
-        $result = [];
-        foreach ($explodedGroups as $year => $groups) {
-            $result[] = [
-                "year" => $year,
-                "groups" => $groups
-            ];
-        }
-
-        return $result;
-    }
-
 
     public function countGroups(): int
     {
@@ -142,4 +114,15 @@ class GroupService
         }
 
     }
+
+    public function getGroupsByYearAndBranch(AcademicYear $year, Branch $branch): array
+    {
+        return $this->entityManager->getRepository(Group::class)->getGroupsByYearAndBranch($year, $branch);
+    }
+
+    public function countNumberOfGroups(AcademicYear $year, Branch $branch): int
+    {
+        return $this->entityManager->getRepository(Group::class)->countNumberOfGroups($year, $branch);
+    }
+
 }

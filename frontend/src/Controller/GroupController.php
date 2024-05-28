@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\AcademicYear;
+use App\Entity\Branch;
 use App\Services\GroupService;
 use App\Services\userServices\StudentService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,11 +16,19 @@ class GroupController extends AbstractController
     {
     }
 
-    #[Route('/group', name: 'app_group')]
-    public function index(): Response
+    #[Route('/schedules/groups/{academicYear}/{branch}', name: 'app_getGroups')]
+    public function index(AcademicYear $academicYear, Branch $branch): Response
     {
+        $this->denyAccessUnlessGranted("ROLE_ADMIN");
         return $this->render('group/index.html.twig', [
-            'controller_name' => 'GroupController',
+                'groups' => $this->groupService->getGroupsByYearAndBranch($academicYear, $branch),
         ]);
     }
+    #[Route('/groups/', name: 'app_getg')]
+    public function getGroups(): Response
+    {
+        return $this->render('student/students.html.twig', [
+        ]);
+    }
+
 }

@@ -47,8 +47,7 @@ final class CourseFactory extends ModelFactory
      */
     protected function getDefaults(): array
     {
-        $courses = ["ASP","PHP","Symfony","DEV Ops"];
-        $course_duration = [45, 25, 30];
+        $course_duration = [45, 30];
 
         return [
             "course_duration" => self::faker()->randomElement($course_duration)

@@ -155,4 +155,18 @@ class Group
         return $this;
     }
 
+    public function branchExists(Branch $branch): bool
+    {
+        if ($this->branches->contains($branch)) {
+            return true;
+        }
+        return false;
+    }
+
+    public function getDisplayName(): string
+    {
+        $academicYears = $this->academicYear->toArray();
+        $branches = $this->branches->toArray();
+        return "{$this->group_name} ({$academicYears[0]->getYear()} - {$branches[0]->getBranchName()})";
+    }
 }

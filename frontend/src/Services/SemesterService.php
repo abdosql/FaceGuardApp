@@ -20,6 +20,10 @@ class SemesterService
         return $this->entityManager->getRepository(Semester::class)->findAll();
     }
 
+    public function getSemesterById(int $semesterId): Semester
+    {
+        return $this->entityManager->getRepository(Semester::class)->find($semesterId);
+    }
     /**
      * @throws \Exception
      */

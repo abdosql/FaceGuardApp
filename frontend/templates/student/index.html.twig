@@ -31,15 +31,16 @@
         <div class="page-content">
             <div class="container-fluid">
                 {{ include('partials/page-title.html.twig', {pagetitle: 'Management', title: 'Students'}) }}
-                {% if studentsWithoutGroupExists["status"] == false %}
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="alert alert-danger alert-top-border alert-dismissible fade show material-shadow d-flex justify-content-between" role="alert">
-                                <div>
-                                    <i class="ri-error-warning-line me-3 align-middle fs-16 text-danger "></i><strong>Notice !</strong>
-                                    - {{ studentsWithoutGroupExists["message"]}}<now class=""></now>
-                                </div>
-                                <a href="{{ path("app_students_generate_groups") }}" class="btn btn-danger btn-load btn-sm">
+                {% if is_granted("ROLE_ADMIN") %}
+                    {% if studentsWithoutGroupExists["status"] == false %}
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="alert alert-danger alert-top-border alert-dismissible fade show material-shadow d-flex justify-content-between" role="alert">
+                                    <div>
+                                        <i class="ri-error-warning-line me-3 align-middle fs-16 text-danger "></i><strong>Notice !</strong>
+                                        - {{ studentsWithoutGroupExists["message"]}}<now class=""></now>
+                                    </div>
+                                    <a href="{{ path("app_students_generate_groups") }}" class="btn btn-danger btn-load btn-sm">
                                                         <span class="d-flex align-items-center">
                                                             <span class="spinner-grow flex-shrink-0" role="status">
                                                                 <span class="visually-hidden">{{ studentsWithoutGroupExists["button"]}}</span>
@@ -48,12 +49,12 @@
                                                                 {{ studentsWithoutGroupExists["button"]}}
                                                             </span>
                                                         </span>
-                                </a>
+                                    </a>
+                                </div>
                             </div>
+                            <!--end col-->
                         </div>
-                        <!--end col-->
-                    </div>
-                {% endif %}
+                    {% endif %}
                 <!--end row-->
                 <div class="row">
                     <div class="col-xxl-3 col-sm-6">
@@ -142,66 +143,118 @@
                     <!--end col-->
                 </div>
                 <!--end row-->
-
-
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="card">
-                            <div class="card-header d-flex justify-content-between">
-                                <h5 class="card-title mb-0">students List</h5>
-                                <a href="{{ path("app_student_new") }}" class="btn btn-primary btn-icon waves-effect waves-light"><i class=" ri-user-add-line"></i></a>
-                            </div>
-                            <div class="card-body">
-                                <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
-                                    <thead>
-                                    <tr>
-                                        <th scope="col" style="width: 10px;">
-                                            <div class="form-check">
-                                                <input class="form-check-input fs-15" type="checkbox" id="checkAll" value="option">
-                                            </div>
-                                        </th>
-                                        <th data-ordering="false">ID</th>
-                                        <th data-ordering="false">FullName</th>
-                                        <th data-ordering="false">Email</th>
-                                        <th>Action</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% for student in students %}
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between">
+                                    <h5 class="card-title mb-0">students List</h5>
+                                    <a href="{{ path("app_student_new") }}" class="btn btn-primary btn-icon waves-effect waves-light"><i class=" ri-user-add-line"></i></a>
+                                </div>
+                                <div class="card-body">
+                                    <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
+                                        <thead>
                                         <tr>
-                                            <th scope="row">
+                                            <th scope="col" style="width: 10px;">
                                                 <div class="form-check">
-                                                    <input class="form-check-input fs-15" type="checkbox" name="checkAll" value="option1">
+                                                    <input class="form-check-input fs-15" type="checkbox" id="checkAll" value="option">
                                                 </div>
                                             </th>
-                                            <td>{{ student.getId }}</td>
-                                            <td>{{ student.getDisplayName }}</td>
-                                            <td>{{ student.getEmail }}</td>
-                                            <td>
-                                                <div class="dropdown d-inline-block">
-                                                    <button class="btn btn-soft-secondary btn-sm dropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <i class="ri-more-fill align-middle"></i>
-                                                    </button>
-                                                    <ul class="dropdown-menu dropdown-menu-end">
-                                                        <li><a href="{{ path("app_student_show", {'id': student.getId}) }}" class="dropdown-item"><i class="ri-eye-fill align-bottom me-2 text-muted"></i> View</a></li>
-                                                        <li><a class="dropdown-item edit-item-btn"><i class="ri-pencil-fill align-bottom me-2 text-muted"></i> Edit</a></li>
-                                                        <li>
-                                                            {{ include("student/_delete_form.html.twig" ) }}
-
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </td>
+                                            <th data-ordering="false">ID</th>
+                                            <th data-ordering="false">FullName</th>
+                                            <th data-ordering="false">Email</th>
+                                            <th>Action</th>
                                         </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody>
+                                        {% for student in students %}
+                                            <tr>
+                                                <th scope="row">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input fs-15" type="checkbox" name="checkAll" value="option1">
+                                                    </div>
+                                                </th>
+                                                <td>{{ student.getId }}</td>
+                                                <td>{{ student.getDisplayName }}</td>
+                                                <td>{{ student.getEmail }}</td>
+                                                <td>
+                                                    <div class="dropdown d-inline-block">
+                                                        <button class="btn btn-soft-secondary btn-sm dropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                            <i class="ri-more-fill align-middle"></i>
+                                                        </button>
+                                                        <ul class="dropdown-menu dropdown-menu-end">
+                                                            <li><a href="{{ path("app_student_show", {'id': student.getId}) }}" class="dropdown-item"><i class="ri-eye-fill align-bottom me-2 text-muted"></i> View</a></li>
+                                                            <li><a class="dropdown-item edit-item-btn"><i class="ri-pencil-fill align-bottom me-2 text-muted"></i> Edit</a></li>
+                                                            <li>
+                                                                {{ include("student/_delete_form.html.twig" ) }}
+
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div><!--end col-->
+
+                    </div><!--end row-->
+                {% else %}
+                <div class="col-12">
+                    <div class="justify-content-between d-flex align-items-center mt-3 mb-4">
+                        <h5 class="mb-0 pb-1 text-decoration-underline">First Year</h5>
+
+                    </div>
+                    <div class="d-flex mb-4 align-items-center">
+                        <div class="flex-grow-1 ms-2">
+                            <h5 class="card-title mb-1">Genie Informatics :</h5>
+                        </div>
+                    </div>
+                    <div class="row gallery-wrapper">
+
+                        {#                        {% for group in groups %}#}
+                        <div class="element-item col-xxl-3 col-xl-4 col-sm-6 project designing development" data-category="designing development">
+                            <div class="gallery-box card">
+                                <div class="gallery-container">
+                                    <a href="" style="background: #132649">
+                                        <div class="p-3 d-flex justify-content-center pb-5 pt-5">
+                                            <i style="font-weight: bolder; font-size: 4rem; color: #fec112" class="fa-solid fa-a gallery-img"></i>
+                                        </div>
+                                        <div class="gallery-overlay">
+                                            <h5 class="overlay-caption">Number of students : 36</h5>
+                                        </div>
+                                    </a>
+                                </div>
 
                             </div>
                         </div>
-                    </div><!--end col-->
+                        <div class="element-item col-xxl-3 col-xl-4 col-sm-6 project designing development" data-category="designing development">
+                            <div class="gallery-box card">
+                                <div class="gallery-container">
+                                    <a href="" style="background: #132649">
+                                        <div class="p-3 d-flex justify-content-center pb-5 pt-5">
+                                            <i style="font-weight: bolder; font-size: 4rem; color: #fec112" class="fa-solid fa-b gallery-img"></i>
+                                        </div>
+                                        <div class="gallery-overlay">
+                                            <h5 class="overlay-caption">Number of students : 36</h5>
+                                        </div>
+                                    </a>
+                                </div>
 
-                </div><!--end row-->
+                            </div>
+                        </div>
+                        <!-- end col -->
+                        {#                        {% endfor %}#}
+
+
+                    </div>
+
+                </div>
+                {% endif %}
+
+
 
 
             </div>
@@ -243,6 +296,14 @@
 <script src="{{ asset("assets/js/pages/sweetalerts.init.js") }}"></script>
 <!-- App js -->
 <script src="{{ asset("assets/js/app.js") }}"></script>
+<!-- glightbox js -->
+<script src="{{ asset("assets/libs/glightbox/js/glightbox.min.js") }}"></script>
+
+<!-- isotope-layout -->
+<script src="{{ asset("assets/libs/isotope-layout/isotope.pkgd.min.js") }}"></script>
+
+<script src="{{ asset("assets/js/pages/gallery.init.js") }}"></script>
+<script src="https://kit.fontawesome.com/000a7e5c15.js" crossorigin="anonymous"></script>
 
 </body>
 

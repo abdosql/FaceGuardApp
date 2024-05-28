@@ -1,99 +1,149 @@
+
 from flask import Flask, request, jsonify
 from ortools.sat.python import cp_model
-
+import serial
+import time
 app = Flask(__name__)
-
-
-def generate_schedule(groups, teachers, classrooms, course_sessions):
+# Serial port configuration
+SERIAL_PORT = "COM8"  # Adjust as per your Arduino's serial port
+BAUD_RATE = 9600
+ser = serial.Serial(SERIAL_PORT, BAUD_RATE, timeout=1)
+def create_and_solve_schedule(groups, teachers, classrooms, course_sessions, num_days=6, num_slots=4):
     model = cp_model.CpModel()
-    x = {}  # x[group][day][slot][course][teacher][classroom]
-    for group in groups:
-        x[group] = {}
-        for day in range(6):
-            x[group][day] = {}
-            for slot in range(5):
-                x[group][day][slot] = {}
-                for course in groups[group]:
-                    x[group][day][slot][course] = {}
-                    for teacher in teachers:
-                        x[group][day][slot][course][teacher] = {}
-                        for classroom in range(classrooms):
-                            var_name = f"x_g{group}_d{day}_s{slot}_c{course}_t{teacher}_r{classroom}"
-                            x[group][day][slot][course][teacher][classroom] = model.NewBoolVar(var_name)
+
+    # Variables
+    x = {}  # x[year][department][group][day][slot][course][teacher][classroom]
+    for year in groups:
+        x[year] = {}
+        for department in groups[year]:
+            x[year][department] = {}
+            for group in groups[year][department]:
+                x[year][department][group] = {}
+                for day in range(num_days):
+                    x[year][department][group][day] = {}
+                    for slot in range(num_slots):
+                        x[year][department][group][day][slot] = {}
+                        for course in groups[year][department][group]:
+                            x[year][department][group][day][slot][course] = {}
+                            for teacher in teachers:
+                                if course in teachers[teacher]:
+                                    x[year][department][group][day][slot][course][teacher] = {}
+                                    for classroom in range(classrooms):
+                                        var_name = f"x_{year}_{department}_{group}_d{day}_s{slot}_c{course}_t{teacher}_r{classroom}"
+                                        x[year][department][group][day][slot][course][teacher][classroom] = model.NewBoolVar(var_name)
 
     # Constraint: Each course is scheduled for the specified number of sessions per week per group
-    for group in groups:
-        for course in groups[group]:
-            model.Add(sum(x[group][day][slot][course][teacher][classroom]
-                          for day in range(5)
-                          for slot in range(4)
-                          for teacher in teachers if course in teachers[teacher]
-                          for classroom in range(classrooms)) == course_sessions.get(course, 2))
+    for year in groups:
+        for department in groups[year]:
+            for group in groups[year][department]:
+                for course in groups[year][department][group]:
+                    model.Add(sum(x[year][department][group][day][slot][course][teacher][classroom]
+                                  for day in range(num_days)
+                                  for slot in range(num_slots)
+                                  for teacher in teachers if course in teachers[teacher]
+                                  for classroom in range(classrooms)) == course_sessions.get(course, 2))
 
     # Constraint: Each teacher teaches at most one course per group per time slot
     for teacher in teachers:
-        for day in range(5):
-            for slot in range(4):
-                model.Add(sum(x[group][day][slot][course][teacher][classroom]
-                              for group in groups
-                              for course in groups[group] if course in teachers[teacher]
+        for day in range(num_days):
+            for slot in range(num_slots):
+                model.Add(sum(x[year][department][group][day][slot][course][teacher][classroom]
+                              for year in groups
+                              for department in groups[year]
+                              for group in groups[year][department]
+                              for course in groups[year][department][group] if course in teachers[teacher]
                               for classroom in range(classrooms)) <= 1)
 
     # Constraint: Each classroom hosts at most one group per time slot
     for classroom in range(classrooms):
-        for day in range(5):
-            for slot in range(4):
-                model.Add(sum(x[group][day][slot][course][teacher][classroom]
-                              for group in groups
-                              for course in groups[group]
+        for day in range(num_days):
+            for slot in range(num_slots):
+                model.Add(sum(x[year][department][group][day][slot][course][teacher][classroom]
+                              for year in groups
+                              for department in groups[year]
+                              for group in groups[year][department]
+                              for course in groups[year][department][group]
                               for teacher in teachers if course in teachers[teacher]) <= 1)
 
     # Constraint: Each group attends at most one course per slot
-    for group in groups:
-        for day in range(5):
-            model.Add(sum(x[group][day][slot][course][teacher][classroom]
-                          for course in groups[group]
-                          for teacher in teachers if course in teachers[teacher]
-                          for classroom in range(classrooms)) <= 1)
+    for year in groups:
+        for department in groups[year]:
+            for group in groups[year][department]:
+                for day in range(num_days):
+                    for slot in range(num_slots):
+                        model.Add(sum(x[year][department][group][day][slot][course][teacher][classroom]
+                                      for course in groups[year][department][group]
+                                      for teacher in teachers if course in teachers[teacher]
+                                      for classroom in range(classrooms)) <= 1)
 
-    # Solve the model
+    # Solve the model with a higher time limit
     solver = cp_model.CpSolver()
-    solver.parameters.max_time_in_seconds = 60.0
+    solver.parameters.max_time_in_seconds = 2400
     status = solver.Solve(model)
 
     if status == cp_model.OPTIMAL or status == cp_model.FEASIBLE:
         solution = {}
-        for group in groups:
-            solution[group] = {}
-            for day in range(5):
-                solution[group][day] = {}
-                for slot in range(4):
-                    solution[group][day][slot] = None
-                    for course in groups[group]:
-                        for teacher in teachers:
-                            for classroom in range(classrooms):
-                                if solver.Value(x[group][day][slot][course][teacher][classroom]):
-                                    solution[group][day][slot] = (course, teacher, classroom)
+        for year in groups:
+            solution[year] = {}
+            for department in groups[year]:
+                solution[year][department] = {}
+                for group in groups[year][department]:
+                    solution[year][department][group] = {}
+                    for day in range(num_days):
+                        solution[year][department][group][day] = {}
+                        for slot in range(num_slots):
+                            solution[year][department][group][day][slot] = None
+                            for course in groups[year][department][group]:
+                                for teacher in teachers:
+                                    if course in teachers[teacher]:
+                                        for classroom in range(classrooms):
+                                            if solver.Value(x[year][department][group][day][slot][course][teacher][classroom]):
+                                                solution[year][department][group][day][slot] = (course, teacher, classroom)
+
         return solution
     else:
-        return None
+        return {"error": "No solution found."}
+def write_to_arduino(rfid_data):
+    # Write the RFID data to the Arduino
+    ser.write(rfid_data.encode())
 
-
+    # Wait for the success message from the Arduino
+    start_time = time.time()
+    timeout = 120  # 2 minutes in seconds
+    while True:
+        if ser.in_waiting > 0:
+            response = ser.readline().decode().strip()
+            if response == "Write successful":
+                return response
+        if time.time() - start_time >= timeout:
+            return "Timeout reached, no success message received."
+        time.sleep(0.1)  # Delay to avoid excessive CPU usage
 @app.route('/schedule', methods=['POST'])
 def schedule():
-    data = request.get_json()
-    groups = data['groups']
-    teachers = data['teachers']
-    classrooms = data['classrooms']
-    course_sessions = data['course_sessions']
+    data = request.json
 
-    schedule_solution = generate_schedule(groups, teachers, classrooms, course_sessions)
+    groups = data.get('groups')
+    teachers = data.get('teachers')
+    classrooms = data.get('classrooms')
+    course_sessions = data.get('course_sessions')
+    days = data.get('days')
+    slots_per_day = data.get('slots_per_day')
 
-    if schedule_solution:
-        return jsonify(schedule_solution), 200
-    else:
-        return jsonify({"error": "No feasible schedule could be found"}), 400
+    # Call the scheduling function
+    result = create_and_solve_schedule(groups, teachers, classrooms, course_sessions, days, slots_per_day)
 
+    return jsonify(result)
+@app.route('/write-rfid', methods=['POST'])
+def write_rfid():
+    try:
+        # Get RFID data from the request
+        rfid_data = request.json.get('rfid')
+        print(rfid_data)
+        # Write RFID data to Arduino
+        response = write_to_arduino(rfid_data)
 
-if __name__ == "__main__":
+        return jsonify({'status': 'success', 'response': response}), 200
+    except Exception as e:
+        return jsonify({'status': 'error', 'error': str(e)}), 500
+if __name__ == '__main__':
     app.run(debug=True)

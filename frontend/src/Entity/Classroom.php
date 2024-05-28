@@ -18,11 +18,19 @@ class Classroom
     #[ORM\Column]
     private ?int $classroom_number = null;
 
-    #[ORM\OneToOne(mappedBy: 'classroom', cascade: ['persist', 'remove'])]
-    private ?Session $session = null;
-
     #[ORM\Column]
     private ?bool $available = null;
+
+    /**
+     * @var Collection<int, Session>
+     */
+    #[ORM\OneToMany(targetEntity: Session::class, mappedBy: 'classroom')]
+    private Collection $sessions;
+
+    public function __construct()
+    {
+        $this->sessions = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -41,22 +49,6 @@ class Classroom
         return $this;
     }
 
-    public function getSession(): ?Session
-    {
-        return $this->session;
-    }
-
-    public function setSession(Session $session): static
-    {
-        // set the owning side of the relation if necessary
-        if ($session->getClassroom() !== $this) {
-            $session->setClassroom($this);
-        }
-
-        $this->session = $session;
-
-        return $this;
-    }
 
     public function isAvailable(): ?bool
     {
@@ -66,6 +58,36 @@ class Classroom
     public function setAvailable(bool $available): static
     {
         $this->available = $available;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Session>
+     */
+    public function getSessions(): Collection
+    {
+        return $this->sessions;
+    }
+
+    public function addSession(Session $session): static
+    {
+        if (!$this->sessions->contains($session)) {
+            $this->sessions->add($session);
+            $session->setClassroom($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSession(Session $session): static
+    {
+        if ($this->sessions->removeElement($session)) {
+            // set the owning side to null (unless already changed)
+            if ($session->getClassroom() === $this) {
+                $session->setClassroom(null);
+            }
+        }
 
         return $this;
     }

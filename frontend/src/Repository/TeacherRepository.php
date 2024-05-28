@@ -30,16 +30,16 @@ class TeacherRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
-public function getCoursesByTeacher(Teacher $teacher): array
-{
-    return array_column($this->createQueryBuilder("t")
-        ->select("c.course_name AS course_name")
-        ->leftJoin("t.courses", "c")
-        ->andWhere("t = :teacher")
-        ->setParameter("teacher", $teacher)
-        ->getQuery()
-        ->getScalarResult(), 'course_name');
-}
+    public function getCoursesByTeacher(Teacher $teacher): array
+    {
+        return array_column($this->createQueryBuilder("t")
+            ->select("c.course_name AS course_name")
+            ->leftJoin("t.courses", "c")
+            ->andWhere("t = :teacher")
+            ->setParameter("teacher", $teacher)
+            ->getQuery()
+            ->getScalarResult(), 'course_name');
+    }
 //    /**
 //     * @return Teacher[] Returns an array of Teacher objects
 //     */

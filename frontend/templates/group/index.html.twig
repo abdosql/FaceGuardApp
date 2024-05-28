@@ -1,20 +1,80 @@
-<!DOCTYPE html>
+{{ include('partials/main.html.twig') }}
 
-<title>Hello GroupController!</title>
+<head>
 
-{% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    {{ include('partials/title-meta.html.twig', {title: 'Schdeules List'}) }}
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    {{ include('partials/head-css.html.twig') }}
+    <!-- glightbox css -->
+    <link rel="stylesheet" href="{{ asset('assets/libs/glightbox/css/glightbox.min.css') }}">
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>C:/Users/seqqal/Documents/GitHub/Projects/PFA/FaceGuardApp/frontend/src/Controller/GroupController.php</code></li>
-        <li>Your template at <code>C:/Users/seqqal/Documents/GitHub/Projects/PFA/FaceGuardApp/frontend/templates/group/index.html.twig</code></li>
-    </ul>
+</head>
+
+<body>
+
+<!-- Begin page -->
+<div id="layout-wrapper">
+
+    {{ include('partials/menu.html.twig') }}
+
+    <!-- ============================================================== -->
+    <!-- Start right Content here -->
+    <!-- ============================================================== -->
+    <div class="main-content">
+        <div class="page-content">
+            <div class="container-fluid">
+                {{ include('partials/page-title.html.twig', {pagetitle: 'Schedules', title: 'Goups'}) }}
+                <div class="row gallery-wrapper">
+                    {% for group in groups %}
+                        <div class="element-item col-xxl-3 col-xl-4 col-sm-6 project designing development" data-category="designing development">
+                            <div class="gallery-box card">
+                                <div class="gallery-container">
+                                    <a href="{{ path("app_group_schedule", {'id': group[0].getId}) }}" style="background: #132649">
+                                        <div class="p-3 d-flex justify-content-center pb-5 pt-5">
+                                            <i style="font-weight: bolder; font-size: 4rem; color: #fec112" class="fa-solid fa-{{ group[0].getGroupName| lower}} gallery-img"></i>
+                                        </div>
+                                        <div class="gallery-overlay">
+                                            <h5 class="overlay-caption">Number of students : {{ group.studentsCount }}</h5>
+                                        </div>
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
+                        <!-- end col -->
+                    {% endfor %}
+
+
+                </div>
+            </div>
+            <!-- container-fluid -->
+        </div>
+        <!-- End Page-content -->
+
+        {{ include('partials/footer.html.twig') }}
+    </div>
+    <!-- end main content-->
+
 </div>
-{% endblock %}
+<!-- END layout-wrapper -->
+
+
+
+{{ include('partials/customizer.html.twig') }}
+
+{{ include('partials/vendor-scripts.html.twig') }}
+
+<!-- App js -->
+<script src="{{ absolute_url(asset("assets/js/app.js")) }}"></script>
+<!-- glightbox js -->
+<script src="{{ asset("assets/libs/glightbox/js/glightbox.min.js") }}"></script>
+
+<!-- isotope-layout -->
+<script src="{{ asset("assets/libs/isotope-layout/isotope.pkgd.min.js") }}"></script>
+
+<script src="{{ asset("assets/js/pages/gallery.init.js") }}"></script>
+<script src="https://kit.fontawesome.com/000a7e5c15.js" crossorigin="anonymous"></script>
+
+</body>
+
+</html>

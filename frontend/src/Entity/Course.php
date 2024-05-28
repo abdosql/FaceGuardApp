@@ -29,16 +29,27 @@ class Course
     #[ORM\Column(type: Types::INTEGER)]
     private ?int $course_duration = null;
 
-    #[ORM\OneToOne(mappedBy: 'course', cascade: ['persist', 'remove'])]
-    private ?Session $session = null;
-
     #[ORM\ManyToMany(targetEntity: Semester::class, inversedBy: 'courses')]
     private Collection $semesters;
+
+    /**
+     * @var Collection<int, Session>
+     */
+    #[ORM\OneToMany(targetEntity: Session::class, mappedBy: 'course')]
+    private Collection $sessions;
+
+    /**
+     * @var Collection<int, AcademicYear>
+     */
+    #[ORM\ManyToMany(targetEntity: AcademicYear::class, inversedBy: 'courses')]
+    private Collection $academicYears;
 
     public function __construct()
     {
         $this->branches = new ArrayCollection();
         $this->semesters = new ArrayCollection();
+        $this->sessions = new ArrayCollection();
+        $this->academicYears = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -109,23 +120,6 @@ class Course
         return $this;
     }
 
-    public function getSession(): ?Session
-    {
-        return $this->session;
-    }
-
-    public function setSession(Session $session): static
-    {
-        // set the owning side of the relation if necessary
-        if ($session->getCourse() !== $this) {
-            $session->setCourse($this);
-        }
-
-        $this->session = $session;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, Semester>
      */
@@ -146,6 +140,60 @@ class Course
     public function removeSemester(Semester $semester): static
     {
         $this->semesters->removeElement($semester);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Session>
+     */
+    public function getSessions(): Collection
+    {
+        return $this->sessions;
+    }
+
+    public function addSession(Session $session): static
+    {
+        if (!$this->sessions->contains($session)) {
+            $this->sessions->add($session);
+            $session->setCourse($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSession(Session $session): static
+    {
+        if ($this->sessions->removeElement($session)) {
+            // set the owning side to null (unless already changed)
+            if ($session->getCourse() === $this) {
+                $session->setCourse(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, AcademicYear>
+     */
+    public function getAcademicYears(): Collection
+    {
+        return $this->academicYears;
+    }
+
+    public function addAcademicYear(AcademicYear $academicYear): static
+    {
+        if (!$this->academicYears->contains($academicYear)) {
+            $this->academicYears->add($academicYear);
+        }
+
+        return $this;
+    }
+
+    public function removeAcademicYear(AcademicYear $academicYear): static
+    {
+        $this->academicYears->removeElement($academicYear);
 
         return $this;
     }

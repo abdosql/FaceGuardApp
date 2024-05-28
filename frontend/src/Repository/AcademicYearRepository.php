@@ -28,6 +28,21 @@ class AcademicYearRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+    public function getAcademicYearWithBranchesAndCountOfGroups(): array
+    {
+        return $this->createQueryBuilder('a')
+            ->leftJoin('a.branches', 'b')
+            ->leftJoin('b.groups', 'g')
+            ->addSelect('b', 'COUNT(DISTINCT g.id) as groupsCount')
+            ->groupBy('a.id, b.id')
+            ->getQuery()
+            ->getResult();
+    }
+
+
+
+
+
 
     //    /**
     //     * @return AcademicYears[] Returns an array of AcademicYears objects

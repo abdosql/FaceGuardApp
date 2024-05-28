@@ -10,6 +10,7 @@ use App\Services\notificationServices\EmailNotificationService;
 use App\Services\userServices\StudentService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
@@ -26,12 +27,17 @@ class StudentController extends AbstractController
     }
 
     #[Route('/', name: 'app_student_index', methods: ['GET'])]
-    public function index(): Response
+    public function index(Security $security): Response
     {
-        $this->denyAccessUnlessGranted("ROLE_ADMIN");
-        //dd($this->studentService->syncNewStudentsToCovenantGroup($this->groupService, 36));
-//        dd($this->groupService->getGroupsByBranchAndYear("First Year", "computer engineering"));
-
+        $user = $this->getUser();
+        if(!$this->isGranted('ROLE_ADMIN') && !$this->isGranted('ROLE_TEACHER')){
+            throw $this->createAccessDeniedException('not allowed');
+        }
+        if ($this->isGranted('ROLE_TEACHER')){
+            return $this->render('student/index.html.twig', [
+//                'students' => $this->studentService->getStudentsByTeacher($user)
+            ]);
+        }
         return $this->render('student/index.html.twig', [
             'students' => $this->studentService->getAllStudents(),
             'studentsWithoutGroupExists' => $this->studentService->studentsWithoutGroupExist(),
@@ -105,5 +111,7 @@ class StudentController extends AbstractController
         $this->studentService->AssignStudentsToCovenantGroupRandomly(36);
         return $this->redirectToRoute("app_student_index");
     }
+
+
 
 }

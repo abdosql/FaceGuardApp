@@ -23,13 +23,25 @@ class Semester
 
     /**
      * @var Collection<int, TimeSchedule>
+     *
+
+    /**
+     * @var Collection<int, AcademicYear>
      */
-    #[ORM\OneToMany(targetEntity: TimeSchedule::class, mappedBy: 'semester', orphanRemoval: true)]
+    #[ORM\ManyToMany(targetEntity: AcademicYear::class, mappedBy: 'semesters')]
+    private Collection $academicYears;
+
+    /**
+     * @var Collection<int, TimeSchedule>
+     */
+    #[ORM\OneToMany(targetEntity: TimeSchedule::class, mappedBy: 'semester')]
     private Collection $timeSchedules;
+
 
     public function __construct()
     {
         $this->courses = new ArrayCollection();
+        $this->academicYears = new ArrayCollection();
         $this->timeSchedules = new ArrayCollection();
     }
 
@@ -77,6 +89,34 @@ class Semester
         return $this;
     }
 
+
+    /**
+     * @return Collection<int, AcademicYear>
+     */
+    public function getAcademicYears(): Collection
+    {
+        return $this->academicYears;
+    }
+
+    public function addAcademicYear(AcademicYear $academicYear): static
+    {
+        if (!$this->academicYears->contains($academicYear)) {
+            $this->academicYears->add($academicYear);
+            $academicYear->addSemester($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAcademicYear(AcademicYear $academicYear): static
+    {
+        if ($this->academicYears->removeElement($academicYear)) {
+            $academicYear->removeSemester($this);
+        }
+
+        return $this;
+    }
+
     /**
      * @return Collection<int, TimeSchedule>
      */
@@ -106,4 +146,7 @@ class Semester
 
         return $this;
     }
+
+
+
 }

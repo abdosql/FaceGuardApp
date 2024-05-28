@@ -13,12 +13,15 @@ class DashboardController extends AbstractController
     #[Route(['/'], name: 'app_dashboard_index')]
     public function index(Security $security): Response
     {
+        if(!$this->isGranted('ROLE_ADMIN') && !$this->isGranted('ROLE_TEACHER')){
+            throw $this->createAccessDeniedException('not allowed');
+        }
         $user = $security->getUser();
         $courses = null;
         if ($user instanceof Teacher) {
             $courses = $user->getCourses();
         }
-        $this->denyAccessUnlessGranted("ROLE_ADMIN");
+
         return $this->render('dashboard/index.html.twig', [
             'controller_name' => 'DashboardController',
             'courses' => $courses,

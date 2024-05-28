@@ -68,7 +68,6 @@ class TeacherService extends UserService
         $this->entityManager->remove($teacher);
         $this->entityManager->flush();
     }
-    
 
 
 

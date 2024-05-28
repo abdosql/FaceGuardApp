@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: TimeScheduleRepository::class)]
+
 class TimeSchedule
 {
     #[ORM\Id]
@@ -15,15 +16,18 @@ class TimeSchedule
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToMany(targetEntity: Session::class, inversedBy: 'timeSchedules')]
-    private Collection $sessions;
-
     #[ORM\OneToOne(inversedBy: 'timeSchedule', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(unique: true, nullable: false)]
     private ?Group $group_ = null;
 
+
+    /**
+     * @var Collection<int, Session>
+     */
+    #[ORM\OneToMany(targetEntity: Session::class, mappedBy: 'timeSchedule')]
+    private Collection $sessions;
+
     #[ORM\ManyToOne(inversedBy: 'timeSchedules')]
-    #[ORM\JoinColumn(nullable: false)]
     private ?Semester $semester = null;
 
     public function __construct()
@@ -34,6 +38,18 @@ class TimeSchedule
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getGroup(): ?Group
+    {
+        return $this->group_;
+    }
+
+    public function setGroup(Group $group_): static
+    {
+        $this->group_ = $group_;
+
+        return $this;
     }
 
     /**
@@ -48,6 +64,7 @@ class TimeSchedule
     {
         if (!$this->sessions->contains($session)) {
             $this->sessions->add($session);
+            $session->setTimeSchedule($this);
         }
 
         return $this;
@@ -55,19 +72,12 @@ class TimeSchedule
 
     public function removeSession(Session $session): static
     {
-        $this->sessions->removeElement($session);
-
-        return $this;
-    }
-
-    public function getGroup(): ?Group
-    {
-        return $this->group_;
-    }
-
-    public function setGroup(Group $group_): static
-    {
-        $this->group_ = $group_;
+        if ($this->sessions->removeElement($session)) {
+            // set the owning side to null (unless already changed)
+            if ($session->getTimeSchedule() === $this) {
+                $session->setTimeSchedule(null);
+            }
+        }
 
         return $this;
     }

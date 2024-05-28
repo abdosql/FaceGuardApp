@@ -32,11 +32,27 @@ class AcademicYear
     #[ORM\ManyToMany(targetEntity: Group::class, mappedBy: 'academicYear')]
     private Collection $groups;
 
+    /**
+     * @var Collection<int, Semester>
+     */
+    #[ORM\ManyToMany(targetEntity: Semester::class, inversedBy: 'academicYears')]
+    private Collection $semesters;
+
+    /**
+     * @var Collection<int, Course>
+     */
+    #[ORM\ManyToMany(targetEntity: Course::class, mappedBy: 'academicYears')]
+    private Collection $courses;
+
+
+
     public function __construct()
     {
         $this->students = new ArrayCollection();
         $this->branches = new ArrayCollection();
         $this->groups = new ArrayCollection();
+        $this->semesters = new ArrayCollection();
+        $this->courses = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -148,5 +164,57 @@ class AcademicYear
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, Semester>
+     */
+    public function getSemesters(): Collection
+    {
+        return $this->semesters;
+    }
+
+    public function addSemester(Semester $semester): static
+    {
+        if (!$this->semesters->contains($semester)) {
+            $this->semesters->add($semester);
+        }
+
+        return $this;
+    }
+
+    public function removeSemester(Semester $semester): static
+    {
+        $this->semesters->removeElement($semester);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Course>
+     */
+    public function getCourses(): Collection
+    {
+        return $this->courses;
+    }
+
+    public function addCourse(Course $course): static
+    {
+        if (!$this->courses->contains($course)) {
+            $this->courses->add($course);
+            $course->addAcademicYear($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCourse(Course $course): static
+    {
+        if ($this->courses->removeElement($course)) {
+            $course->removeAcademicYear($this);
+        }
+
+        return $this;
+    }
+
 
 }

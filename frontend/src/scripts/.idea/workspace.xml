@@ -5,14 +5,74 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b5cdb73a-30f8-47b9-abe8-b3bffade9398" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../Services/ScheduleApiService.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/benchmark_results.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/benchmarks.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../templates/student/_rfidModal.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../.env.local.php" beforeDir="false" afterPath="$PROJECT_DIR$/../../.env.local.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../assets/js/pages/calendar.init.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../assets/js/pages/calendar.init.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../assets/js/pages/dashboard-analytics.init.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../assets/js/pages/dashboard-analytics.init.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../composer.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../../composer.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../config/packages/security.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../../config/packages/security.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../config/services.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/../../config/services.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../public/assets/js/pages/calendar.init.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../public/assets/js/pages/calendar.init.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../public/assets/js/pages/dashboard-analytics.init.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../public/assets/js/pages/dashboard-analytics.init.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../public/assets/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../public/assets/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Controller/AdminController.php" beforeDir="false" afterPath="$PROJECT_DIR$/../Controller/AdminController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Controller/DashboardController.php" beforeDir="false" afterPath="$PROJECT_DIR$/../Controller/DashboardController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Controller/GroupController.php" beforeDir="false" afterPath="$PROJECT_DIR$/../Controller/GroupController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Controller/ScheduleController.php" beforeDir="false" afterPath="$PROJECT_DIR$/../Controller/ScheduleController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Controller/StudentController.php" beforeDir="false" afterPath="$PROJECT_DIR$/../Controller/StudentController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Controller/TeacherController.php" beforeDir="false" afterPath="$PROJECT_DIR$/../Controller/TeacherController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Controller/TestController.php" beforeDir="false" afterPath="$PROJECT_DIR$/../Controller/TestController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DataFixtures/AppFixtures.php" beforeDir="false" afterPath="$PROJECT_DIR$/../DataFixtures/AppFixtures.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Entity/AcademicYear.php" beforeDir="false" afterPath="$PROJECT_DIR$/../Entity/AcademicYear.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Entity/Classroom.php" beforeDir="false" afterPath="$PROJECT_DIR$/../Entity/Classroom.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Entity/Course.php" beforeDir="false" afterPath="$PROJECT_DIR$/../Entity/Course.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Entity/Group.php" beforeDir="false" afterPath="$PROJECT_DIR$/../Entity/Group.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Entity/Semester.php" beforeDir="false" afterPath="$PROJECT_DIR$/../Entity/Semester.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Entity/Session.php" beforeDir="false" afterPath="$PROJECT_DIR$/../Entity/Session.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Entity/TimeSchedule.php" beforeDir="false" afterPath="$PROJECT_DIR$/../Entity/TimeSchedule.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Factory/CourseFactory.php" beforeDir="false" afterPath="$PROJECT_DIR$/../Factory/CourseFactory.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Repository/AcademicYearRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/../Repository/AcademicYearRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Repository/GroupRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/../Repository/GroupRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Repository/SessionRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/../Repository/SessionRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Repository/StudentRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/../Repository/StudentRepository.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Repository/TeacherRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/../Repository/TeacherRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Repository/TimeScheduleRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/../Repository/TimeScheduleRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Services/AcademicYearService.php" beforeDir="false" afterPath="$PROJECT_DIR$/../Services/AcademicYearService.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Services/AutoGeneratorsServices/TimeScheduleGenerator.php" beforeDir="false" afterPath="$PROJECT_DIR$/../Services/AutoGeneratorsServices/TimeScheduleGenerator.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Services/ClassroomService.php" beforeDir="false" afterPath="$PROJECT_DIR$/../Services/ClassroomService.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Services/CourseService.php" beforeDir="false" afterPath="$PROJECT_DIR$/../Services/CourseService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Services/GroupService.php" beforeDir="false" afterPath="$PROJECT_DIR$/../Services/GroupService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Services/RfidService.php" beforeDir="false" afterPath="$PROJECT_DIR$/../Services/RfidService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Services/ScheduleApiService.php" beforeDir="false" afterPath="$PROJECT_DIR$/../Services/ScheduleApiService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Services/ScheduleService.php" beforeDir="false" afterPath="$PROJECT_DIR$/../Services/ScheduleService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Services/SemesterService.php" beforeDir="false" afterPath="$PROJECT_DIR$/../Services/SemesterService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Services/settingsServices/settings/scheduleSettings.json" beforeDir="false" afterPath="$PROJECT_DIR$/../Services/settingsServices/settings/scheduleSettings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Services/userServices/StudentService.php" beforeDir="false" afterPath="$PROJECT_DIR$/../Services/userServices/StudentService.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Services/userServices/TeacherService.php" beforeDir="false" afterPath="$PROJECT_DIR$/../Services/userServices/TeacherService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/benchmark graphes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../templates/dashboard/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/../../templates/dashboard/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../templates/group/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/../../templates/group/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../templates/partials/_topbar.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/../../templates/partials/_topbar.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../templates/partials/apps/_calendar.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/../../templates/partials/apps/_calendar.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../templates/partials/customizer.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/../../templates/partials/customizer.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../templates/partials/sidebarLinks/_teacher.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/../../templates/partials/sidebarLinks/_teacher.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../templates/schedule/_calendar.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/../../templates/schedule/_calendar.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../templates/schedule/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/../../templates/schedule/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../templates/schedule/schedule.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/../../templates/schedule/schedule.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../templates/security/login.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/../../templates/security/login.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../templates/settings/modals/_scheduleModal.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/../../templates/settings/modals/_scheduleModal.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../templates/student/_form.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/../../templates/student/_form.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../templates/student/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/../../templates/student/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../templates/student/new.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/../../templates/student/new.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../templates/student/students.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/../../templates/student/students.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../templates/teacher/new.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/../../templates/teacher/new.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../templates/teacher/show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/../../templates/teacher/show.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../templates/test/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/../../templates/test/index.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,13 +110,24 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Flask server.Flask (benchmarks.py).executor": "Run",
+    "Flask server.Flask (main.py).executor": "Run",
+    "Flask server.Flask (test.py).executor": "Run",
+    "Flask server.Flask (test2.py).executor": "Run",
+    "Flask server.scripts.executor": "Run",
+    "Python.FET.executor": "Run",
+    "Python.benchmark graphes.executor": "Run",
+    "Python.finalone.executor": "Run",
     "Python.main.executor": "Run",
     "Python.scheduleGenartor.executor": "Run",
     "Python.schedule_generator.executor": "Run",
+    "Python.test.executor": "Run",
+    "Python.test2.executor": "Run",
+    "Python.working.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "tests/genratorScript",
-    "last_opened_file_path": "C:/Users/seqqal/.venv",
+    "git-widget-placeholder": "semiFinal",
+    "last_opened_file_path": "C:/Users/seqqal/.venv/Scripts",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -66,6 +137,51 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\seqqal\Documents\GitHub\Projects\PFA\FaceGuardApp\frontend\src\scripts\fet" />
+      <recent name="C:\Users\seqqal\Documents\GitHub\Projects\PFA\FaceGuardApp\frontend\src\scripts" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="Flask (test.py)" type="Python.FlaskServer" temporary="true" nameIsGenerated="true">
+      <module name="scripts" />
+      <option name="target" value="$PROJECT_DIR$/test.py" />
+      <option name="targetType" value="PATH" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration name="scripts" type="Python.FlaskServer">
+      <module name="scripts" />
+      <option name="target" value="$PROJECT_DIR$/main.py" />
+      <option name="targetType" value="PATH" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Flask server.Flask (test.py)" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -84,7 +200,15 @@
       <workItem from="1715363465984" duration="1503000" />
       <workItem from="1715365197863" duration="3152000" />
       <workItem from="1715377853872" duration="3436000" />
-      <workItem from="1715396405555" duration="3616000" />
+      <workItem from="1715396405555" duration="7205000" />
+      <workItem from="1715697096169" duration="12138000" />
+      <workItem from="1715744585735" duration="7252000" />
+      <workItem from="1715859723866" duration="773000" />
+      <workItem from="1715907022671" duration="16513000" />
+      <workItem from="1715942758855" duration="36351000" />
+      <workItem from="1716412187215" duration="1190000" />
+      <workItem from="1716761144022" duration="3450000" />
+      <workItem from="1716899372742" duration="14982000" />
     </task>
     <servers />
   </component>
@@ -92,8 +216,19 @@
     <option name="version" value="3" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/scripts$scripts.coverage" NAME="scripts Coverage Results" MODIFIED="1716909507229" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/scripts$scheduleGenartor.coverage" NAME="scheduleGenartor Coverage Results" MODIFIED="1715397137004" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/scripts$Flask__benchmarks_py_.coverage" NAME="Flask (benchmarks.py) Coverage Results" MODIFIED="1716915322499" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/scripts$schedule_generator.coverage" NAME="schedule_generator Coverage Results" MODIFIED="1715397282240" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/scripts$main.coverage" NAME="main Coverage Results" MODIFIED="1715402926714" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/scripts$Flask__test_py_.coverage" NAME="Flask (test.py) Coverage Results" MODIFIED="1715949172248" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/scripts$Flask__test2_py_.coverage" NAME="Flask (test2.py) Coverage Results" MODIFIED="1716367794043" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/scripts$working.coverage" NAME="working Coverage Results" MODIFIED="1715954110831" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/scripts$Flask__main_py_.coverage" NAME="Flask (main.py) Coverage Results" MODIFIED="1716405918539" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/scripts$test.coverage" NAME="test Coverage Results" MODIFIED="1715953289255" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/scripts$test2.coverage" NAME="test2 Coverage Results" MODIFIED="1715953092710" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/scripts$finalone.coverage" NAME="finalone Coverage Results" MODIFIED="1715953235070" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$USER_HOME$/Desktop" />
+    <SUITE FILE_PATH="coverage/scripts$benchmark_graphes.coverage" NAME="benchmark graphes Coverage Results" MODIFIED="1716916124647" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/scripts$main.coverage" NAME="main Coverage Results" MODIFIED="1715919718210" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/scripts$FET.coverage" NAME="FET Coverage Results" MODIFIED="1716924741728" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/fet" />
   </component>
 </project>

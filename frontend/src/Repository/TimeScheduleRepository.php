@@ -21,6 +21,25 @@ class TimeScheduleRepository extends ServiceEntityRepository
         parent::__construct($registry, TimeSchedule::class);
     }
 
+    public function findBySemesterAndGroup($semesterId, $groupId)
+    {
+        return $this->createQueryBuilder('ts')
+            ->leftJoin('ts.sessions', 's')
+            ->addSelect('s')
+            ->leftJoin('s.course', 'c')
+            ->addSelect('c')
+            ->leftJoin('s.classroom', 'cl')
+            ->addSelect('cl')
+            ->where('ts.semester = :semesterId')
+            ->andWhere('ts.group_ = :groupId')
+            ->setParameter('semesterId', $semesterId)
+            ->setParameter('groupId', $groupId)
+            ->getQuery()
+            ->getResult();
+    }
+
+
+
     //    /**
     //     * @return TimeSchedule[] Returns an array of TimeSchedule objects
     //     */

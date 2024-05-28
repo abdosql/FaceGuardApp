@@ -17,6 +17,10 @@ class CourseService
         return $this->entityManager->getRepository(Course::class)->findAll();
     }
 
+    public function getCourseById(int $id): Course
+    {
+        return $this->entityManager->getRepository(Course::class)->find($id);
+    }
     public function getCourseDuration(Course $course): int
     {
         return $course->getCourseDuration();

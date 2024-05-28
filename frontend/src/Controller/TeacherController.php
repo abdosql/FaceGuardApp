@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Teacher;
 use App\Form\TeacherType;
 use App\Services\notificationServices\EmailNotificationService;
+use App\Services\ScheduleService;
 use App\Services\userServices\TeacherService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,6 +18,7 @@ class TeacherController extends AbstractController
 {
     public function __construct(
         private TeacherService $teacherService,
+        private ScheduleService $scheduleService,
     )
     {
     }
@@ -62,9 +64,13 @@ class TeacherController extends AbstractController
     #[Route('/{id}', name: 'app_teacher_show', methods: ['GET'])]
     public function show(Teacher $teacher): Response
     {
+//        dd($this->scheduleService->findTeacherSessions($teacher->getId()));
         return $this->render('teacher/show.html.twig', [
             'user' => $teacher,
-            'studentsCount' => $this->teacherService->countStudentsByTeacher($teacher)
+            'studentsCount' => $this->teacherService->countStudentsByTeacher($teacher),
+            'schedules' => $this->scheduleService->fullCalenderDataStructureTeachers($teacher->getId()),
+
         ]);
     }
+
 }

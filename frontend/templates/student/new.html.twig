@@ -6,7 +6,35 @@
     <!-- Filepond css -->
     <link rel="stylesheet" href="{{ asset("assets/libs/filepond/filepond.min.cssassets/libs/filepond/filepond.min.css") }}" type="text/css" />
     <link rel="stylesheet" href="{{ asset("assets/libs/filepond-plugin-image-preview/filepond-plugin-image-preview.min.css") }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('#generate-rfid-button').click(function(){
+                $.ajax({
+                    url: '/generate-rfid',
+                    method: 'POST',
+                    success: function(response) {
+                        console.log(response)
+                        $('#icon').html('<lord-icon src="https://cdn.lordicon.com/lupuorrc.json" trigger="loop" colors="primary:#121331,secondary:#08a88a" style="width:120px;height:120px"></lord-icon>');
+                        $('#rfid-message').html('<p>Success: ' + response["response"] + '</p>');
 
+                        $('#buttonDiv').html(
+                            '<a href="javascript:void(0);" class="btn btn-link link-success fw-medium material-shadow-none" data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i> Close</a>'
+                        );
+
+
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.log(jqXHR);
+                        $('#rfid-message').html('<p>Error: ' + jqXHR["responseJSON"] + '</p>');
+                        $('#buttonDiv').html(
+                            '<a href="javascript:void(0);" class="btn btn-link link-success fw-medium material-shadow-none" data-bs-dismiss="modal"><i class="ri-close-line me-1 align-middle"></i> Close</a>'
+                        );
+                    }
+                });
+            });
+        });
+    </script>
     {{ include('partials/head-css.html.twig') }}
 
 </head>
@@ -26,18 +54,19 @@
         <div class="page-content">
             <div class="container-fluid">
 
-                {{ include('partials/page-title.html.twig', {pagetitle: 'Tables', title: 'New teacher'}) }}
+                {{ include('partials/page-title.html.twig', {pagetitle: 'Forms', title: 'New Student'}) }}
 
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-header align-items-center d-flex">
                                 <h4>
-                                    <h4 class="card-title mb-0 flex-grow-1">New Teacher</h4>
+                                    <h4 class="card-title mb-0 flex-grow-1">New Student</h4>
                                 </h4>
                             </div>
                             <div class="card-body">
                                 {{ include("student/_form.html.twig") }}
+                                {{ include("student/_rfidModal.html.twig") }}
                             </div>
                         </div>
                     </div><!--end col-->

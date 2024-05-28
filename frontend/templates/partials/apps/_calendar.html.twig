@@ -1,7 +1,7 @@
 <div class="col-xl-12">
     <div class="card card-h-100">
         <div class="card-body">
-            <div id="calendar"></div>
+            <div id="calendar" data-schedule="{{ schedules | json_encode }}"></div>
         </div>
     </div>
 </div><!-- end col -->
@@ -15,71 +15,116 @@
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const calendarEl = document.getElementById('calendar')
+        var schedules = JSON.parse(calendarEl.getAttribute("data-schedule"));
+
+        function getMondayOfCurrentWeek() {
+            const today = new Date();
+            const dayOfWeek = today.getDay(); // Get the current day of the week (0 = Sunday, 1 = Monday, ..., 6 = Saturday)
+
+            // Calculate the difference in days from the current day to the last Monday
+            const diffToMonday = (dayOfWeek + 6) % 7;
+
+            // Get the date of the previous Monday
+            const mondayDate = new Date(today);
+            mondayDate.setDate(today.getDate() - diffToMonday);
+
+            // Set the hours, minutes, seconds, and milliseconds to zero for a clean date object
+            mondayDate.setHours(0, 0, 0, 0);
+
+            return mondayDate;
+        }
+
+        var startDate = getMondayOfCurrentWeek();
+        var classNames = ['bg-primary', 'bg-success', 'bg-danger', 'bg-warning', 'bg-info', 'bg-dark'];
+
+        function getRandomClassName() {
+            return classNames[Math.floor(Math.random() * classNames.length)];
+        }
+        function formatDatePart(value) {
+            return ('0' + value).slice(-2);
+        }
+
+        var eventData = schedules.map(function(schedule) {
+            // Extracting the day number and time
+            var dayAndTimeParts = schedule.start.split("T");
+            var dayNumber = parseInt(dayAndTimeParts[0]);
+            var startTime = dayAndTimeParts[1];
+            var endTime = schedule.end.split("T")[1];
+
+            // Calculate the specific date within the range for the given day number
+            var eventDate = new Date(startDate);
+            eventDate.setDate(startDate.getDate() + dayNumber - 1); // Adjust to the correct day in the range
+
+            // Constructing the full datetime strings
+            var formattedMonth = formatDatePart(eventDate.getMonth() + 1); // Month is zero-based
+            var formattedDate = formatDatePart(eventDate.getDate());
+            var startDateTime = eventDate.getFullYear() + "-" + formattedMonth + "-" + formattedDate + "T" + startTime;
+            var endDateTime = eventDate.getFullYear() + "-" + formattedMonth + "-" + formattedDate + "T" + endTime;
+
+            return {
+                title: schedule.title,
+                start: startDateTime,
+                end: endDateTime,
+                description: schedule.description,
+                className: getRandomClassName()
+                // Add other properties as needed
+            };
+            console.log(eventDate);
+        });
         const calendar = new FullCalendar.Calendar(calendarEl, {
-            headerToolbar: {
-                start: '', // Remove the left part (previous button)
-                center: 'title', // Display the title (e.g., current date)
-                end: '' // Remove the right part (next button)
+            timeZone: 'local',
+            editable: true,
+            droppable: true,
+            selectable: true,
+            navLinks: false,
+            initialView: 'timeGridWeek', // Display time slots vertically
+            themeSystem: 'bootstrap',
+            headerToolbar: false,
+            eventOverlap: false,
+            allDaySlot: false,
+            slotDuration: '00:30:00', // Adjust time slot duration as needed
+            slotLabelInterval: { hours: 1 }, // Show time labels for every hour
+            slotMinTime: '08:30:00', // Set the start time for the schedule
+            slotMaxTime: '18:30:00', // Set the end time for the schedule
+            slotEventOverlap: false, // Prevent events from overlapping in the time slots
+            firstDay: 1,
+            views: {
+                timeGridWeek: {
+                    titleFormat: { weekday: 'long' } // Display only the weekday name in the title
+                }
             },
-            initialView: 'timeGridWeek',
-            slotDuration: '00:30:00', // Duration of each time slot (30 minutes)
-            slotLabelInterval: '01:00', // Show time labels every 1 hour
-            slotMinTime: '08:00:00', // Earliest time (e.g., 8:00 AM)
-            slotMaxTime: '18:30:00', // Latest time (e.g., 6:30 PM)
-            businessHours: {
-                // Define business hours (the time slots when courses are scheduled)
-                daysOfWeek: [1, 2, 3, 4, 5], // Monday to Friday
-                startTime: '08:00', // Start of business hours (e.g., 8:00 AM)
-                endTime: '18:30' // End of business hours (e.g., 6:30 PM)
+            slotLabelFormat: {
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: false,
             },
-            nowIndicator: true, // Display a line indicating the current time
-            events: generateRandomEvents() // Load events generated by the function
+            // Customize the day headers to start with Monday
+            columnHeaderFormat: { weekday: 'long' },
+            eventSources: [
+                {
+                    events: eventData
+                }
+            ],
+            eventContent: function(arg) {
+                // Create a wrapper element
+                let customContent = document.createElement('div');
+
+                // Create title element
+                let titleElement = document.createElement('div');
+                titleElement.innerHTML = arg.event.title;
+
+                // Create description element
+                let descriptionElement = document.createElement('div');
+                descriptionElement.innerHTML = arg.event.extendedProps.description;
+
+                // Append title and description to the wrapper
+                customContent.appendChild(titleElement);
+                customContent.appendChild(descriptionElement);
+
+                return { domNodes: [customContent] };
+            },
         });
         calendar.render();
-        function generateRandomEvents() {
-            const events = [];
-            const daysOfWeek = [1, 2, 3, 4, 5]; // Monday to Friday
-            const courseTimes = [
-                { startTime: '08:00', endTime: '10:00' },
-                { startTime: '10:30', endTime: '12:00' },
-                { startTime: '14:00', endTime: '16:00' },
-                { startTime: '16:30', endTime: '18:30' }
-            ];
-
-            // Generate random events for each day of the week
-            daysOfWeek.forEach(day => {
-                courseTimes.forEach(time => {
-                    const startDate = getRandomDate(day, time.startTime);
-                    const endDate = getRandomDate(day, time.endTime);
-                    events.push({
-                        title: 'Course', // Event title
-                        start: startDate,
-                        end: endDate,
-                        allDay: false // Set to false to display as time-specific event
-                    });
-                });
-            });
-
-            return events;
-        }
-
-        function getRandomDate(dayOfWeek, timeString) {
-            const today = new Date();
-            const currentDayOfWeek = today.getDay(); // Get today's day of the week (0 for Sunday, 1 for Monday, etc.)
-            let daysToAdd = dayOfWeek - currentDayOfWeek;
-            if (daysToAdd <= 0) {
-                daysToAdd += 7; // If the specified day of the week has already passed this week, add 7 days to get next week
-            }
-            const targetDate = new Date(today.getTime() + daysToAdd * 24 * 60 * 60 * 1000); // Calculate target date
-
-            // Parse time string and set the target time
-            const [hours, minutes] = timeString.split(':');
-            targetDate.setHours(hours);
-            targetDate.setMinutes(minutes);
-            targetDate.setSeconds(0);
-
-            return targetDate;
-        }
     })
 </script>
 

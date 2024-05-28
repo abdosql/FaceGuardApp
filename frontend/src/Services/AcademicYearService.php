@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Entity\AcademicYear;
+use App\Entity\Group;
 use Doctrine\ORM\EntityManagerInterface;
 
 class AcademicYearService
@@ -14,6 +15,7 @@ class AcademicYearService
     {
         return $this->entityManager->getRepository(AcademicYear::class)->findAll();
     }
+
     public function getAcademicYearWithBranches():array
     {
         return $this->entityManager->getRepository(AcademicYear::class)->getAcademicYearWithBranches();
@@ -22,4 +24,5 @@ class AcademicYearService
     {
         return $this->entityManager->getRepository(AcademicYear::class)->findOneBy(["year" => $year]);
     }
+
 }

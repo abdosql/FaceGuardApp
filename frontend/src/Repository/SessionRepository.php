@@ -20,6 +20,15 @@ class SessionRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Session::class);
     }
+    public function findTeacherSessions($teacherId)
+    {
+        return $this->createQueryBuilder('s')
+            ->leftJoin('s.course', 'c')
+            ->where('c.teacher = :teacherId')
+            ->setParameter('teacherId', $teacherId)
+            ->getQuery()
+            ->getResult();
+    }
 
     //    /**
     //     * @return Session[] Returns an array of Session objects

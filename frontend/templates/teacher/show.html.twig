@@ -693,8 +693,7 @@
 
                                 {% endset %}
                                 {% set scheduleTabContent %}
-                                    {{ include("partials/apps/_calendar.html.twig") }}
-
+                                    {{ include("partials/apps/_calendar.html.twig", {"es": schedules}) }}
                                 {% endset %}
                                 {{ include('partials/profile/_tabPane.html.twig', {'status': 'active', 'id': 'Overview', 'content': overviewTabContent}) }}
                                 {{ include('partials/profile/_tabPane.html.twig', {'status': '', 'id': 'Students', "content": studentTabContent}) }}
@@ -724,6 +723,12 @@
 
 {{ include('partials/vendor-scripts.html.twig') }}
 
+<!-- calendar min js -->
+<script src="{{ asset("assets/libs/fullcalendar/index.global.min.js") }}"></script>
+<!-- Calendar init -->
+
+<script src="{{ asset("assets/js/pages/calendar.init.js") }}"></script>
+
 <!-- swiper js -->
     <script src="{{ absolute_url(asset("assets/libs/swiper/swiper-bundle.min.js")) }}"></script>
 
@@ -732,6 +737,8 @@
 
 <!-- App js -->
 <script src="{{ absolute_url(asset("assets/js/app.js")) }}"></script>
+
+
 </body>
 
 </html>

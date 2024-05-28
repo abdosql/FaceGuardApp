@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>PHP</ID>
+  <OriginalElement>C:/Users/seqqal/Documents/GitHub/Projects/PFA/FaceGuardApp/frontend/src/Services</OriginalElement>
+  <nodes>
+    <node x="-235.23972837450492" y="754.5760364636299">\App\Services\serviceInterfaces\UserServiceInterface</node>
+    <node x="1864.5738352374678" y="429.813227970719">\App\Services\SessionService</node>
+    <node x="183.8184829415137" y="790.6056766325482">\App\Services\userServices\StudentService</node>
+    <node x="1044.5845303401322" y="1276.693444738945">\App\Services\ScheduleService</node>
+    <node x="110.592056477342" y="90.84963618482101">\App\Services\serviceInterfaces\SettingsServiceInterface</node>
+    <node x="746.501330124428" y="1044.2999290091202">\App\Services\ClassroomService</node>
+    <node x="-163.84600902829175" y="522.0043680351087">\App\Services\notificationServices\EmailNotificationService</node>
+    <node x="1581.5674879538312" y="323.570697148015">\App\Services\BranchService</node>
+    <node x="-208.4993974408635" y="954.0847451433573">\App\Services\userServices\UserService</node>
+    <node x="1263.1317569810249" y="237.93844195422963">\App\Services\AcademicYearService</node>
+    <node x="1063.6746321794171" y="675.2786244915067">\App\Services\AutoGeneratorsServices\TimeScheduleGenerator</node>
+    <node x="1592.6146847836928" y="44.34963618482101">\App\Services\Decorators\SessionDecorator</node>
+    <node x="641.8276400413554" y="-165.4196269802373">\App\Services\GroupService</node>
+    <node x="8.30828855910579" y="405.3941819831248">\App\Services\notificationServices\NotificationServiceInterface</node>
+    <node x="479.0525895698819" y="1225.0154648106814">\App\Services\userServices\AdminService</node>
+    <node x="1283.151063721909" y="456.01899102302866">\App\Services\ScheduleApiService</node>
+    <node x="406.2570580505296" y="326.8297062008198">\App\Services\settingsServices\SettingsService</node>
+    <node x="766.3276400413554" y="676.2840156542572">\App\Services\settingsServices\ScheduleSettingsService</node>
+    <node x="95.092056477342" y="1185.6941783378154">\App\Services\userServices\TeacherService</node>
+    <node x="1566.3643139915453" y="518.1324547646695">\App\Services\SemesterService</node>
+    <node x="199.21104169587693" y="534.6805570379832">\App\Services\CourseService</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="\App\Services\SessionService" target="\App\Services\Decorators\SessionDecorator" relationship="GENERALIZATION">
+      <point x="-44.95915045377501" y="-14.0" />
+      <point x="146.5" y="108.0" />
+    </edge>
+    <edge source="\App\Services\ScheduleService" target="\App\Services\AutoGeneratorsServices\TimeScheduleGenerator" relationship="GENERALIZATION">
+      <point x="0.0" y="-14.0" />
+      <point x="-155.0901018392849" y="223.00000000000006" />
+    </edge>
+    <edge source="\App\Services\settingsServices\ScheduleSettingsService" target="\App\Services\settingsServices\SettingsService" relationship="GENERALIZATION">
+      <point x="-111.0" y="0.0" />
+      <point x="703.5525895698819" y="829.7840156542572" />
+      <point x="703.5525895698819" y="400.3297062008198" />
+      <point x="91.99999999999999" y="0.0" />
+    </edge>
+    <edge source="\App\Services\userServices\AdminService" target="\App\Services\userServices\UserService" relationship="GENERALIZATION">
+      <point x="4.1043011810870667E-4" y="-61.500464810681365" />
+      <point x="582.553" y="1139.106" />
+      <point x="154.0" y="1139.106" />
+      <point x="154.0" y="1027.585" />
+      <point x="165.50039744086348" y="2.5485664275493036E-4" />
+    </edge>
+    <edge source="\App\Services\userServices\UserService" target="\App\Services\serviceInterfaces\UserServiceInterface" relationship="REALIZATION">
+      <point x="-18.740330933641417" y="-73.5" />
+      <point x="0.0" y="38.5" />
+    </edge>
+    <edge source="\App\Services\notificationServices\EmailNotificationService" target="\App\Services\notificationServices\NotificationServiceInterface" relationship="REALIZATION">
+      <point x="144.0" y="-50.5" />
+      <point x="-28.154297587397537" y="27.0" />
+    </edge>
+    <edge source="\App\Services\userServices\StudentService" target="\App\Services\userServices\UserService" relationship="GENERALIZATION">
+      <point x="-244.0004829415137" y="3.233674517559848E-4" />
+      <point x="154.0" y="956.106" />
+      <point x="154.0" y="1027.585" />
+      <point x="165.50039744086348" y="2.5485664275493036E-4" />
+    </edge>
+    <edge source="\App\Services\userServices\TeacherService" target="\App\Services\userServices\UserService" relationship="GENERALIZATION">
+      <point x="-5.647734198532817E-5" y="-84.50017833781544" />
+      <point x="220.092" y="1139.106" />
+      <point x="154.0" y="1139.106" />
+      <point x="154.0" y="1027.585" />
+      <point x="165.50039744086348" y="2.5485664275493036E-4" />
+    </edge>
+    <edge source="\App\Services\settingsServices\SettingsService" target="\App\Services\serviceInterfaces\SettingsServiceInterface" relationship="REALIZATION">
+      <point x="-0.0" y="-73.5" />
+      <point x="498.2570580505296" y="152.349636184821" />
+      <point x="109.5" y="0.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Compact" zoom="0.3877212389380531" showDependencies="false" x="581.5805991440798" y="738.0" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

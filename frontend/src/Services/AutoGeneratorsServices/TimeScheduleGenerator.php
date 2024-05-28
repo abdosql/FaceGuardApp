@@ -5,10 +5,8 @@ namespace App\Services\AutoGeneratorsServices;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Process\Exception\ProcessFailedException;
-use Symfony\Component\Process\Process;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Entity\{Course, Group, TimeSchedule, Session};
+use App\Entity\{TimeSchedule, Session};
 use App\Services\{AcademicYearService,
     ClassroomService,
     CourseService,
@@ -17,25 +15,23 @@ use App\Services\{AcademicYearService,
     SemesterService,
     settingsServices\ScheduleSettingsService,
     userServices\TeacherService};
-use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class TimeScheduleGenerator
 {
     public function __construct(
-        private ScheduleSettingsService $scheduleSettingsService,
-        private AcademicYearService $academicYearService,
-        private CourseService $courseService,
-        private EntityManagerInterface $entityManager,
-        private ClassroomService $classroomService,
-        private TeacherService $teacherService,
-        private GroupService $groupService,
-        private ScheduleApiService $scheduleApiService,
-        private SemesterService $semesterService,
-        private LoggerInterface $logger
+        private ScheduleSettingsService  $scheduleSettingsService,
+        private AcademicYearService      $academicYearService,
+        private CourseService            $courseService,
+        protected EntityManagerInterface $entityManager,
+        private ClassroomService         $classroomService,
+        private TeacherService           $teacherService,
+        private GroupService             $groupService,
+        private ScheduleApiService       $scheduleApiService,
+        private SemesterService          $semesterService,
+        private LoggerInterface          $logger
     ) {
     }
 
@@ -44,22 +40,25 @@ class TimeScheduleGenerator
      */
     public function generateSchedules(): array
     {
-        $teachers = $this->fetchTeachers();
-        $groups = $this->fetchGroups();
+        $groups = $this->fetchGroups(1);
         $semesterWeeks = $this->semesterService->semesterNumberOfWeeks($this->scheduleSettingsService->getFallSemesterPeriod());
         $course_sessions = $this->numberOfSessionsPerWeekForEachCourse($semesterWeeks);
-        $classrooms = $this->classroomService->getAllClassrooms();
-
+        $classrooms = $this->classroomService->getNumberOfClassrooms();
+        $teachers = $this->fetchTeachers(1);
         $requestData = [
             "groups" => $groups,
             "teachers" => $teachers,
-            "classrooms" => 50,
-            "course_sessions" => $course_sessions
+            "classrooms" => $classrooms,
+            "course_sessions" => $course_sessions,
+            "days" => 6,
+            "slots_per_day" => 4
         ];
-        dd($requestData);
+
+
+
         try {
             return $this->scheduleApiService->getSchedule($requestData);
-        } catch (\Exception $e) {
+        } catch (DecodingExceptionInterface|TransportExceptionInterface $e) {
             // Log the exception message
             $this->logger->error('Error generating schedules: ' . $e->getMessage());
 
@@ -71,70 +70,111 @@ class TimeScheduleGenerator
         }
     }
 
-    private function fetchGroups(): array
+    private function fetchGroups(int $id): array
     {
-
         $groupsOutput = [];
-        $groups = $this->groupService->getAllGroups();
-        foreach ($groups as $group) {
-            foreach ($group->getBranches() as $branch){
-                $groupsOutput[$group->getId()] = [];
-                foreach ($branch->getCourses() as $course) {
-                    $groupsOutput[$group->getId()][] = $course->getCourseName();
+        $academicYears = $this->academicYearService->getAllAcademicYears();
+        foreach ($academicYears as $academicYear) {
+            foreach ($academicYear->getBranches() as $branch) {
+                foreach ($academicYear->getGroups() as $group) {
+                    foreach ($branch->getCourses() as $course) {
+                        foreach ($course->getSemesters() as $semester) {
+                            if ($semester->getId() == $id) {
+                                if (!$group->branchExists($branch)){
+                                    continue;
+                                }
+                                $groupsOutput[$academicYear->getId()][$branch->getId()][$group->getId()][] = $course->getId();
+
+                            }
+                        }
+                    }
                 }
             }
         }
+
         return $groupsOutput;
-//        return [
-//            1 => ["PHP", "ASP", "Spring", "Economics", "Business", "Big Data"],
-//            // More groups
-//        ];
     }
 
-    private function fetchTeachers(): array
+    private function fetchTeachers(int $semesterId): array
     {
         $teachersOutput = [];
         $teachers = $this->teacherService->getAllTeachers();
         foreach ($teachers as $teacher) {
             foreach ($teacher->getCourses() as $course) {
-                $teachersOutput[$teacher->getDisplayName()] = $this->teacherService->getCoursesByTeacher($teacher);
+                foreach ($course->getSemesters() as $semester) {
+                    if ($semester->getId() == $semesterId){
+                        $teachersOutput[$teacher->getId()][] = $course->getId();
+                    }
+                }
             }
         }
         return $teachersOutput;
     }
 
-    private function saveSchedules(array $schedules): void
+    /**
+     * @throws \Exception
+     */
+    public function saveSchedules(array $schedules, int $semesterId): void
     {
-        foreach ($schedules as $groupId => $days) {
-            $group = $this->entityManager->getRepository(Group::class)->find($groupId);
-            if (!$group) continue;
+        $semester = $this->semesterService->getSemesterById($semesterId);
+        $sessionsTimeSlots = $this->generateSessionsTimeSlots();
 
-            $timeSchedule = new TimeSchedule();
-            $group->setTimeSchedule($timeSchedule);
+        foreach ($schedules as $years => $branches) {
+            foreach ($branches as $branch => $groups) {
+                foreach ($groups as $groupId => $days) {
+                    $groupEntity = $this->groupService->getGroupById($groupId);
 
-            foreach ($days as $day => $slots) {
-                foreach ($slots as $slot => $courseInfo) {
-                    if ($courseInfo) {
-                        [$courseName, $teacherName, $classroomNumber] = $courseInfo;
-                        $course = $this->courseService->findByName($courseName);
-                        $teacher = $this->teacherService->findByName($teacherName); // Ensure you have a way to get teachers
-                        $classroom = $this->entityManager->getRepository(Classroom::class)->find($classroomNumber);
+                    // Check if a TimeSchedule already exists for this group and semester
+                    $existingSchedule = $this->entityManager->getRepository(TimeSchedule::class)->findOneBy([
+                        'group_' => $groupEntity,
+                        'semester' => $semester
+                    ]);
 
-                        $session = new Session();
-                        $session->setCourse($course);
-                        $session->setTeacher($teacher);
-                        $session->setClassroom($classroom);
-                        $session->setStartHour(new \DateTime("08:30")); // Example, set correctly based on slot
-                        $session->setEndHour(new \DateTime("10:30")); // Example, set correctly
-
-                        $timeSchedule->addSession($session);
+                    if ($existingSchedule) {
+                        error_log("Schedule for Group ID $groupId and Semester ID $semesterId already exists.");
+                        continue;
                     }
+
+                    $schedule = new TimeSchedule();
+                    $schedule->setGroup($groupEntity);
+                    $schedule->setSemester($semester);
+                    $this->entityManager->persist($schedule);
+
+                    foreach ($days as $day => $sessions) {
+                        foreach ($sessions as $session => $data) {
+                            if ($data != null) {
+                                $course = $this->courseService->getCourseById($data[0]);
+                                $classroom = $this->classroomService->getClassroomById($data[2] + 1);
+                                if (!$course || !$classroom) {
+                                    error_log("Course ID {$data[0]} or Classroom ID {$data[2]} not found.");
+                                    continue;
+                                }
+
+                                error_log("Creating session for Group ID $groupId, Day $day, Session $session");
+
+                                $newSession = new Session();
+                                $newSession->setDay($day);
+                                $newSession->setStartHour($sessionsTimeSlots[$session]["start_time"]);
+                                $newSession->setEndHour($sessionsTimeSlots[$session]["end_time"]);
+                                $newSession->setCourse($course);
+                                $newSession->setClassroom($classroom);
+                                $newSession->setTimeSchedule($schedule);
+                                $this->entityManager->persist($newSession);
+                            }
+                        }
+                    }
+
+                    // Persist and flush the schedule and its sessions
+                    $this->entityManager->flush();
                 }
             }
-            $this->entityManager->persist($timeSchedule);
         }
+
+        // Final flush to ensure all data is persisted
         $this->entityManager->flush();
     }
+
+
     /**
      * @throws \Exception
      */
@@ -149,9 +189,15 @@ class TimeScheduleGenerator
 
         $evening_slot = $this->scheduleSettingsService->getEveningSlot();
 
-        $timeSlots["morning"] = $this->createSessionsSlots($morning_slot, $pause_duration, $sessions_duration);
 
-        $timeSlots["evening"] = $this->createSessionsSlots($evening_slot, $pause_duration, $sessions_duration);
+
+        foreach ($this->createSessionsSlots($morning_slot, $pause_duration, $sessions_duration) as $session) {
+            $timeSlots[] = $session;
+        }
+
+        foreach ($this->createSessionsSlots($evening_slot, $pause_duration, $sessions_duration) as $session) {
+            $timeSlots[] = $session;
+        }
         return $timeSlots;
     }
 
@@ -169,8 +215,8 @@ class TimeScheduleGenerator
             $endTime->add(new \DateInterval('PT' . $sessions_duration->format('h') . 'H' . $sessions_duration->format('i') . 'M'));
 
             $sessions["session " . $i] = [
-                "start_time" => $startTime->format('H:i'),
-                "end_time" => $endTime->format('H:i'),
+                "start_time" => $startTime,
+                "end_time" => $endTime,
             ];
 
             $startTime = clone $endTime;
@@ -204,7 +250,7 @@ class TimeScheduleGenerator
         foreach ($this->courseService->getAllCourses() as $course) {
             $numberOfSessionNeededForCourse = $this->courseService->numberOfSessionsNeeded($course, $sessionDuration);
             $numberOfSessionsPerWeek = $this->courseService->numberOfSessionsPerWeek($numberOfSessionNeededForCourse, $numberOfWeeks);
-            $courses[$course->getCourseName()] = $numberOfSessionsPerWeek;
+            $courses[$course->getId()] = $numberOfSessionsPerWeek;
 
         }
         return $courses;

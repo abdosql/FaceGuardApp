@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Student;
+use App\Entity\Teacher;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -72,6 +73,19 @@ class StudentRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+public function getStudentsByTeacher(Teacher $teacher): array
+{
+    return $this->createQueryBuilder('s')
+        ->leftJoin('s.teachers', 't')
+        ->leftJoin('s.group_', 'g')
+        ->where('t.groups = :teacher')
+        ->andWhere('g IS NOT NULL') // Added this line to ensure only students with a group are returned
+        ->setParameter('teacher', $teacher)
+        ->orderBy('g.id')
+        ->getQuery()
+        ->getResult();
+}
     //    /**
     //     * @return Student[] Returns an array of Student objects
     //     */
