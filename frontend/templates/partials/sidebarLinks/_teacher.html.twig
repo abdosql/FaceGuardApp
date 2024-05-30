@@ -17,16 +17,16 @@
         <div class="menu-dropdown collapse show" id="sidebarAdvanceUI" style="">
             <ul class="nav nav-sm flex-column">
                 <li class="nav-item">
-                    <a href="" class="nav-link">My Schedule</a>
+                    <a href="{{ path("app_teacher_schedule") }}" class="nav-link">My Schedule</a>
                 </li>
                 <li class="nav-item">
-                    <a href="" class="nav-link">Current session</a>
+                    <a href="{{ path("app_session_current") }}" class="nav-link">Current session</a>
                 </li>
             </ul>
         </div>
     </li>
     <li class="nav-item">
-        <a class="nav-link menu-link" href="#">
+        <a class="nav-link menu-link" href="{{ path('coming_soon') }}">
             <i class="ri-organization-chart"></i> <span data-key="t-planning">Session Planning</span>
         </a>
     </li>

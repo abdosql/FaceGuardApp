@@ -20,7 +20,7 @@ class SessionRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Session::class);
     }
-    public function findTeacherSessions($teacherId)
+    public function findTeacherSessions($teacherId): array
     {
         return $this->createQueryBuilder('s')
             ->leftJoin('s.course', 'c')
@@ -29,6 +29,19 @@ class SessionRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+    public function findStudentSessions(int $studentId): array
+    {
+        return $this->createQueryBuilder('s')
+            ->leftJoin('s.timeSchedule', 'ts')
+            ->leftJoin('ts.group_', 'g')
+            ->leftJoin('g.students', 'st')
+            ->andWhere('st.id = :studentId')
+            ->setParameter('studentId', $studentId)
+            ->getQuery()
+            ->getResult();
+    }
+
+
 
     //    /**
     //     * @return Session[] Returns an array of Session objects

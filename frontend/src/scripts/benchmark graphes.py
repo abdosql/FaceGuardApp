@@ -1,84 +1,55 @@
-import json
 import matplotlib.pyplot as plt
-import os
+import matplotlib.dates as mdates
+from datetime import datetime, timedelta
+import matplotlib.patches as mpatches
 
-def plot_benchmark_data(json_file, output_file):
-    # Load the benchmark data from the JSON file
-    with open(json_file, 'r') as file:
-        data = json.load(file)
+# Define the new start dates and durations
+tasks = [
+    {"name": "Sprint 1: Préparation", "start": "2023-12-25", "duration": 7},
+    {"name": "Sprint 2: Analyse et Conception", "start": "2024-01-01", "duration": 30},
+    {"name": "Sprint 3: Dev App Web", "start": "2024-01-31", "duration": 60},
+    {"name": "Sprint 4: Dev et Intégration API", "start": "2024-04-01", "duration": 30},
+    {"name": "Sprint 5: Système RFID", "start": "2024-05-01", "duration": 15},
+    {"name": "Sprint 6: Statistiques et Paramètres", "start": "2024-05-16", "duration": 12},
+    {"name": "Sprint 7: Tests et Déploiement", "start": "2024-05-28", "duration": 1}
+]
 
-    # Extract the data for each configuration
-    config_names = list(data.keys())
-    elapsed_times = [data[config][0]['elapsed_time'] for config in config_names]
-    memory_usages = [data[config][0]['memory_usage'] for config in config_names]
-    num_groups = [data[config][0]['num_groups'] for config in config_names]
-    num_teachers = [data[config][0]['num_teachers'] for config in config_names]
-    num_courses = [data[config][0]['num_courses'] for config in config_names]
-    slots_per_day = [data[config][0]['slots_per_day'] for config in config_names]
+# Convert start dates and durations to appropriate format
+for task in tasks:
+    task["start"] = datetime.strptime(task["start"], "%Y-%m-%d")
+    task["end"] = task["start"] + timedelta(days=task["duration"])
 
-    # Create the figure and axes
-    fig, ax = plt.subplots(2, 3, figsize=(12, 8))
+# Define colors for the bars
+colors = ['#ff9999','#66b3ff','#99ff99','#ffcc99','#c2c2f0','#ffb3e6','#c2f0c2']
 
-    # Plot the elapsed time
-    ax[0, 0].bar(config_names, elapsed_times)
-    ax[0, 0].set_title('Elapsed Time')
-    ax[0, 0].set_xlabel('Configuration')
-    ax[0, 0].set_ylabel('Time (s)')
+# Create the plot
+fig, ax = plt.subplots(figsize=(18, 8))  # Increased width
 
-    # Plot the memory usage
-    ax[0, 1].bar(config_names, memory_usages)
-    ax[0, 1].set_title('Memory Usage')
-    ax[0, 1].set_xlabel('Configuration')
-    ax[0, 1].set_ylabel('Memory (MB)')
+# Add tasks to the Gantt chart
+for i, task in enumerate(tasks):
+    ax.barh(task["name"], task["duration"], left=task["start"], color=colors[i % len(colors)], edgecolor='black')
 
-    # Plot the number of groups
-    ax[0, 2].bar(config_names, num_groups)
-    ax[0, 2].set_title('Number of Groups')
-    ax[0, 2].set_xlabel('Configuration')
-    ax[0, 2].set_ylabel('Number of Groups')
+# Format the x-axis as dates
+ax.xaxis.set_major_locator(mdates.WeekdayLocator(interval=1))
+ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y-%m-%d"))
 
-    # Plot the number of teachers
-    ax[1, 0].bar(config_names, num_teachers)
-    ax[1, 0].set_title('Number of Teachers')
-    ax[1, 0].set_xlabel('Configuration')
-    ax[1, 0].set_ylabel('Number of Teachers')
+# Adding grid lines for better readability
+ax.grid(True, which='both', linestyle='--', linewidth=0.5)
 
-    # Plot the number of courses
-    ax[1, 1].bar(config_names, num_courses)
-    ax[1, 1].set_title('Number of Courses')
-    ax[1, 1].set_xlabel('Configuration')
-    ax[1, 1].set_ylabel('Number of Courses')
+# Set labels
+ax.set_xlabel('Date', fontsize=14)
+ax.set_ylabel('Tasks', fontsize=14)
+ax.set_title('Gantt Chart', fontsize=16)
 
-    # Plot the number of slots per day
-    ax[1, 2].bar(config_names, slots_per_day)
-    ax[1, 2].set_title('Slots per Day')
-    ax[1, 2].set_xlabel('Configuration')
-    ax[1, 2].set_ylabel('Slots per Day')
+# Customize tick parameters
+ax.tick_params(axis='x', which='major', labelsize=10, rotation=45)
+ax.tick_params(axis='y', which='major', labelsize=12)
 
-    # Add annotations to the chart
-    for i, config in enumerate(config_names):
-        ax[0, 0].text(i, elapsed_times[i] + 0.1, f"{elapsed_times[i]:.2f}", ha='center', va='bottom')
-        ax[0, 1].text(i, memory_usages[i] + 0.1, f"{memory_usages[i]:.2f}", ha='center', va='bottom')
-        ax[0, 2].text(i, num_groups[i] + 0.1, str(num_groups[i]), ha='center', va='bottom')
-        ax[1, 0].text(i, num_teachers[i] + 0.1, str(num_teachers[i]), ha='center', va='bottom')
-        ax[1, 1].text(i, num_courses[i] + 0.1, str(num_courses[i]), ha='center', va='bottom')
-        ax[1, 2].text(i, slots_per_day[i] + 0.1, str(slots_per_day[i]), ha='center', va='bottom')
+# Create a legend
+patches = [mpatches.Patch(color=colors[i % len(colors)], label=task["name"]) for i, task in enumerate(tasks)]
+plt.legend(handles=patches, bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0.)
 
-    # Adjust the spacing between subplots
-    plt.subplots_adjust(wspace=0.5, hspace=0.5)
-
-    # Save the plot to a file
-    plt.savefig(output_file)
-
-    # Show the plot
-    plt.show()
-
-# Example usage
-json_file = 'benchmark_results.json'
-output_file = 'benchmark_plot.png'
-if os.path.isfile(json_file):
-    plot_benchmark_data(json_file, output_file)
-else:
-    print(f"Error: File '{json_file}' not found.")
-
-plot_benchmark_data('benchmark_results.json', 'benchmark_plot.png')
+# Display the plot
+plt.tight_layout()
+plt.savefig('gantt_chart.png')
+plt.show()

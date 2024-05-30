@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Entity\AcademicYear;
 use App\Entity\Branch;
 use App\Entity\Group;
+use App\Entity\Teacher;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Constraints\Collection;
 
@@ -41,6 +42,7 @@ class GroupService
 
     public function countGroups(): int
     {
+
         return $this->entityManager->getRepository(Group::class)->count();
     }
 
@@ -108,7 +110,11 @@ class GroupService
                 for ($i = 0; $i < $numberOfGroups; $i++) {
                     $academicYear = $this->academicYearService->getAcademicYearByYear($year);
                     $branchEntity = $this->branchService->getBranchByName($branch);
-                    $this->createGroup($uppercaseLetters[$i], $academicYear, $branchEntity);
+                    $group = $this->createGroup($uppercaseLetters[$i], $academicYear, $branchEntity);
+                    foreach ($branchEntity->getCourses() as $course) {
+                        $teacher = $course->getTeacher();
+                        $teacher->addGroup($group);
+                    }
                 }
             }
         }
@@ -124,5 +130,22 @@ class GroupService
     {
         return $this->entityManager->getRepository(Group::class)->countNumberOfGroups($year, $branch);
     }
+
+    public function getGroupsOfTeacher(Teacher $teacher): array
+    {
+        $data = [];
+        $groups = $this->entityManager->getRepository(Group::class)->getGroupsOfTeacher($teacher);
+
+        foreach ($groups as $group) {
+            foreach ($group->getAcademicYear() as $year) {
+                foreach ($group->getBranches() as $branch) {
+                    $data[$year->getYear()][$branch->getBranchName()][] = $group;
+                }
+            }
+        }
+
+        return $data;
+    }
+
 
 }

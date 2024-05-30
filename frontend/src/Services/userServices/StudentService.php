@@ -3,6 +3,7 @@
 namespace App\Services\userServices;
 
 use App\Entity\Group;
+use App\Entity\RFIDCard;
 use App\Entity\Student;
 use App\Entity\Teacher;
 use App\Services\AcademicYearService;
@@ -40,6 +41,11 @@ class StudentService extends UserService
     public function getStudentById(Student $student): ?Student
     {
         return $this->entityManager->getRepository(Student::class)->find($student);
+    }
+
+    public function getStudentByRfid(RFIDCard $RFIDCard): ?Student
+    {
+        return $this->entityManager->getRepository(Student::class)->findOneBy(['rfidCard' => $RFIDCard]);
     }
 
     public function countStudentsPercentageByGender(): array

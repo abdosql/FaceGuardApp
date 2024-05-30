@@ -5,7 +5,7 @@ from flask import Flask, request, jsonify
 from ortools.sat.python import cp_model
 
 app = Flask(__name__)
-
+i = 0
 def create_and_solve_schedule(groups, teachers, classrooms, course_sessions, num_days=6, num_slots=4):
     model = cp_model.CpModel()
 
@@ -137,6 +137,8 @@ def generate_benchmark_data(scenario='simple'):
 
 def save_benchmark_result(scenario, result, elapsed_time, memory_usage, num_groups, num_teachers, num_courses, slots_per_day):
     benchmark_file = 'benchmark_results.json'
+    case = 'simple ' + str(scenario)
+
     try:
         # Load existing data if file exists
         try:
@@ -149,9 +151,9 @@ def save_benchmark_result(scenario, result, elapsed_time, memory_usage, num_grou
 
         # Append new data to the scenario's list
         if scenario not in benchmark_data:
-            benchmark_data[scenario] = []
+            benchmark_data[case] = []
 
-        benchmark_data[scenario].append({
+        benchmark_data[case].append({
             'elapsed_time': elapsed_time,
             'memory_usage': memory_usage,
             'num_groups': num_groups,
@@ -203,14 +205,14 @@ def schedule():
     days = data.get('days')
     slots_per_day = data.get('slots_per_day')
     # Extract number of groups and teachers from benchmark data
-    num_groups = sum(len(departments) for departments in groups.values())
+    num_groups = sum(len(groups[year][department]) for year in groups for department in groups[year])
     num_teachers = sum(len(teachers) for teachers in teachers.values())
     num_courses = len(course_sessions)
 
 
     # Call the scheduling function
     result, elapsed_time, memory_usage = create_and_solve_schedule(groups, teachers, classrooms, course_sessions, days, slots_per_day)
-    i=0
+    global i
     save_benchmark_result(i, result, elapsed_time, memory_usage, num_groups, num_teachers, num_courses, slots_per_day)
     i += 1
     return jsonify({

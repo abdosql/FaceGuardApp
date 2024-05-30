@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\AcademicYear;
 use App\Entity\Branch;
 use App\Entity\Group;
+use App\Entity\Teacher;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -83,6 +84,16 @@ class GroupRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
+    public function getGroupsOfTeacher(Teacher $teacher): array
+    {
+        return $this->createQueryBuilder('g')
+            ->leftJoin('g.teachers', 't')
+            ->andWhere('t.id = :teacherId')
+            ->setParameter('teacherId', $teacher->getId())
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return Group[] Returns an array of Group objects
     //     */

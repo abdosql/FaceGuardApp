@@ -18,11 +18,18 @@ class Teacher extends User
     #[ORM\ManyToMany(targetEntity: Branch::class, mappedBy: 'teachers')]
     private Collection $branches;
 
+    /**
+     * @var Collection<int, Group>
+     */
+    #[ORM\ManyToMany(targetEntity: Group::class, inversedBy: 'teachers')]
+    private Collection $groups;
+
     public function __construct()
     {
         $this->courses = new ArrayCollection();
         $this->students = new ArrayCollection();
         $this->branches = new ArrayCollection();
+        $this->groups = new ArrayCollection();
     }
 
     /**
@@ -119,6 +126,30 @@ class Teacher extends User
         if ($this->branches->removeElement($branch)) {
             $branch->removeTeacher($this);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Group>
+     */
+    public function getGroups(): Collection
+    {
+        return $this->groups;
+    }
+
+    public function addGroup(Group $group): static
+    {
+        if (!$this->groups->contains($group)) {
+            $this->groups->add($group);
+        }
+
+        return $this;
+    }
+
+    public function removeGroup(Group $group): static
+    {
+        $this->groups->removeElement($group);
 
         return $this;
     }

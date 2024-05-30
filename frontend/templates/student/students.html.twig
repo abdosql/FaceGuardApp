@@ -41,19 +41,19 @@
                                         <tbody>
                                         <tr>
                                             <th class="ps-0" scope="row">Academic Year :</th>
-                                            <td class="text-muted">First Year</td>
+                                            <td class="text-muted">{{ students[0].getAcademicYear().getYear() }}</td>
                                         </tr>
                                         <tr>
                                             <th class="ps-0" scope="row">Branch :</th>
-                                            <td class="text-muted">Genie informatics</td>
+                                            <td class="text-muted">{{ students[0].getBranch().getBranchName() }}</td>
                                         </tr>
                                         <tr>
                                             <th class="ps-0" scope="row">Group :</th>
-                                            <td class="text-muted">A</td>
+                                            <td class="text-muted">{{ group.getGroupName() }}</td>
                                         </tr>
                                         <tr>
                                             <th class="ps-0" scope="row">Number students</th>
-                                            <td class="text-muted">36</td>
+                                            <td class="text-muted">{{ students| length }}</td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -79,122 +79,21 @@
                                             <th data-ordering="false">ID</th>
                                             <th data-ordering="false">FullName</th>
                                             <th data-ordering="false">Email</th>
-                                            <th>Action</th>
                                         </tr>
                                         </thead>
                                         <tbody>
-{#                                        {% for student in students %}#}
-<tr>
-    <th scope="row">
-        <div class="form-check">
-            <input class="form-check-input fs-15" type="checkbox" name="checkAll" value="option2">
-        </div>
-    </th>
-    <td>2</td>
-    <td>Fatima Zahra</td>
-    <td>fatima.zahra@example.com</td>
-    <td></td>
-</tr>
-<tr>
-    <th scope="row">
-        <div class="form-check">
-            <input class="form-check-input fs-15" type="checkbox" name="checkAll" value="option3">
-        </div>
-    </th>
-    <td>3</td>
-    <td>Mohamed Salah</td>
-    <td>mohamed.salah@example.com</td>
-    <td></td>
-</tr>
-<tr>
-    <th scope="row">
-        <div class="form-check">
-            <input class="form-check-input fs-15" type="checkbox" name="checkAll" value="option4">
-        </div>
-    </th>
-    <td>4</td>
-    <td>Layla Hassan</td>
-    <td>layla.hassan@example.com</td>
-    <td></td>
-</tr>
-<tr>
-    <th scope="row">
-        <div class="form-check">
-            <input class="form-check-input fs-15" type="checkbox" name="checkAll" value="option5">
-        </div>
-    </th>
-    <td>5</td>
-    <td>Omar Ahmed</td>
-    <td>omar.ahmed@example.com</td>
-    <td></td>
-</tr>
-<tr>
-    <th scope="row">
-        <div class="form-check">
-            <input class="form-check-input fs-15" type="checkbox" name="checkAll" value="option6">
-        </div>
-    </th>
-    <td>6</td>
-    <td>Yasmine Karim</td>
-    <td>yasmine.karim@example.com</td>
-    <td></td>
-</tr>
-<tr>
-    <th scope="row">
-        <div class="form-check">
-            <input class="form-check-input fs-15" type="checkbox" name="checkAll" value="option7">
-        </div>
-    </th>
-    <td>7</td>
-    <td>Hassan Ali</td>
-    <td>hassan.ali@example.com</td>
-    <td></td>
-</tr>
-<tr>
-    <th scope="row">
-        <div class="form-check">
-            <input class="form-check-input fs-15" type="checkbox" name="checkAll" value="option8">
-        </div>
-    </th>
-    <td>8</td>
-    <td>Sara Ibrahim</td>
-    <td>sara.ibrahim@example.com</td>
-    <td></td>
-</tr>
-<tr>
-    <th scope="row">
-        <div class="form-check">
-            <input class="form-check-input fs-15" type="checkbox" name="checkAll" value="option9">
-        </div>
-    </th>
-    <td>9</td>
-    <td>Khaled Mohamed</td>
-    <td>khaled.mohamed@example.com</td>
-    <td></td>
-</tr>
-<tr>
-    <th scope="row">
-        <div class="form-check">
-            <input class="form-check-input fs-15" type="checkbox" name="checkAll" value="option10">
-        </div>
-    </th>
-    <td>10</td>
-    <td>Nour El-Din</td>
-    <td>nour.eldin@example.com</td>
-    <td></td>
-</tr>
-<tr>
-    <th scope="row">
-        <div class="form-check">
-            <input class="form-check-input fs-15" type="checkbox" name="checkAll" value="option11">
-        </div>
-    </th>
-    <td>11</td>
-    <td>Aisha Omar</td>
-    <td>aisha.omar@example.com</td>
-    <td></td>
-</tr>
-{#                                        {% endfor %}#}
+                                        {% for student in students %}
+                                            <tr>
+                                                <th scope="row">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input fs-15" type="checkbox" name="checkAll" value="option2">
+                                                    </div>
+                                                </th>
+                                                <td>{{ student.getId() }}</td>
+                                                <td>{{ student.getDisplayName() }}</td>
+                                                <td>{{ student.getEmail() }}</td>
+                                            </tr>
+                                        {% endfor %}
                                         </tbody>
                                     </table>
 

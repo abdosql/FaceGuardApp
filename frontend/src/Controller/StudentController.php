@@ -5,9 +5,12 @@ namespace App\Controller;
 use App\Entity\Group;
 use App\Entity\Student;
 use App\Form\StudentType;
+use App\Services\AttendanceService;
 use App\Services\GroupService;
 use App\Services\notificationServices\EmailNotificationService;
+use App\Services\RfidService;
 use App\Services\userServices\StudentService;
+use App\Services\userServices\TeacherService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -21,7 +24,9 @@ class StudentController extends AbstractController
 {
     public function __construct(
         private StudentService $studentService,
+        private TeacherService $teacherService,
         private GroupService $groupService,
+        private RfidService $rfidService
     )
     {
     }
@@ -34,8 +39,10 @@ class StudentController extends AbstractController
             throw $this->createAccessDeniedException('not allowed');
         }
         if ($this->isGranted('ROLE_TEACHER')){
+//            dd($this->groupService->getGroupsOfTeacher($user));
             return $this->render('student/index.html.twig', [
-//                'students' => $this->studentService->getStudentsByTeacher($user)
+                'groups' => $this->groupService->getGroupsOfTeacher($user),
+                'groupService' => $this->groupService
             ]);
         }
         return $this->render('student/index.html.twig', [
@@ -59,6 +66,7 @@ class StudentController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()){
             $data = $this->studentService->saveStudent($student);
+            $this->rfidService->saveStudentRfid($student, $request->request->get('rfid'));
             $this->addFlash("success", $data);
             $emailNotificationService->sendMessage($student->getEmail(),"Here are you're credentials.", $data);
             return $this->redirectToRoute("app_student_index",[], Response::HTTP_SEE_OTHER);
@@ -73,6 +81,14 @@ class StudentController extends AbstractController
     {
         return $this->render('student/show.html.twig', [
             'user' => $student,
+        ]);
+    }
+    #[Route('/group/{id}', name: 'app_group_students', methods: ['GET'])]
+    public function getStudentsByGroup(Group $group): Response
+    {
+        return $this->render('student/students.html.twig', [
+            'students' => $group->getStudents(),
+            'group' => $group,
         ]);
     }
 

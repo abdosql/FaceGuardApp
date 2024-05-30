@@ -1,18 +1,21 @@
 
 from flask import Flask, request, jsonify
 from ortools.sat.python import cp_model
+import concurrent.futures
+
+
 import serial
 import time
 app = Flask(__name__)
 # Serial port configuration
 SERIAL_PORT = "COM8"  # Adjust as per your Arduino's serial port
 BAUD_RATE = 9600
-ser = serial.Serial(SERIAL_PORT, BAUD_RATE, timeout=1)
+#ser = serial.Serial(SERIAL_PORT, BAUD_RATE, timeout=1)
 def create_and_solve_schedule(groups, teachers, classrooms, course_sessions, num_days=6, num_slots=4):
     model = cp_model.CpModel()
 
     # Variables
-    x = {}  # x[year][department][group][day][slot][course][teacher][classroom]
+    x = {}
     for year in groups:
         x[year] = {}
         for department in groups[year]:
@@ -32,7 +35,7 @@ def create_and_solve_schedule(groups, teachers, classrooms, course_sessions, num
                                         var_name = f"x_{year}_{department}_{group}_d{day}_s{slot}_c{course}_t{teacher}_r{classroom}"
                                         x[year][department][group][day][slot][course][teacher][classroom] = model.NewBoolVar(var_name)
 
-    # Constraint: Each course is scheduled for the specified number of sessions per week per group
+    # Constraints
     for year in groups:
         for department in groups[year]:
             for group in groups[year][department]:
@@ -43,7 +46,6 @@ def create_and_solve_schedule(groups, teachers, classrooms, course_sessions, num
                                   for teacher in teachers if course in teachers[teacher]
                                   for classroom in range(classrooms)) == course_sessions.get(course, 2))
 
-    # Constraint: Each teacher teaches at most one course per group per time slot
     for teacher in teachers:
         for day in range(num_days):
             for slot in range(num_slots):
@@ -54,7 +56,6 @@ def create_and_solve_schedule(groups, teachers, classrooms, course_sessions, num
                               for course in groups[year][department][group] if course in teachers[teacher]
                               for classroom in range(classrooms)) <= 1)
 
-    # Constraint: Each classroom hosts at most one group per time slot
     for classroom in range(classrooms):
         for day in range(num_days):
             for slot in range(num_slots):
@@ -65,7 +66,6 @@ def create_and_solve_schedule(groups, teachers, classrooms, course_sessions, num
                               for course in groups[year][department][group]
                               for teacher in teachers if course in teachers[teacher]) <= 1)
 
-    # Constraint: Each group attends at most one course per slot
     for year in groups:
         for department in groups[year]:
             for group in groups[year][department]:
@@ -99,21 +99,23 @@ def create_and_solve_schedule(groups, teachers, classrooms, course_sessions, num
                                         for classroom in range(classrooms):
                                             if solver.Value(x[year][department][group][day][slot][course][teacher][classroom]):
                                                 solution[year][department][group][day][slot] = (course, teacher, classroom)
-
         return solution
     else:
         return {"error": "No solution found."}
 def write_to_arduino(rfid_data):
+
     # Write the RFID data to the Arduino
     ser.write(rfid_data.encode())
 
     # Wait for the success message from the Arduino
     start_time = time.time()
     timeout = 120  # 2 minutes in seconds
+    response = {}
     while True:
         if ser.in_waiting > 0:
-            response = ser.readline().decode().strip()
-            if response == "Write successful":
+            response['message'] = ser.readline().decode().strip()
+            if response['message'] == "Write successful":
+                response["rfid_data"] = rfid_data
                 return response
         if time.time() - start_time >= timeout:
             return "Timeout reached, no success message received."

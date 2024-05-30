@@ -202,56 +202,41 @@
 
                     </div><!--end row-->
                 {% else %}
-                <div class="col-12">
-                    <div class="justify-content-between d-flex align-items-center mt-3 mb-4">
-                        <h5 class="mb-0 pb-1 text-decoration-underline">First Year</h5>
-
-                    </div>
-                    <div class="d-flex mb-4 align-items-center">
-                        <div class="flex-grow-1 ms-2">
-                            <h5 class="card-title mb-1">Genie Informatics :</h5>
-                        </div>
-                    </div>
-                    <div class="row gallery-wrapper">
-
-                        {#                        {% for group in groups %}#}
-                        <div class="element-item col-xxl-3 col-xl-4 col-sm-6 project designing development" data-category="designing development">
-                            <div class="gallery-box card">
-                                <div class="gallery-container">
-                                    <a href="" style="background: #132649">
-                                        <div class="p-3 d-flex justify-content-center pb-5 pt-5">
-                                            <i style="font-weight: bolder; font-size: 4rem; color: #fec112" class="fa-solid fa-a gallery-img"></i>
-                                        </div>
-                                        <div class="gallery-overlay">
-                                            <h5 class="overlay-caption">Number of students : 36</h5>
-                                        </div>
-                                    </a>
-                                </div>
-
+                    {% for yearId, yearBranches in groups %}
+                        <div class="col-12">
+                            <div class="justify-content-between d-flex align-items-center mt-3 mb-4">
+                                <h5 class="mb-0 pb-1 text-decoration-underline">{{ yearId }}</h5>
                             </div>
-                        </div>
-                        <div class="element-item col-xxl-3 col-xl-4 col-sm-6 project designing development" data-category="designing development">
-                            <div class="gallery-box card">
-                                <div class="gallery-container">
-                                    <a href="" style="background: #132649">
-                                        <div class="p-3 d-flex justify-content-center pb-5 pt-5">
-                                            <i style="font-weight: bolder; font-size: 4rem; color: #fec112" class="fa-solid fa-b gallery-img"></i>
-                                        </div>
-                                        <div class="gallery-overlay">
-                                            <h5 class="overlay-caption">Number of students : 36</h5>
-                                        </div>
-                                    </a>
+                            {% for branchId, branchGroups in yearBranches %}
+                                <div class="d-flex mb-4 align-items-center">
+                                    <div class="flex-grow-1 ms-2">
+                                        <h5 class="card-title mb-1">{{ branchId }}</h5>
+                                    </div>
                                 </div>
-
-                            </div>
+                                <div class="row gallery-wrapper">
+                                    {% for group in branchGroups %}
+                                        <div class="element-item col-xxl-3 col-xl-4 col-sm-6 project designing development" data-category="designing development">
+                                            <div class="gallery-box card">
+                                                <div class="gallery-container">
+                                                    <a href="{{ path("app_group_students", {'id' : group.getId()}) }}" style="background: #132649">
+                                                        <div class="p-3 d-flex justify-content-center pb-5 pt-5">
+                                                            <i style="font-weight: bolder; font-size: 4rem; color: #fec112" class="fa-solid fa-{{ group.getGroupName()|lower}} gallery-img"></i>
+                                                        </div>
+                                                        <div class="gallery-overlay">
+                                                            <h5 class="overlay-caption">Number of students : </h5>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <!-- end col -->
+                                    {% endfor %}
+                                </div>
+                            {% endfor %}
                         </div>
-                        <!-- end col -->
-                        {#                        {% endfor %}#}
+                    {% endfor %}
 
-
-                    </div>
-
-                </div>
                 {% endif %}
 
 

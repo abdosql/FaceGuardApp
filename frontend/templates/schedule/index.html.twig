@@ -22,32 +22,68 @@
         <div class="page-content">
             <div class="container-fluid">
                 {{ include('partials/page-title.html.twig', {pagetitle: 'Management', title: 'Schedules'}) }}
+                {% if schedulesExists == false %}
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="alert alert-danger alert-top-border alert-dismissible fade show material-shadow d-flex justify-content-between" role="alert">
+                                <div>
+                                    <i class="ri-error-warning-line me-3 align-middle fs-16 text-danger "></i><strong>Notice !</strong>
+                                    -   You haven't generated time schedules yet !
+                                </div>
+                                <a href="{{ path("generate_schedules") }}" class="btn btn-danger btn-load btn-sm">
+                                                        <span class="d-flex align-items-center">
+                                                            <span class="spinner-grow flex-shrink-0" role="status">
+                                                                <span class="visually-hidden">Generate</span>
+                                                            </span>
+                                                            <span class="flex-grow-1 ms-2">
+                                                                Generate
+                                                            </span>
+                                                        </span>
+                                </a>
+                            </div>
+                        </div>
+                        <!--end col-->
+                    </div>
+                {% else %}
+
+
 
                 <div class="row">
                     {% for year in years %}
-                    <div class="col-12">
-                        <div class="justify-content-between d-flex align-items-center mt-3 mb-4">
-                            <h5 class="mb-0 pb-1 text-decoration-underline">{{ year.getYear }}</h5>
-                        </div>
-                        <div class="row row-cols-xxl-4 row-cols-lg-3 row-cols-1">
-                            {% for branch in year.getBranches %}
-                                    <div class="col">
-                                        <div class="card card-body">
-                                            <div class="d-flex mb-4 align-items-center">
-                                                <div class="flex-grow-1 ms-2">
-                                                    <h5 class="card-title mb-1">{{ branch.getBranchName }}</h5>
-                                                </div>
-                                            </div>
-                                            <p class="card-text text-muted">Number Of Groups : {{ groupService.countNumberOfGroups(year, branch) }}</p>
-                                            <a href="{{ path("app_getGroups", {'academicYear': year.getId, 'branch': branch.getId }) }}" class="btn btn-primary btn-sm">See Details</a>
-                                        </div>
-                                    </div><!-- end col -->
-                            {% endfor %}
+                        <div class="col-12">
+                            <div class="justify-content-between d-flex align-items-center mt-3 mb-4">
+                                <h5 class="mb-0 pb-1 text-decoration-underline">{{ year.getYear }}</h5>
+                            </div>
+                            <div class="row row-cols-xxl-4 row-cols-lg-3 row-cols-1">
+                                {% set processedBranches = [] %}
+                                {% for group in year.getGroups %}
+                                    {% for branch in group.getBranches %}
+                                        {% if branch not in processedBranches %}
+                                            {% set processedBranches = processedBranches|merge([branch]) %}
+                                            {% if group.branchExists(branch) %}
+                                                <div class="col">
+                                                    <div class="card card-body">
+                                                        <div class="d-flex mb-4 align-items-center">
+                                                            <div class="flex-grow-1 ms-2">
+                                                                <h5 class="card-title mb-1">{{ branch.getBranchName }}</h5>
+                                                            </div>
+                                                        </div>
+                                                        <p class="card-text text-muted">Number Of Groups : {{ groupService.countNumberOfGroups(year, branch) }}</p>
+                                                        <a href="{{ path('app_getGroups', {'academicYear': year.getId, 'branch': branch.getId }) }}" class="btn btn-primary btn-sm">See Details</a>
+                                                    </div>
+                                                </div><!-- end col -->
 
-                        </div><!-- end row -->
-                    </div><!-- end col -->
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endfor %}
+                            </div><!-- end row -->
+                        </div><!-- end col -->
                     {% endfor %}
                 </div><!-- end row -->
+
+                {% endif %}
+
 
             </div>
             <!-- container-fluid -->

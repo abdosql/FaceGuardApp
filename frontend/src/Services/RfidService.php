@@ -2,6 +2,9 @@
 
 namespace App\Services;
 
+use App\Entity\RFIDCard;
+use App\Entity\Student;
+use Doctrine\ORM\EntityManagerInterface;
 use Random\RandomException;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\Process\Exception\ProcessFailedException;
@@ -16,7 +19,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class RfidService
 {
-    public function __construct(private HttpClientInterface $client)
+    public function __construct(private HttpClientInterface $client, private EntityManagerInterface $entityManager)
     {
     }
 
@@ -25,7 +28,7 @@ class RfidService
      */
     public function generateRandomRFID(): string
     {
-        return bin2hex(random_bytes(10));
+        return (string)random_int(1000000000, 9999999999);
     }
 
     /**
@@ -53,5 +56,19 @@ class RfidService
         } catch (TransportExceptionInterface | ServerExceptionInterface | RedirectionExceptionInterface | DecodingExceptionInterface | ClientExceptionInterface $e) {
             return ['status' => 'error', 'message' => $e->getMessage()];
         }
+    }
+
+    public function saveStudentRfid(Student $student, string $rfidString):void
+    {
+        $rfid = new RFIDCard();
+        $rfid->setRfidString($rfidString);
+        $rfid->setStudent($student);
+        $this->entityManager->persist($rfid);
+        $this->entityManager->flush();
+    }
+
+    public function getRfidCard(string $rfidString): ?RFIDCard
+    {
+        return $this->entityManager->getRepository(RFIDCard::class)->findOneBy(['rfidString' => $rfidString]);
     }
 }

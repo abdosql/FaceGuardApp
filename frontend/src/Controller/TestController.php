@@ -235,7 +235,6 @@ class TestController extends AbstractController
         set_time_limit(1200);
         // Call the generateSchedules method from the service
         $schedules = $this->scheduleService->generateSchedules();
-        $file = fopen('schedule.txt', 'w');
         if (empty($schedules)) {
             return new JsonResponse([
                 'status' => 'error',
@@ -247,6 +246,13 @@ class TestController extends AbstractController
         return $this->render('test/index.html.twig', [
             'controller_name' => 'TestController',
             'timetable' => $schedules
+        ]);
+    }
+    #[Route('/soon', name: 'coming_soon')]
+
+    public function comingSoon(): Response
+    {
+        return $this->render('pages/pages-coming-soon.html.twig', [
         ]);
     }
 }

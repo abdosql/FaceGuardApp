@@ -23,9 +23,10 @@ class RfidController extends AbstractController
     #[Route('/generate-rfid', name: 'generate_rfid')]
     public function generateRfid(): JsonResponse
     {
-        $randomRfid = $this->rfidService->generateRandomRfid();
 
         try {
+            $randomRfid = $this->rfidService->generateRandomRfid();
+
             $result = $this->rfidService->writeRfid($randomRfid);
 
             if ($result['status'] === 'success') {

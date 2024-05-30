@@ -130,7 +130,6 @@ class AcademicYear
 
         return $this;
     }
-
     public function removeBranch(Branch $branch): static
     {
         $this->branches->removeElement($branch);

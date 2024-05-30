@@ -33,10 +33,10 @@
 .auth-one-bg{
     background-image: url("../../images/auth-one-bg.jpg");
     background-position: center;
-    background-size: cover;
+    background-size: contain;
 
     .bg-overlay{
-        background: linear-gradient(to right, var(--#{$prefix}primary-text-emphasis), var(--#{$prefix}primary));
+        background: linear-gradient(to right, #a4a3bc, #4b91cf);
         opacity: 0.9;
     }
 }

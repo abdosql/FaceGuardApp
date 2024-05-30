@@ -75,8 +75,8 @@ class TimeScheduleGenerator
         $groupsOutput = [];
         $academicYears = $this->academicYearService->getAllAcademicYears();
         foreach ($academicYears as $academicYear) {
-            foreach ($academicYear->getBranches() as $branch) {
-                foreach ($academicYear->getGroups() as $group) {
+            foreach ($academicYear->getGroups() as $group) {
+                foreach ($group->getBranches() as $branch) {
                     foreach ($branch->getCourses() as $course) {
                         foreach ($course->getSemesters() as $semester) {
                             if ($semester->getId() == $id) {
@@ -84,14 +84,13 @@ class TimeScheduleGenerator
                                     continue;
                                 }
                                 $groupsOutput[$academicYear->getId()][$branch->getId()][$group->getId()][] = $course->getId();
-
                             }
                         }
                     }
+
                 }
             }
         }
-
         return $groupsOutput;
     }
 
@@ -144,6 +143,13 @@ class TimeScheduleGenerator
                         foreach ($sessions as $session => $data) {
                             if ($data != null) {
                                 $course = $this->courseService->getCourseById($data[0]);
+                                $teacher = $course->getTeacher();
+                                if (!$teacher->getGroups()->contains($groupEntity)){
+                                    $teacher->addGroup($groupEntity);
+                                    $this->entityManager->persist($teacher);
+                                    error_log("Teacher ID {$teacher->getId()} added to Group ID $groupId");
+                                }
+
                                 $classroom = $this->classroomService->getClassroomById($data[2] + 1);
                                 if (!$course || !$classroom) {
                                     error_log("Course ID {$data[0]} or Classroom ID {$data[2]} not found.");

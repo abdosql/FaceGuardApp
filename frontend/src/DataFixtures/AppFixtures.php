@@ -38,6 +38,12 @@ class AppFixtures extends Fixture
             'last_name' => "Saqqal",
             'image_name' => "1706396409942-6624ed416023f712150858.jpeg"
         ]);
+        $hanae = TeacherFactory::createOne([
+            "username" => "hanae",
+            'first_name' => "Hanae",
+            'last_name' => "Mouhib",
+            'image_name' => "hanae-6653a95c4666e679230798.jpg"
+        ]);
 
         // Create Teachers
         $teachers = [];
@@ -45,7 +51,7 @@ class AppFixtures extends Fixture
             $teachers[] = TeacherFactory::createOne(["username" => "teacher$i", 'roles' => ["ROLE_TEACHER"]]);
         }
         $genieInformatiqueCourses = [
-            CourseFactory::createOne(["course_name" => "Algorithmique", "teacher" => $teachers[0], "semesters" => [$semester1]]),
+            CourseFactory::createOne(["course_name" => "Algorithmique", "teacher" => $hanae, "semesters" => [$semester1]]),
             CourseFactory::createOne(["course_name" => "Programmation", "teacher" => $teachers[1], "semesters" => [$semester1]]),
             CourseFactory::createOne(["course_name" => "Mathématiques", "teacher" => $teachers[2], "semesters" => [$semester1]]),
             CourseFactory::createOne(["course_name" => "Physique", "teacher" => $teachers[3], "semesters" => [$semester1]]),
@@ -130,27 +136,25 @@ class AppFixtures extends Fixture
             'branches' => [$genieBranch, $genieIndustrielBranch, $genieMecanicsBranch],
             'semesters' => [$semester1, $semester2]
         ]);
-        $fifthYear = AcademicYearsFactory::createOne([
-            'year' => AcademicYearEnum::FIFTH_YEAR,
-            'slug' => $this->slugger->slug(AcademicYearEnum::FOURTH_YEAR),
-            'branches' => [$genieBranch, $genieIndustrielBranch, $genieMecanicsBranch],
-            'semesters' => [$semester1, $semester2]
+//        $fifthYear = AcademicYearsFactory::createOne([
+//            'year' => AcademicYearEnum::FIFTH_YEAR,
+//            'slug' => $this->slugger->slug(AcademicYearEnum::FOURTH_YEAR),
+//            'branches' => [$genieBranch, $genieIndustrielBranch, $genieMecanicsBranch],
+//            'semesters' => [$semester1, $semester2]
+//        ]);
+
+        //first year
+        StudentFactory::createMany(80, [
+            'academicYear' => $firstYear,
+            'branch' => $genieBranch,
+
+        ]);
+        StudentFactory::createMany(80, [
+            'academicYear' => $firstYear,
+            'branch' => $genieIndustrielBranch
         ]);
 
-
-        StudentFactory::createMany(80, [
-            'academicYear' => $firstYear,
-            'branch' => $genieBranch
-        ]);
-        StudentFactory::createMany(80, [
-            'academicYear' => $firstYear,
-            'branch' => $genieIndustrielBranch
-        ]);
-        StudentFactory::createMany(80, [
-            'academicYear' => $firstYear,
-            'branch' => $genieMecanicsBranch
-        ]);
-        //
+        //second year
         StudentFactory::createMany(80, [
             'academicYear' => $secondYear,
             'branch' => $genieMecanicsBranch
@@ -163,7 +167,7 @@ class AppFixtures extends Fixture
             'academicYear' => $secondYear,
             'branch' => $genieBranch
         ]);
-        //
+        //forth year
         StudentFactory::createMany(80, [
             'academicYear' => $forthYear,
             'branch' => $genieIndustrielBranch
@@ -176,7 +180,7 @@ class AppFixtures extends Fixture
             'academicYear' => $forthYear,
             'branch' => $genieBranch
         ]);
-        //
+        //third year
         StudentFactory::createMany(80, [
             'academicYear' => $thirdYear,
             'branch' => $genieBranch
@@ -189,6 +193,19 @@ class AppFixtures extends Fixture
             'academicYear' => $thirdYear,
             'branch' => $genieIndustrielBranch
         ]);
+        //third year
+//        StudentFactory::createMany(80, [
+//            'academicYear' => $fifthYear,
+//            'branch' => $genieBranch
+//        ]);
+//        StudentFactory::createMany(80, [
+//            'academicYear' => $fifthYear,
+//            'branch' => $genieMecanicsBranch
+//        ]);
+//        StudentFactory::createMany(80, [
+//            'academicYear' => $fifthYear,
+//            'branch' => $genieIndustrielBranch
+//        ]);
 
 
         // Create Classrooms

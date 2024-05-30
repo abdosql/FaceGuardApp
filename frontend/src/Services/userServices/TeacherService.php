@@ -4,6 +4,7 @@ namespace App\Services\userServices;
 
 use App\Entity\Branch;
 use App\Entity\Teacher;
+use App\Services\SessionService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -14,7 +15,8 @@ class TeacherService extends UserService
     public function __construct(
         EntityManagerInterface $entityManager,
         SluggerInterface $slugger,
-        UserPasswordHasherInterface $passwordHasher
+        UserPasswordHasherInterface $passwordHasher,
+        private SessionService $sessionService
     )
     {
         parent::__construct($entityManager, $slugger, $passwordHasher);

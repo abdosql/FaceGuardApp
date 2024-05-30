@@ -27,6 +27,7 @@ class ScheduleController extends AbstractController
         return $this->render('schedule/index.html.twig', [
             'years' => $this->academicYearService->getAllAcademicYears(),
             'groupService' => $this->groupService,
+            'schedulesExists' => $this->scheduleService->schedulesExists()
         ]);
     }
     #[Route('/group/{id}', name: 'app_group_schedule', methods: ['GET'])]
@@ -37,6 +38,25 @@ class ScheduleController extends AbstractController
         ]);
     }
 
+    /**
+     * @throws \Exception
+     */
+    #[Route("/generate", name : "generate_schedules")]
+    public function generateSchedules(Request $request): Response
+    {
+        set_time_limit(1200);
+        // Call the generateSchedules method from the service
+        $schedules = $this->scheduleService->generateSchedules();
+        if (empty($schedules)) {
+            return new JsonResponse([
+                'status' => 'error',
+                'message' => 'Could not generate schedule, check your data or API.'
+            ], 500);
+        }
+        $this->scheduleService->saveSchedules($schedules, 1);
+        // Return the schedule data in a JSON response
+        return $this->redirectToRoute("app_schedule_index");
+    }
     #[Route("/api/schedules", name : "get_schedules")]
     public function getSchedules(Request $request): JsonResponse
     {

@@ -1,0 +1,62 @@
+{
+    "1": [
+        {
+            "elapsed_time": 0.5959802839775106,
+            "memory_usage": 103.3334375,
+            "num_groups": 8,
+            "num_teachers": 10,
+            "num_courses": 10,
+            "slots_per_day": 4
+        }
+    ],
+    "2": [
+        {
+            "elapsed_time": 15.407355623123273,
+            "memory_usage": 161.521640625,
+            "num_groups": 25,
+            "num_teachers": 35,
+            "num_courses": 41,
+            "slots_per_day": 4
+        }
+    ],
+    "3": [
+        {
+            "elapsed_time": 22.425822366216065,
+            "memory_usage": 208.919375,
+            "num_groups": 29,
+            "num_teachers": 21,
+            "num_courses": 41,
+            "slots_per_day": 4
+        }
+    ],
+    "4": [
+        {
+            "elapsed_time": 26.028584248469444,
+            "memory_usage": 214.165546875,
+            "num_groups": 28,
+            "num_teachers": 35,
+            "num_courses": 41,
+            "slots_per_day": 5
+        }
+    ],
+    "5": [
+        {
+            "elapsed_time": 98.33387231463422,
+            "memory_usage": 43.50140625,
+            "num_groups": 40,
+            "num_teachers": 60,
+            "num_courses": 41,
+            "slots_per_day": 5
+        }
+    ],
+    "6": [
+        {
+            "elapsed_time": 170.7010976888215,
+            "memory_usage": 67.16921875,
+            "num_groups": 33,
+            "num_teachers": 21,
+            "num_courses": 42,
+            "slots_per_day": 4
+        }
+    ]
+}

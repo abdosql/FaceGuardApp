@@ -12,7 +12,7 @@ use Psr\Log\LoggerInterface;
 
 class ScheduleService extends TimeScheduleGenerator{
 
-    public function __construct(ScheduleSettingsService $scheduleSettingsService, AcademicYearService $academicYearService, CourseService $courseService, EntityManagerInterface $entityManager, ClassroomService $classroomService, TeacherService $teacherService, GroupService $groupService, ScheduleApiService $scheduleApiService, SemesterService $semesterService, LoggerInterface $logger)
+    public function __construct(ScheduleSettingsService $scheduleSettingsService, AcademicYearService $academicYearService, CourseService $courseService, EntityManagerInterface $entityManager, ClassroomService $classroomService, TeacherService $teacherService, GroupService $groupService, ScheduleApiService $scheduleApiService, SemesterService $semesterService, LoggerInterface $logger, private SessionService $sessionService)
     {
         parent::__construct($scheduleSettingsService, $academicYearService, $courseService, $entityManager, $classroomService, $teacherService, $groupService, $scheduleApiService, $semesterService, $logger);
     }
@@ -24,10 +24,6 @@ class ScheduleService extends TimeScheduleGenerator{
     public function findBySemesterAndGroup($semesterId, $groupId)
     {
         return $this->entityManager->getRepository(TimeSchedule::class)->findBySemesterAndGroup($semesterId, $groupId);
-    }
-    public function findTeacherSessions($teacherId)
-    {
-        return $this->entityManager->getRepository(Session::class)->findTeacherSessions($teacherId);
     }
     public function fullCalenderDataStructure($semesterId, $groupId): array
     {
@@ -43,7 +39,7 @@ class ScheduleService extends TimeScheduleGenerator{
     }
     public function fullCalenderDataStructureTeachers($teacherId): array
     {
-        $sessions = $this->findTeacherSessions($teacherId);
+        $sessions = $this->sessionService->findTeacherSessions($teacherId);
 
         $events = [];
         foreach ($sessions as $session) {
@@ -81,6 +77,14 @@ class ScheduleService extends TimeScheduleGenerator{
         }
 
         return $events;
+    }
+
+    public function schedulesExists(): bool
+    {
+        if (!$this->entityManager->getRepository(TimeSchedule::class)->findAll()){
+            return false;
+        }
+        return true;
     }
 
 }

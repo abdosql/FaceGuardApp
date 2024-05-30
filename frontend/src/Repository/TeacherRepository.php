@@ -40,6 +40,7 @@ class TeacherRepository extends ServiceEntityRepository
             ->getQuery()
             ->getScalarResult(), 'course_name');
     }
+
 //    /**
 //     * @return Teacher[] Returns an array of Teacher objects
 //     */

@@ -16,6 +16,9 @@ class RFIDCard
     #[ORM\OneToOne(mappedBy: 'rfidCard', cascade: ['persist', 'remove'])]
     private ?Student $student = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $rfidString = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -39,6 +42,18 @@ class RFIDCard
         }
 
         $this->student = $student;
+
+        return $this;
+    }
+
+    public function getRfidString(): ?string
+    {
+        return $this->rfidString;
+    }
+
+    public function setRfidString(string $rfidString): static
+    {
+        $this->rfidString = $rfidString;
 
         return $this;
     }
